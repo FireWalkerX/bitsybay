@@ -215,7 +215,6 @@ final class Url {
     *
     * @param string $route Path to controller. For example: account/account/update
     * @param string $arguments Ampersand separated
-    * @param bool $secure TRUE for SSL or FALSE by default
     * @return string Returns canonical link
     */
     public function link($route, $arguments = '') {
