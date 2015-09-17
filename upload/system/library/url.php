@@ -35,9 +35,14 @@ final class Url {
     private $_base;
 
     /**
+     * @var language
+     */
+    private $_language = false;
+
+    /**
      * @var array
      */
-    private $_rewrite = array();
+    private $_rewrite  = array();
 
     /**
     * Construct
@@ -133,7 +138,30 @@ final class Url {
 
             $rewrite = array_flip($this->_rewrite);
 
-            // If has rewrite rule
+            // Prepare multi-language requests
+            $statement = $this->_db->query('SELECT `language_id`, `code` FROM `language`');
+
+            if ($statement->rowCount()) {
+                foreach ($statement->fetchAll() as $language) {
+
+                    if (isset($this->_request->get['_route_']) && preg_match(sprintf('/^%s\//ui', $language->code), $this->_request->get['_route_'])) {
+
+                        // Set current language
+                        $this->_language = $language->code;
+
+                        // Set global language request
+                        $this->_request->get['language_id=' . $language->language_id] = $language->code;
+
+                        // Clear request
+                        $this->_request->get['_route_'] = str_replace($language->code . '/', false, $this->_request->get['_route_']);
+
+                        break;
+                    }
+
+                }
+            }
+
+            // If request exists in rewrite rule
             if (isset($rewrite[$this->_request->get['_route_']])) {
 
                 // Category
@@ -219,8 +247,8 @@ final class Url {
     */
     public function link($route, $arguments = '') {
 
-        // Secure layer
-        $url = $this->_base;
+        // Multi-language base
+        $url = $this->_language ? $this->_base . $this->_language . '/' : $this->_base;
 
         // Route
         $url .= isset($this->_rewrite[$route]) ? $this->_rewrite[$route] : 'index.php?route=' . $route;
