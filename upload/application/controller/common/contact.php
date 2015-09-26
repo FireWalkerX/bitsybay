@@ -20,6 +20,7 @@ class ControllerCommonContact extends Controller {
 
         parent::__construct($registry);
 
+        $this->load->library('captcha/captcha');
     }
 
     public function index() {
@@ -55,7 +56,14 @@ class ControllerCommonContact extends Controller {
         $data['href_common_information_terms']     = $this->url->link('common/information/terms');
         $data['href_common_information_faq']       = $this->url->link('common/information/faq');
 
-        $data['action'] = $this->url->link('common/contact');
+        $data['guest'] = !$this->auth->isLogged();
+
+        $captcha = new Captcha();
+        $this->session->setCaptcha($captcha->getCode());
+
+        $data['captcha'] = $this->url->link('common/contact/captcha');
+
+        $data['action']  = $this->url->link('common/contact');
 
         $data['alert_success']  = $this->load->controller('common/alert/success');
 
@@ -63,6 +71,11 @@ class ControllerCommonContact extends Controller {
         $data['header']         = $this->load->controller('common/header');
 
         $this->response->setOutput($this->load->view('common/contact.tpl', $data));
+    }
+
+    public function captcha() {
+        $captcha = new Captcha();
+        $captcha->getImage($this->session->getCaptcha());
     }
 
     private function _validatePost() {
@@ -77,6 +90,14 @@ class ControllerCommonContact extends Controller {
 
         if (!isset($this->request->post['message']) || empty($this->request->post['message'])) {
             $this->_error['message'] = tt('Message is required');
+        }
+
+        if (!$this->auth->isLogged()) {
+            if (!isset($this->request->post['captcha']) || empty($this->request->post['captcha'])) {
+                $this->_error['captcha'] = tt('Magic word is required');
+            } else if (strtoupper($this->request->post['captcha']) != strtoupper($this->session->getCaptcha())) {
+                $this->_error['captcha'] = tt('Incorrect magic word');
+            }
         }
 
         return !$this->_error;
