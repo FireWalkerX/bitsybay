@@ -703,7 +703,7 @@ CREATE TABLE `user` (
   `approved` enum('1','0') NOT NULL,
   `verified` enum('1','0') NOT NULL,
   `affiliate_currency_id` int(10) unsigned NULL,
-  `affiliate_address` varchar(255) NOT NULL,
+  `affiliate_address` varchar(255) NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
