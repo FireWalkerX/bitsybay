@@ -57,7 +57,7 @@
                     <div class="col-lg-12">
                       <button type="submit" class="btn btn-primary sign-in-button"><?php echo tt('Sign In') ?></button>
                       <div class="col-lg-offset-2">
-                       &nbsp;&nbsp; or <a href="<?php echo $href_account_create ?>"><?php echo tt('Join Us') ?></a>
+                       &nbsp;&nbsp; <?php echo tt('or') ?> <a href="<?php echo $href_account_create ?>"><?php echo tt('Join Us') ?></a>
                       </div>
                     </div>
                   </div>
