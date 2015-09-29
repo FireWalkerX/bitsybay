@@ -45,6 +45,9 @@ class ControllerCommonHeader extends Controller {
         $data['bool_is_verified'] = !$this->auth->isVerified();
         $data['username']         = $this->auth->getUsername();
 
+        // Common
+        $data['href_common_home'] = $this->url->link('common/home');
+
         // Notification section
         $this->load->model('account/notification');
         $data['total_account_notification'] = $this->model_account_notification->checkNewNotifications($this->auth->getId());
