@@ -43,16 +43,16 @@ class ControllerCommonHome extends Controller {
         }
 
         $total_products  = $this->model_catalog_product->getTotalProducts(array());
-        $data['total_products'] = sprintf(tt('%s %s'), $total_products, plural($total_products, array(tt('offer'), tt('offers'), tt('offers'))));
+        $data['total_products'] = sprintf(tt('%s %s'), $total_products, plural($total_products, array(tt('offer'), tt('offers'), tt('offers '))));
 
         $total_categories  = $this->model_catalog_category->getTotalCategories();
-        $data['total_categories'] = sprintf(tt('%s %s'), $total_categories, plural($total_categories, array(tt('category'), tt('categories'), tt('categories'))));
+        $data['total_categories'] = sprintf(tt('%s %s'), $total_categories, plural($total_categories, array(tt('category'), tt('categories'), tt('categories '))));
 
         $total_sellers  = $this->model_account_user->getTotalSellers();
-        $data['total_sellers'] = sprintf(tt('%s %s'), $total_sellers, plural($total_sellers, array(tt('sellers'), tt('sellers'), tt('sellers'))));
+        $data['total_sellers'] = sprintf(tt('%s %s'), $total_sellers, plural($total_sellers, array(tt('sellers'), tt('sellers'), tt('sellers '))));
 
         $total_buyers  = $this->model_account_user->getTotalUsers();
-        $data['total_buyers'] = sprintf(tt('%s %s'), $total_buyers, plural($total_buyers, array(tt('buyers'), tt('buyers'), tt('buyers'))));
+        $data['total_buyers'] = sprintf(tt('%s %s'), $total_buyers, plural($total_buyers, array(tt('buyers'), tt('buyers'), tt('buyers '))));
 
         $redirect = base64_encode($this->url->getCurrentLink());
 
