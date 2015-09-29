@@ -35,6 +35,24 @@ class ControllerCommonFooter extends Controller {
         $data['href_common_information_terms']     = $this->url->link('common/information/terms');
         $data['href_common_information_faq']       = $this->url->link('common/information/faq');
 
+        $data['languages'] = array();
+
+        $languages = $this->language->getLanguages();
+        foreach ($languages as $language) {
+
+            if ($language['language_code'] == 'en') {
+                $data['languages'][] = array(
+                    'name' => $language['language_name'],
+                    'href' => URL_BASE
+                );
+            } else {
+                $data['languages'][] = array(
+                    'name' => $language['language_name'],
+                    'href' => URL_BASE . $language['language_code'] . '/'
+                );
+            }
+        }
+
         $data['href_facebook'] = URL_FACEBOOK;
         $data['href_twitter']  = URL_TWITTER;
         $data['href_tumblr']   = URL_TUMBLR;

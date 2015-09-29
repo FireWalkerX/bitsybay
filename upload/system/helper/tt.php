@@ -21,5 +21,16 @@
 * @return string Prepared string
 */
 function tt($string) {
-    return htmlentities($string);
+
+    // Get global
+    global $_TRANSLATION;
+
+    // Try to translate
+    $string = isset($_TRANSLATION[$string]) ? $_TRANSLATION[$string] : $string;
+
+    // Prepare string to valid HTML
+    $string = htmlentities($string);
+
+    // Output
+    return $string;
 }

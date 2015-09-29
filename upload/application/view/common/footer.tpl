@@ -14,7 +14,7 @@
 
       <footer>
         <div class="row footer">
-          <div class="col-lg-3 col-md-2 col-sm-3 col-xs-4">
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
             <ul class="list-unstyled">
               <li><h5><?php echo tt('Explore') ?></h5>
                 <ul class="list-unstyled menu">
@@ -27,7 +27,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-lg-3 col-md-2 col-sm-2 col-xs-4">
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
             <ul class="list-unstyled">
               <li><h5><?php echo tt('Help Center') ?></h5>
                 <ul class="list-unstyled menu">
@@ -38,24 +38,45 @@
               </li>
             </ul>
           </div>
-          <div class="col-lg-3 col-md-2 col-sm-2 col-xs-3">
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
             <ul class="list-unstyled">
               <li><h5><?php echo tt('Network') ?></h5>
                 <ul class="list-unstyled menu">
                   <li><a href="<?php echo $href_facebook ?>" target="_blank" rel="nofollow"><?php echo tt('Facebook') ?></a></li>
                   <li><a href="<?php echo $href_tumblr ?>" target="_blank" rel="nofollow"><?php echo tt('Tumblr') ?></a></li>
-                  <li><a href="<?php echo $href_twitter ?>" target="_blank" rel="nofollow"><?php echo tt('Twitter') ?></a> / <a class="small" href="#bitsybay" target="_blank"><?php echo tt('Twister') ?></a></li>
+                  <li><a href="<?php echo $href_twitter ?>" target="_blank" rel="nofollow"><?php echo tt('Twitter') ?></a> / <a class="small" href="https://twistnik.com/@bitsybay" target="_blank"><?php echo tt('Twister') ?></a></li>
                   <li><a href="<?php echo $href_github ?>" target="_blank" rel="nofollow"><?php echo tt('GitHub') ?></a></li>
                 </ul>
               </li>
             </ul>
           </div>
-          <div class="col-lg-3 col-md-6 col-sm-4 col-xs-4">
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+            <ul class="list-unstyled">
+              <li><h5><?php echo tt('Press about us') ?></h5>
+                <ul class="list-unstyled menu">
+                  <li><a href="http://forklog.com/pokupajte-i-prodavajte-za-bitkoiny-obzor-rynka-tsifrovyh-tovarov-bitsybay/" target="_blank" rel="nofollow"><?php echo tt('Forklog') ?></a></li>
+                  <li><a href="http://www.newsbtc.com/2015/09/22/bitsybay-uses-bitcoin-to-promote-digital-artists-works/" target="_blank" rel="nofollow"><?php echo tt('NewsBTC') ?></a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+            <ul class="list-unstyled">
+              <li><h5><?php echo tt('Language') ?></h5>
+                <ul class="list-unstyled menu">
+                  <?php foreach ($languages as $language) { ?>
+                    <li><a href="<?php echo $language['href'] ?>"><?php echo $language['name'] ?></a></li>
+                  <?php } ?>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
             <ul class="list-unstyled pull-right">
               <li>
-                <?php echo tt('The') ?> <a href="/"><?php echo tt('BitsyBay') ?></a> <?php echo tt('Project') ?> &copy; <?php echo date('Y') ?> Beta
-                <div style="font-size:9px">
-                  <?php echo tt('Powered by') ?> <a href="https://github.com/bitsybay" target="_blank" rel="nofollow"><?php echo tt('BitsyBay Engine') ?></a>,
+                <div class="small"><a href="/"><?php echo tt('BitsyBay') ?></a> <?php echo tt('Project') ?> &copy; <?php echo date('Y') ?> Beta</div>
+                <div class="text-muted" style="font-size:10px">
+                  <?php echo tt('Powered by') ?> <a href="https://github.com/bitsybay" target="_blank" rel="nofollow"><?php echo tt('BitsyBay Engine') ?></a><br />
                   <!--
                   BitsyBay Engine is an open source software and you are free to remove the powered by BitsyBay Engine if you want, but its generally accepted practise to make a small donation.
                   Please donate via BitCoin to 13t5kVqpFgKzPBLYtRNShSU2dMSTP4wQYx
@@ -65,7 +86,7 @@
               </li>
             </ul>
             <div class="input-group pull-right" id="footerSearchForm">
-              <input name="query" type="text" class="form-control" value="" placeholder="<?php echo tt('Search in catalog') ?>" />
+              <input name="query" type="text" class="form-control" value="" placeholder="<?php echo tt('Search') ?>" />
               <input name="action" type="hidden" value="<?php echo $href_catalog_search ?>" />
               <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button></span>
             </div>

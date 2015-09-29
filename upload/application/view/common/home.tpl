@@ -17,22 +17,22 @@
   <div class="col-lg-12 home">
     <?php if ($user_is_logged) { ?>
       <div class="page-header text-center">
-        <h2><?php echo $total_products ?> by <?php echo $total_sellers ?> for <?php echo $total_buyers ?></h2>
+        <h2><?php echo $total_products ?> <?php echo tt('by') ?> <?php echo $total_sellers ?> <?php echo tt('for') ?> <?php echo $total_buyers ?></h2>
       </div>
       <?php echo $module_search ?>
     <?php } else { ?>
       <div class="bs-component welcome">
         <div class="jumbotron">
           <div class="col-lg-7">
-            <h3>Looking for a Marketplace to buy or sell digital creative in Bitcoin?</h3>
-            Then here you are:
+            <h3><?php echo tt('Looking for a Marketplace to buy or sell digital creative in Bitcoin?') ?></h3>
+            <?php echo tt('Then here you are:') ?>
             <ul>
-              <li><?php echo $total_products ?> by <?php echo $total_sellers ?> for <?php echo $total_buyers ?></li>
-              <li>Trade from any country without bank fees and other restrictions</li>
-              <li>Royalty Free and Exclusive licenses</li>
-              <li><?php echo QUOTA_FILE_SIZE_BY_DEFAULT ?> Mb free disk space for all new sellers and +<?php echo QUOTA_BONUS_SIZE_PER_ORDER ?> Mb for every next sale</li>
-              <li>0% seller fee up to 2016, 11% later</li>
-              <li>0% seller fee for project contributors forever</li>
+              <li><?php echo $total_products ?> <?php echo tt('by') ?> <?php echo $total_sellers ?> <?php echo tt('for') ?> <?php echo $total_buyers ?></li>
+              <li><?php echo tt('Trade from any country without bank fees and other restrictions') ?></li>
+              <li><?php echo tt('Royalty Free and Exclusive licenses') ?></li>
+              <li><?php echo sprintf(tt('%s Mb free disk space for all new sellers and +%s Mb for every next sale'), QUOTA_FILE_SIZE_BY_DEFAULT, QUOTA_BONUS_SIZE_PER_ORDER) ?></li>
+              <li><?php echo tt('0% seller fee up to 2016, 11% later') ?></li>
+              <li><?php echo tt('0% seller fee for project contributors forever') ?></li>
             </ul>
           </div>
           <div class="col-lg-4 col-lg-offset-1">

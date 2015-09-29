@@ -59,7 +59,7 @@ $session = new Session();
 $registry->set('session', $session);
 
 // Language
-$language = new Language($registry, DEFAULT_LANGUAGE_ID);
+$language = new Language($registry, $request, DEFAULT_LANGUAGE_ID);
 $registry->set('language', $language);
 
 // Currency
@@ -97,6 +97,9 @@ $registry->set('security_log', $security_log);
 if (isset($request->get['ref'])) {
     setcookie('referrer', (int) $request->get['ref'], time() + 3600 * 24 * 1000, '/');
 }
+
+// Load text tools
+$_TRANSLATION = $language->getTranslation(); $loader->helper('tt');
 
 // Front Controller
 $controller = new Front($registry);

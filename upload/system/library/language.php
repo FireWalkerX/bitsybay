@@ -44,20 +44,27 @@ final class Language {
      */
     private $_languages        = array();
 
+    /**
+     * @var array
+     */
+    private $_translation      = array();
+
 
     /**
     * Construct
     *
-    * @param registry $registry
-    * @param int $language_id Current language id
+    * @param Registry $registry
+    * @param Request $request
+    * @param int $language_id Default language id
     */
-    public function __construct(Registry $registry, $language_id) {
+    public function __construct(Registry $registry, Request $request, $language_id) {
+
+        $_translation = array();
 
         $this->_db = $registry->get('db');
 
         try {
-            $statement = $this->_db->prepare('SELECT * FROM `language`');
-            $statement->execute();
+            $statement = $this->_db->query('SELECT * FROM `language`');
 
         } catch (PDOException $e) {
 
@@ -72,6 +79,7 @@ final class Language {
 
             foreach ($statement->fetchAll() as $language) {
 
+                // Add languages registry
                 $this->_languages[$language->language_id] = array(
                     'language_id'      => $language->language_id,
                     'language_code'    => $language->code,
@@ -79,11 +87,29 @@ final class Language {
                     'language_name'    => $language->name
                 );
 
+                // Set default language
                 if ($language->language_id == $language_id) {
+
                     $this->_language_id      = $language->language_id;
                     $this->_language_code    = $language->code;
                     $this->_language_locale  = $language->locale;
                     $this->_language_name    = $language->name;
+                }
+
+                // Set current language
+                $language_file = DIR_BASE . 'language' . DIR_SEPARATOR . $language->code . '.php';
+
+                if (isset($request->get['language_id']) && $request->get['language_id'] == $language->language_id && file_exists($language_file) && is_readable($language_file)) {
+
+                    $this->_language_id      = $language->language_id;
+                    $this->_language_code    = $language->code;
+                    $this->_language_locale  = $language->locale;
+                    $this->_language_name    = $language->name;
+
+                    // Load language package if exist
+                    require_once($language_file);
+
+                    $this->_translation = $_translation;
                 }
             }
         }
@@ -98,6 +124,15 @@ final class Language {
     */
     public function hasId($language_id) {
         return isset($this->_languages[$language_id]);
+    }
+
+    /**
+    * Get all languages
+    *
+    * @return array
+    */
+    public function getLanguages() {
+        return $this->_languages;
     }
 
     /**
@@ -134,5 +169,15 @@ final class Language {
     */
     public function getName() {
         return $this->_language_name;
+    }
+
+    /**
+     * Get translation strings
+     *
+     * @return array translation strings
+     */
+    public function getTranslation() {
+
+        return $this->_translation;
     }
 }

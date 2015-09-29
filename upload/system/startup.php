@@ -66,9 +66,6 @@ require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'engine/loader.php');
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'engine/model.php');
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'engine/registry.php');
 
-// Helper
-require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'helper/tt.php');
-
 // Library
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/url.php');
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/request.php');

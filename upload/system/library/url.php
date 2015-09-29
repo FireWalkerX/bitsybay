@@ -150,7 +150,7 @@ final class Url {
                         $this->_language = $language->code;
 
                         // Set global language request
-                        $this->_request->get['language_id=' . $language->language_id] = $language->code;
+                        $this->_request->get['language_id'] = $language->language_id;
 
                         // Clear request
                         $this->_request->get['_route_'] = str_replace($language->code . '/', false, $this->_request->get['_route_']);
