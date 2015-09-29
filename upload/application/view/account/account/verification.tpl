@@ -38,14 +38,15 @@
         <div class="col-lg-12 form-group">
           <div class="well">
             <p>
-              The Verification feature is intended primarily for sellers. Verified seller can be identified by this label <span class="text-success"><span class="glyphicon glyphicon-ok"></span> <strong><?php echo tt('Verified Seller') ?></strong></span> in the product pages.
-              Verified sellers enjoy a greater deal of trust from buyers.
+              <?php echo tt('The Verification feature is intended primarily for sellers. Verified seller can be identified by this label') ?>
+              <span class="text-success"><span class="glyphicon glyphicon-ok"></span> <strong><?php echo tt('Verified Seller') ?></strong></span> <?php echo tt('in the product pages.') ?>
+              <?php echo tt('Verified sellers enjoy a greater deal of trust from buyers.') ?>
             </p>
             <p>
-              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;The verification process is based on our expert judgement and we charge a small fee for this.<br />
-              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;Be sure that the information provided is correct and that all relevant facts and links are provided.<br />
-              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;We do not refund any payments and neither do we guarantee that your request will be approved.<br />
-              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;The review and verification process takes between 1 to 14 days.<br />
+              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;<?php echo tt('The verification process is based on our expert judgement and we charge a small fee for this.') ?><br />
+              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;<?php echo tt('Be sure that the information provided is correct and that all relevant facts and links are provided.') ?><br />
+              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;<?php echo tt('We do not refund any payments and neither do we guarantee that your request will be approved.') ?><br />
+              <span class="glyphicon glyphicon-circle-arrow-right"></span>&nbsp;&nbsp;&nbsp;<?php echo tt('The review and verification process takes between 1 to 14 days.') ?><br />
             </p>
           </div>
         </div>
