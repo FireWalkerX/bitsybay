@@ -39,7 +39,7 @@ class ControllerCommonHeader extends Controller {
         $data['lang']        = $this->language->getCode();
         $data['icon']        = '/image/template/favicon.ico';
         $data['logo']        = '';
-        $data['base']        = URL_BASE;
+        $data['base']        = $this->url->link('common/home');
 
         $data['bool_is_logged']   = $this->auth->isLogged();
         $data['bool_is_verified'] = !$this->auth->isVerified();
