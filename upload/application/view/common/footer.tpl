@@ -54,8 +54,8 @@
             <ul class="list-unstyled">
               <li><h5><?php echo tt('Press about us') ?></h5>
                 <ul class="list-unstyled menu">
-                  <li><a href="http://forklog.com/pokupajte-i-prodavajte-za-bitkoiny-obzor-rynka-tsifrovyh-tovarov-bitsybay/" target="_blank" rel="nofollow"><?php echo tt('Forklog') ?></a></li>
                   <li><a href="http://www.newsbtc.com/2015/09/22/bitsybay-uses-bitcoin-to-promote-digital-artists-works/" target="_blank" rel="nofollow"><?php echo tt('NewsBTC') ?></a></li>
+                  <li><a href="http://forklog.com/pokupajte-i-prodavajte-za-bitkoiny-obzor-rynka-tsifrovyh-tovarov-bitsybay/" target="_blank" rel="nofollow"><?php echo tt('Forklog') ?></a></li>
                 </ul>
               </li>
             </ul>
