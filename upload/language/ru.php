@@ -28,7 +28,7 @@ $_translation = array(
 
 // Others modules
 'Last offers' => 'Новые товары',
-'Products not found. Try again later' => 'Товары не найдены. Попробуйте чуть позже.',
+'Products not found. Try again later' => 'Товары не найдены. А они таки должны быть!',
 
 // Common
 'Make coins +' => 'Продавать +',
@@ -90,7 +90,7 @@ $_translation = array(
 'Please, explain the reason for your report and click on the Submit button' => 'Пожалуйста, опишите причину жалобы и нажмите кнопку «Отправить»',
 'Contact Us' => 'Контакты',
 'Network' => 'Мы в сети',
-'Press about us' => 'Пресса',
+'Press about us' => 'Пресса о нас',
 'Language' => 'Язык интерфейса',
 'The %s Project &copy; %s Beta' => 'Проект %s &copy; %s Beta',
 'Search in catalog' => 'Поиск по каталогу',
@@ -134,16 +134,20 @@ $_translation = array(
 'Magic word is required' => 'Вы забыли о волшебном слове!',
 'Invalid email address' => 'Похоже, ваш e-mail не из нашего измерения!',
 'Username can only contain latin letters, numbers and hyphen' => 'Когнитивный диссонанс, латинские символы, цифры и дефис, пожалуйста!',
+'Create an Account' => 'Создание аккаунта',
+'Please login or create your account' => 'Представьтесь или сделайте себе аккаунт',
+'Don’t have an account?' => 'Все еще ходите тут да там?',
 
 
 // Forgot Password
 'Forgot Password' => 'Напомнить пароль',
+'Forgot Password?' => 'Таки забыли?',
 
 // Account recovery
 'Account recovery' => 'Восстановление доступа',
 'Recovery' => 'Восстановление',
 'What’s your registered email?' => 'Введите e-mail, указанный при регистрации',
-'I’ve remember my password!' => 'Я вспомнил мой пароль!',
+'I’ve remember my password!' => 'Я таки припоминаю мой пароль!',
 'Help resources' => 'Нужна помощь?',
 
 
