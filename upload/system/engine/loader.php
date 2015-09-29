@@ -22,9 +22,9 @@ final class Loader {
     /**
     * Construct by registry
     *
-    * @param resource $registry
+    * @param Registry $registry
     */
-    public function __construct($registry) {
+    public function __construct(Registry $registry) {
         $this->registry = $registry;
     }
 
