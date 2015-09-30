@@ -116,23 +116,28 @@
             <fieldset>
               <legend><?php echo tt('Description') ?></legend>
               <?php foreach ($product_description as $language_id => $description) { ?>
-                <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['title']) ? 'has-error' : false ?>">
-                  <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="product_description[<?php echo $language_id ?>][title]" class="form-control" id="inputGeneralTitle<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $description['title'] ?>">
-                  <?php if (isset($error['general']['product_description'][$language_id]['title'])) { ?>
-                    <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['title'] ?></div>
-                  <?php } ?>
-                </div>
-                <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['description']) ? 'has-error' : false ?>">
-                  <textarea onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_DESCRIPTION_MAX_LENGTH ?>)" name="product_description[<?php echo $language_id ?>][description]" placeholder="<?php echo tt('Description') ?>" id="inputGeneralDescription<?php echo $language_id ?>" class="form-control" rows="6"><?php echo $description['description'] ?></textarea>
-                  <?php if (isset($error['general']['product_description'][$language_id]['description'])) { ?>
-                    <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['description'] ?></div>
-                  <?php } ?>
-                </div>
-                <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['tags']) ? 'has-error' : false ?>">
-                  <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TAGS_MAX_LENGTH ?>)" type="text" name="product_description[<?php echo $language_id ?>][tags]" class="form-control" id="inputGeneralTags<?php echo $language_id ?>" placeholder="<?php echo tt('Tags (comma separated)') ?>" value="<?php echo $description['tags'] ?>">
-                  <?php if (isset($error['general']['product_description'][$language_id]['tags'])) { ?>
-                    <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['tags'] ?></div>
-                  <?php } ?>
+                <?php if ($language_id != $this_language_id) { ?>
+                  <div class="language-version" onclick="$('#productDescription<?php echo $language_id ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                <?php } ?>
+                <div id="productDescription<?php echo $language_id ?>" <?php echo ($language_id != $this_language_id && empty($description['title']) && empty($description['description']) && empty($description['tags']) ? 'style="display:none"' : false) ?>>
+                  <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['title']) ? 'has-error' : false ?>">
+                    <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="product_description[<?php echo $language_id ?>][title]" class="form-control" id="inputGeneralTitle<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $description['title'] ?>">
+                    <?php if (isset($error['general']['product_description'][$language_id]['title'])) { ?>
+                      <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['title'] ?></div>
+                    <?php } ?>
+                  </div>
+                  <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['description']) ? 'has-error' : false ?>">
+                    <textarea onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_DESCRIPTION_MAX_LENGTH ?>)" name="product_description[<?php echo $language_id ?>][description]" placeholder="<?php echo tt('Description') ?>" id="inputGeneralDescription<?php echo $language_id ?>" class="form-control" rows="6"><?php echo $description['description'] ?></textarea>
+                    <?php if (isset($error['general']['product_description'][$language_id]['description'])) { ?>
+                      <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['description'] ?></div>
+                    <?php } ?>
+                  </div>
+                  <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['tags']) ? 'has-error' : false ?>">
+                    <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TAGS_MAX_LENGTH ?>)" type="text" name="product_description[<?php echo $language_id ?>][tags]" class="form-control" id="inputGeneralTags<?php echo $language_id ?>" placeholder="<?php echo tt('Tags (comma separated)') ?>" value="<?php echo $description['tags'] ?>">
+                    <?php if (isset($error['general']['product_description'][$language_id]['tags'])) { ?>
+                      <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['tags'] ?></div>
+                    <?php } ?>
+                  </div>
                 </div>
               <?php } ?>
             </fieldset>
@@ -200,9 +205,12 @@
                         <div class="text-danger"><?php echo $error['demo'][$row]['url'] ?></div>
                       <?php } ?>
                     </td>
-                    <td class="form-group <?php echo isset($error['demo'][$row]['title']) ? 'has-error' : false ?>">
+                    <td style="width:40%" class="form-group <?php echo isset($error['demo'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($demo['title'] as $language_id => $title) { ?>
-                        <div>
+                        <?php if ($language_id != $this_language_id) { ?>
+                          <div class="language-version" onclick="$('#demoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                        <?php } ?>
+                        <div id="demoDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputDemoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <?php if (isset($error['demo'][$row]['title'][$language_id])) { ?>
                             <div class="text-danger"><?php echo $error['demo'][$row]['title'][$language_id] ?></div>
@@ -276,7 +284,11 @@
 
                     <td class="form-group <?php echo isset($error['image'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($image['title'] as $language_id => $title) { ?>
-                        <div>
+                        <?php if ($language_id != $this_language_id) { ?>
+                          <div class="language-version" onclick="$('#imageDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                        <?php } ?>
+                        <div id="imageDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
+                          <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputDemoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="image[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputImageTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <?php if (isset($error['image'][$row]['title'][$language_id])) { ?>
                             <div class="text-danger"><?php echo $error['image'][$row]['title'][$language_id] ?></div>
@@ -345,7 +357,10 @@
                     </td>
                     <td class="form-group <?php echo isset($error['video'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($video['title'] as $language_id => $title) { ?>
-                        <div>
+                        <?php if ($language_id != $this_language_id) { ?>
+                          <div class="language-version" onclick="$('#videoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                        <?php } ?>
+                          <div id="videoDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputVideoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <?php if (isset($error['video'][$row]['title'][$language_id])) { ?>
                             <div class="text-danger"><?php echo $error['video'][$row]['title'][$language_id] ?></div>
@@ -413,7 +428,10 @@
                     </td>
                     <td class="form-group <?php echo isset($error['audio'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($audio['title'] as $language_id => $title) { ?>
-                        <div>
+                        <?php if ($language_id != $this_language_id) { ?>
+                          <div class="language-version" onclick="$('#audioDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                        <?php } ?>
+                        <div id="audioDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputAudioTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <?php if (isset($error['audio'][$row]['title'][$language_id])) { ?>
                             <div class="text-danger"><?php echo $error['audio'][$row]['title'][$language_id] ?></div>
@@ -845,7 +863,7 @@
       html += '<td class="form-group"><input type="radio" name="main_demo" id="inputDemoMain' + demo_r + '" value="' + demo_r + '" /></td>';
     }
     html += '<td class="form-group"><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_URL_MAX_LENGTH ?>)" type="text" name="demo[' + demo_r + '][url]" class="form-control" id="inputDemoUrl' + demo_r + '" placeholder="<?php echo tt("URL address") ?>" value="" /></td>';
-    html += '<td class="form-group"><?php foreach ($languages as $language) { ?><div><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[' + demo_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputDemoTitle' + demo_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
+    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#demoDescription<?php echo $language_id ?>-\' + demo_r).toggle(\'fast\');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="demoDescription<?php echo $language_id ?>-' + demo_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[' + demo_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputDemoTitle' + demo_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group"><input type="hidden" name="demo[' + demo_r + '][sort_order]" value="' + demo_r + '" /><span onclick="removeDemo(' + demo_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span></td>';
     html += '</tr>';
 
