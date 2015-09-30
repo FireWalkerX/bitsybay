@@ -655,7 +655,7 @@
     var formData = new FormData($('#productForm').get(0));
 
     $.ajax({
-        url: 'product/upload/package',
+        url: 'ajax/upload/package',
         type: 'POST',
                       xhr: function() {
                           var myXhr = $.ajaxSettings.xhr();
@@ -698,10 +698,10 @@
 
           if (e['error_message']) {
             $('#aFiles').append(' <span class="text-danger">*</span>');
-            $('#packageQuotaAvailable').load('product/quota');
+            $('#packageQuotaAvailable').load('ajax/quota');
             $('#files').prepend('<div id="productFileError" class="alert alert-dismissible alert-danger">' + e['error_message'] + '</div>');
           } else if (e['success_message']) {
-            $('#packageQuotaAvailable').load('product/quota?product_file_id=' + e['product_file_id'] + '<?php echo $product_id ? "&product_id=" . $product_id : false ?>');
+            $('#packageQuotaAvailable').load('ajax/quota?product_file_id=' + e['product_file_id'] + '<?php echo $product_id ? "&product_id=" . $product_id : false ?>');
             $('#files').prepend('<div id="productFileSuccess" class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">×</button> ' + e['success_message'] + '</div>');
             $('#productFileTmpId').val(e['product_file_id']);
             $('#productFileMd5').html(e['hash_md5']);
@@ -731,7 +731,7 @@
     var formData = new FormData($('#productForm').get(0));
 
     $.ajax({
-        url: 'product/upload/image?row=' + r,
+        url: 'ajax/upload/image?row=' + r,
         type: 'POST',
                       xhr: function() {
                           var myXhr = $.ajaxSettings.xhr();

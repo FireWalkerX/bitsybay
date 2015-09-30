@@ -275,7 +275,7 @@
         $('#loginForm').modal('toggle');
       <?php } else { ?>
         $.ajax({
-            url:  'index.php?route=order/bitcoin/create',
+            url:  'ajax/order/bitcoin/create',
             type: 'POST',
             data: { product_id: <?php echo $product_id ?>, license: $('#priceForm input[name=license]:checked').val() },
             beforeSend: function(e) {
@@ -305,7 +305,7 @@
 
     // Init reviews
     function loadReviews(product_id) {
-        $('#productReviewList').load('index.php?route=catalog/product/reviews&product_id=' + product_id);
+        $('#productReviewList').load('ajax/reviews&product_id=' + product_id);
     }
 
     loadReviews(<?php echo $product_id ?>);
@@ -317,7 +317,7 @@
         $('#productReviewForm .review-form').addClass('has-error');
       } else {
         $.ajax({
-            url:  'index.php?route=catalog/product/review',
+            url:  'ajax/review',
             type: 'POST',
             data: { product_id: <?php echo $product_id ?>, review: $('#productReviewContent').val() },
             beforeSend: function(e) {

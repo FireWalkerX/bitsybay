@@ -105,14 +105,19 @@ final class Url {
         // Ajax rewrite rules begin
 
         // Account
-        $this->_addRewrite('account/account/uploadAvatar', 'account/upload/avatar');
-        $this->_addRewrite('account/product/uploadPackage', 'product/upload/package');
-        $this->_addRewrite('account/product/uploadImage', 'product/upload/image');
-        $this->_addRewrite('account/product/quota', 'product/quota');
+        $this->_addRewrite('account/account/uploadAvatar', 'ajax/upload/avatar');
+        $this->_addRewrite('account/product/uploadPackage', 'ajax/upload/package');
+        $this->_addRewrite('account/product/uploadImage', 'ajax/upload/image');
+        $this->_addRewrite('account/product/quota', 'ajax/quota');
 
         // Product
-        $this->_addRewrite('catalog/product/report', 'report');
-        $this->_addRewrite('catalog/product/favorite', 'product/favorite');
+        $this->_addRewrite('catalog/product/report', 'ajax/report');
+        $this->_addRewrite('catalog/product/favorite', 'ajax/favorite');
+        $this->_addRewrite('catalog/product/review', 'ajax/review');
+        $this->_addRewrite('catalog/product/reviews', 'ajax/reviews');
+
+        // Order
+        $this->_addRewrite('order/bitcoin/create', 'ajax/order/bitcoin/create');
 
         // Create categories rewrite rules
         $statement = $this->_db->query('SELECT

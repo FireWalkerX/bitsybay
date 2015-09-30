@@ -85,7 +85,7 @@
     var formData = new FormData($('#accountForm').get(0));
 
     $.ajax({
-        url: 'index.php?route=account/account/uploadAvatar',
+        url: 'ajax/upload/avatar',
         type: 'POST',
         beforeSend: function(e) {
           $('.alert-danger, .alert-success').remove();
