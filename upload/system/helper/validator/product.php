@@ -22,9 +22,9 @@ class ValidatorProduct {
     */
     static public function titleValid($title) {
 
-        if (mb_strlen($title) < VALIDATOR_PRODUCT_TITLE_MIN_LENGTH || mb_strlen($title) > VALIDATOR_PRODUCT_TITLE_MAX_LENGTH) {
+        if (mb_strlen($title) > VALIDATOR_PRODUCT_TITLE_MAX_LENGTH) {
             return false;
-        } else if (!preg_match('/^[\w\s\d\(\)\-\+\.\%\/]+$/i', $title)) {
+        } else if (!empty($title) && !preg_match('/^[\w\s\d\(\)\-\+\.\%\/]+$/i', $title)) {
             return false;
         } else {
             return true;
@@ -39,11 +39,9 @@ class ValidatorProduct {
     */
     static public function descriptionValid($description) {
 
-        if (empty($description)) {
+        if (mb_strlen($description) > VALIDATOR_PRODUCT_DESCRIPTION_MAX_LENGTH) {
             return false;
-        } else if (mb_strlen($description) < VALIDATOR_PRODUCT_DESCRIPTION_MIN_LENGTH || mb_strlen($description) > VALIDATOR_PRODUCT_DESCRIPTION_MAX_LENGTH) {
-            return false;
-        } else if (!preg_match('/^[\w\s\d\(\)\.\,\`\"\'\@\®\©\#\№\&\%\:\;\*\/\-\–\—\_\~\+\=\?\!\<\>\{\}\[\]\’\‘\“\”×]+$/ui', $description)) {
+        } else if (!empty($description) && !preg_match('/^[\w\s\d\(\)\.\,\`\"\'\@\®\©\#\№\&\%\:\;\*\/\-\–\—\_\~\+\=\?\!\<\>\{\}\[\]\’\‘\“\”×]+$/ui', $description)) {
             return false;
         } else {
             return true;
