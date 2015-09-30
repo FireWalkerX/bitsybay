@@ -17,13 +17,14 @@ class ModelCommonLanguage extends Model {
     /**
     * Get languages
     *
+    * @param int $language_id
     * @return array|bool Languages rows or false if throw exception
     */
-    public function getLanguages() {
+    public function getLanguages($language_id = 0) {
 
         try {
-            $statement = $this->db->prepare('SELECT * FROM `language` ORDER BY `name` DESC');
-            $statement->execute();
+            $statement = $this->db->prepare('SELECT * FROM `language` ORDER BY `language_id` = ? DESC, `name` DESC');
+            $statement->execute(array($language_id));
 
             if ($statement->rowCount()) {
                 return $statement->fetchAll();

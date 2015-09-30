@@ -825,7 +825,7 @@ class ControllerAccountProduct extends Controller {
         }
 
         // Languages
-        $languages = $this->model_common_language->getLanguages();
+        $languages = $this->model_common_language->getLanguages($this->language->getId());
 
         $data['languages']  = array();
         foreach ($languages as $language) {
