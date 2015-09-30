@@ -28,14 +28,14 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="col-lg-6 not-found-code">
-      <span>404</span> <span>page not found</span>
+      <span>404</span> <span><?php echo tt('page not found') ?></span>
     </div>
     <div class="col-lg-5 col-lg-offset-1 not-found-navigator">
       <div class="bs-component">
         <h3><?php echo tt('Do not forget') ?></h3>
         <ul>
-          <li>Visit the <a href="<?php echo $href_common_information_faq ?>">F.A.Q. page</a></li>
-          <li>Use the <a href="<?php echo $href_catalog_search ?>">search</a> to find specific content</li>
+          <li><?php echo tt('Visit the') ?> <a href="<?php echo $href_common_information_faq ?>"><?php echo tt('F.A.Q. page') ?></a></li>
+          <li><?php echo tt('Use the') ?> <a href="<?php echo $href_catalog_search ?>"><?php echo tt('search') ?></a> <?php echo tt('to find specific content') ?></li>
         </ul>
         <h4><?php echo tt('Navigate') ?></h4>
         <ul>
