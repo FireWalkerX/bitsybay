@@ -37,7 +37,7 @@
             <li><?php echo tt('Use only plain text without any special chars and links') ?></li>
           </ul>
           <ul id="productPackageHints">
-            <li><?php echo sprintf(tt('The package file must be %sped'), STORAGE_FILE_EXTENSION) ?></li>
+            <li><?php echo sprintf(tt('Allowed package format: %s'), strtoupper(STORAGE_FILE_EXTENSION)) ?></li>
           </ul>
           <ul id="productDemoHints">
             <li><?php echo tt('The demo pages used for online product preview in the iframe wrapper') ?></li>
