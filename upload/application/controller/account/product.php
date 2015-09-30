@@ -1523,7 +1523,7 @@ class ControllerAccountProduct extends Controller {
                                     break;
                                 case 'vimeo':
                                     if (empty($video['id'])) {
-                                        $this->_error['video'][$row]['id'] = tt('YouTube Vimeo is required');
+                                        $this->_error['video'][$row]['id'] = tt('Vimeo ID is required');
                                     } else if (!ValidatorVimeo::idValid(html_entity_decode($video['id']))) {
                                         $this->_error['video'][$row]['id'] = tt('Invalid Vimeo ID format');
                                     }
