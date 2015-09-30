@@ -45,7 +45,7 @@ $(document).ready(function() {
     $('#reportSubmit').click(function () {
 
         $.ajax({
-            url:  'index.php?route=catalog/product/report',
+            url:  'product/report',
             type: 'POST',
             data: { product_id: $('#reportProductId').val(), message: $('#reportMessage').val() },
             beforeSend: function () {
@@ -87,7 +87,7 @@ function favorite(product_id, user_is_logged) {
         $('#loginForm').modal('toggle');
     } else {
         $.ajax({
-            url:  'index.php?route=catalog/product/favorite',
+            url:  'product/favorite',
             type: 'POST',
             data: {product_id : product_id},
             success: function (e) {

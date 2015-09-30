@@ -102,6 +102,18 @@ final class Url {
         // Create error rewrite rules
         $this->_addRewrite('error/not_found',  '404');
 
+        // Ajax rewrite rules begin
+
+        // Account
+        $this->_addRewrite('account/account/uploadAvatar', 'account/upload/avatar');
+        $this->_addRewrite('account/product/uploadPackage', 'product/upload/package');
+        $this->_addRewrite('account/product/uploadImage', 'product/upload/image');
+        $this->_addRewrite('account/product/quota', 'product/quota');
+
+        // Product
+        $this->_addRewrite('catalog/product/report', 'report');
+        $this->_addRewrite('catalog/product/favorite', 'product/favorite');
+
         // Create categories rewrite rules
         $statement = $this->_db->query('SELECT
         `c`.`category_id`,
