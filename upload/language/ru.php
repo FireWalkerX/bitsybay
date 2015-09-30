@@ -16,6 +16,8 @@ $_translation = array(
 
 // Headers
 'BitsyBay - Sell and Buy Digital Creative with BitCoin' => 'BitsyBay - Магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin',
+'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Free seller fee up to 2016!' => 'Bitcoin супермаркет фотографий, графики, шаблонов, кода, приложений, книг и другого креатива за BitCoin. Только легальные и качественные авторские товары. Нулевые комиссии до конца 2016!',
+'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, photos, arts, illustrations, 3d, templates, codes, extensions, books, content, digital, creative, quality, legal' => 'bitsybay, bitcoin, биткойн, btc, инди, супермаркет, магазин, купить, продать, royalty-free, фото, изображения, иллюстрации, 3d, шаблоны, открытый код, приложения, книги, цифровой контент, креатив, качество, легально',
 
 // Welcome module
 'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
@@ -28,7 +30,7 @@ $_translation = array(
 
 // Others modules
 'Last offers' => 'Новые товары',
-'Products not found. Try again later' => 'Товары не найдены. А они таки должны быть!',
+'Products not found. Try again later' => 'Товары не найдены. Попробуйте чуть позже!',
 
 // Common
 'Make coins +' => 'Продавать +',
@@ -92,12 +94,23 @@ $_translation = array(
 'Contact Us' => 'Контакты',
 'Network' => 'Мы в сети',
 'Press about us' => 'Пресса о нас',
-'Language' => 'Язык интерфейса',
+'Language' => 'Язык',
 'The %s Project &copy; %s Beta' => 'Проект %s &copy; %s Beta',
 'Search in catalog' => 'Поиск по каталогу',
 
 // Home page
 'Home' => 'Главная',
+
+// 404 page
+'Page not found' => 'Страница не найдена',
+'page not found' => 'страница не найдена',
+'Navigate' => 'Навигация',
+'Visit the' => 'Посетите',
+'F.A.Q. page' => 'страницу помощи',
+'Use the search to find specific content' => 'Страницу помощи',
+'Use the' => 'Используйте',
+'search' => 'поиск',
+'to find specific content' => 'чтобы найти специфический контент',
 
 // Contact page
 'Send your message' => 'Обратная связь',
@@ -139,7 +152,6 @@ $_translation = array(
 'Please login or create your account' => 'Представьтесь или сделайте себе аккаунт',
 'Don’t have an account?' => 'Все еще ходите тут да там?',
 
-
 // Forgot Password
 'Forgot Password' => 'Напомнить пароль',
 'Forgot Password?' => 'Таки забыли?',
@@ -150,7 +162,6 @@ $_translation = array(
 'What’s your registered email?' => 'Введите e-mail, указанный при регистрации',
 'I’ve remember my password!' => 'Я таки припоминаю мой пароль!',
 'Help resources' => 'Нужна помощь?',
-
 
 // FAQ Page
 'General F.A.Q.' => 'Раздел F.A.Q.',
@@ -226,7 +237,7 @@ $_translation = array(
 'Offer end' => 'Конец акции',
 'Add special' => 'Добавить',
 'Title is required' => 'Необходимо указать заголовок',
-'Demo URL is required' => 'Необходимо указать адрес демонстрационной страницы',
+'Demo URL is required' => 'Необходимо указать адрес URL',
 'YouTube ID is required' => 'Необходимо указать YouTube ID',
 'Vimeo ID is required' => 'Необходимо указать Vimeo ID',
 'Category is required' => 'Необходимо выбрать категорию',
@@ -241,7 +252,15 @@ $_translation = array(
 'Date end should not begin prior to Date start' => 'Дата начала не может быть больше даты завершения',
 'Invalid tags format' => 'Неверный формат тегов',
 'Invalid title format' => 'Неверный формат заголовка',
-
+'Package file was successfully uploaded!' => 'Товар был успешно загружен!',
+'Stored control sum' => 'Контрольная сумма файла',
+'Update your package' => 'Обновите ваш товар',
+'Current: %s Mb' => 'Текущий файл: %s Мб',
+'Update file' => 'Обновить файл',
+'Invalid description format' => 'Неверный формат описания!',
+'%s version' => '%s версия',
+'Temporary image ID is wrong' => 'Проблема с идентификатором',
+'Invalid URL format' => 'Неправильный формат URL',
 
 // Verification
 'Verification' => 'Верификация',
