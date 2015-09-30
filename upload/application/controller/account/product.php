@@ -1140,7 +1140,7 @@ class ControllerAccountProduct extends Controller {
         // Categories list
         $data['categories'] = array();
         foreach ($this->model_catalog_category->getCategories(null, $this->language->getId()) as $category) {
-            foreach ($this->model_catalog_category->getCategories($category->category_id, 1) as $child_category) {
+            foreach ($this->model_catalog_category->getCategories($category->category_id, $this->language->getId()) as $child_category) {
                 $data['categories'][$category->title][$child_category->category_id] = $child_category->title;
             }
         }
