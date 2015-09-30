@@ -60,7 +60,7 @@
               </li>
             </ul>
           </div>
-          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">
+          <div class="col-lg-1 col-md-1 col-sm-4 col-xs-6">
             <ul class="list-unstyled">
               <li><h5><?php echo tt('Language') ?></h5>
                 <ul class="list-unstyled menu">
@@ -71,12 +71,12 @@
               </li>
             </ul>
           </div>
-          <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12">
+          <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <ul class="list-unstyled pull-right">
               <li>
-                <div class="small"><a href="/"><?php echo tt('BitsyBay') ?></a> <?php echo tt('Project') ?> &copy; <?php echo date('Y') ?> Beta</div>
-                <div class="text-muted" style="font-size:10px">
-                  <?php echo tt('Powered by') ?> <a href="https://github.com/bitsybay" target="_blank" rel="nofollow"><?php echo tt('BitsyBay Engine') ?></a><br />
+                <?php echo tt('The') ?> <a href="/"><?php echo tt('BitsyBay') ?></a> <?php echo tt('Project') ?> &copy; <?php echo date('Y') ?> Beta
+                <div style="font-size:9px">
+                  <?php echo tt('Powered by') ?> <a href="https://github.com/bitsybay" target="_blank" rel="nofollow"><?php echo tt('BitsyBay Engine') ?></a>,
                   <!--
                   BitsyBay Engine is an open source software and you are free to remove the powered by BitsyBay Engine if you want, but its generally accepted practise to make a small donation.
                   Please donate via BitCoin to 13t5kVqpFgKzPBLYtRNShSU2dMSTP4wQYx
@@ -85,7 +85,7 @@
                 </div>
               </li>
             </ul>
-            <div class="input-group pull-right" id="footerSearchForm">
+            <div class="input-group pull-right" style="padding-left:32px" id="footerSearchForm">
               <input name="query" type="text" class="form-control" value="" placeholder="<?php echo tt('Search') ?>" />
               <input name="action" type="hidden" value="<?php echo $href_catalog_search ?>" />
               <span class="input-group-btn"><button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button></span>
