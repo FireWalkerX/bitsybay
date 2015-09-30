@@ -775,6 +775,8 @@ class ControllerAccountProduct extends Controller {
         $data['action']               = $action;
         $data['href_account_product'] = $this->url->link('account/product');
 
+        $data['this_language_id']     = $this->language->getId();
+
         // Get saved info
         if (isset($this->request->get['product_id'])) {
             $product_info = $this->model_catalog_product->getProduct($this->request->get['product_id'], $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
@@ -827,7 +829,11 @@ class ControllerAccountProduct extends Controller {
 
         $data['languages']  = array();
         foreach ($languages as $language) {
-            $data['languages'][] = array('language_id' => $language->language_id);
+            $data['languages'][$language->language_id] = array(
+                'language_id' => $language->language_id,
+                'code'        => $language->code,
+                'name'        => $language->name
+            );
         }
 
         // Product descriptions
@@ -1198,7 +1204,7 @@ class ControllerAccountProduct extends Controller {
                     unset($this->request->post['product_description'][$language_id]);
                     break;
 
-                } else if (empty($product_description['title'])) {
+                } else if (empty($product_description['title']) && $language_id == $this->language->getId()) {
                     $this->_error['general']['product_description'][$language_id]['title'] = tt('Title is required');
                 } else if (!ValidatorProduct::titleValid(html_entity_decode($product_description['title']))) {
                     $this->_error['general']['product_description'][$language_id]['title'] = tt('Invalid title format');
@@ -1213,7 +1219,7 @@ class ControllerAccountProduct extends Controller {
                     unset($this->request->post['product_description'][$language_id]);
                     break;
 
-                } else if (empty($product_description['description'])) {
+                } else if (empty($product_description['description']) && $language_id == $this->language->getId()) {
                     $this->_error['general']['product_description'][$language_id]['description'] = tt('Description is required');
                 } else if (!ValidatorProduct::descriptionValid(html_entity_decode($product_description['description']))) {
                     $this->_error['general']['product_description'][$language_id]['description'] = tt('Invalid description format');
@@ -1288,7 +1294,7 @@ class ControllerAccountProduct extends Controller {
                         }
 
                         // Title validation
-                        if (empty($title)) {
+                        if (empty($title) && $language_id == $this->language->getId()) {
                             $this->_error['demo'][$row]['title'][$language_id] = tt('Title is required');
                         } else if (!ValidatorProduct::titleValid(html_entity_decode($title))) {
                             $this->_error['demo'][$row]['title'][$language_id] = tt('Invalid title format');
@@ -1375,7 +1381,7 @@ class ControllerAccountProduct extends Controller {
                         }
 
                         // Title validation
-                        if (empty($title)) {
+                        if (empty($title) && $language_id == $this->language->getId()) {
                             $this->_error['image'][$row]['title'][$language_id] = tt('Title is required');
                         } else if (!ValidatorProduct::titleValid(html_entity_decode($title))) {
                             $this->_error['image'][$row]['title'][$language_id] = tt('Invalid title format');
@@ -1469,7 +1475,7 @@ class ControllerAccountProduct extends Controller {
                         }
 
                         // Title string validation
-                        if (empty($title)) {
+                        if (empty($title) && $language_id == $this->language->getId()) {
                             $this->_error['video'][$row]['title'][$language_id] = tt('Title is required');
                         } else if (!ValidatorProduct::titleValid(html_entity_decode($title))) {
                             $this->_error['video'][$row]['title'][$language_id] = tt('Invalid title format');
@@ -1586,7 +1592,7 @@ class ControllerAccountProduct extends Controller {
                         }
 
                         // Title string validation
-                        if (empty($title)) {
+                        if (empty($title) && $language_id == $this->language->getId()) {
                             $this->_error['audio'][$row]['title'][$language_id] = tt('Title is required');
                         } else if (!ValidatorProduct::titleValid(html_entity_decode($title))) {
                             $this->_error['audio'][$row]['title'][$language_id] = tt('Invalid title format');

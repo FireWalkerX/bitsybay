@@ -473,6 +473,15 @@ table img {
     padding: 10px 0;
 }
 
+.language-version {
+    cursor: pointer;
+    color: #999;
+    border-bottom: 1px #999 dashed;
+    margin: 10px 0;
+    display: inline-block;
+    clear: both;
+}
+
 
 /* Modules */
 .container .jumbotron {

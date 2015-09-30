@@ -208,9 +208,9 @@
                     <td style="width:40%" class="form-group <?php echo isset($error['demo'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($demo['title'] as $language_id => $title) { ?>
                         <?php if ($language_id != $this_language_id) { ?>
-                          <div class="language-version" onclick="$('#demoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                          <div class="language-version" onclick="$('#demoTitle<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
                         <?php } ?>
-                        <div id="demoDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
+                        <div id="demoTitle<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputDemoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <?php if (isset($error['demo'][$row]['title'][$language_id])) { ?>
                             <div class="text-danger"><?php echo $error['demo'][$row]['title'][$language_id] ?></div>
@@ -285,7 +285,7 @@
                     <td class="form-group <?php echo isset($error['image'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($image['title'] as $language_id => $title) { ?>
                         <?php if ($language_id != $this_language_id) { ?>
-                          <div class="language-version" onclick="$('#imageDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                          <div class="language-version" onclick="$('#imageDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
                         <?php } ?>
                         <div id="imageDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputDemoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
@@ -358,7 +358,7 @@
                     <td class="form-group <?php echo isset($error['video'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($video['title'] as $language_id => $title) { ?>
                         <?php if ($language_id != $this_language_id) { ?>
-                          <div class="language-version" onclick="$('#videoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                          <div class="language-version" onclick="$('#videoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
                         <?php } ?>
                           <div id="videoDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputVideoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
@@ -429,7 +429,7 @@
                     <td class="form-group <?php echo isset($error['audio'][$row]['title']) ? 'has-error' : false ?>">
                       <?php foreach ($audio['title'] as $language_id => $title) { ?>
                         <?php if ($language_id != $this_language_id) { ?>
-                          <div class="language-version" onclick="$('#audioDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle('fast');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                          <div class="language-version" onclick="$('#audioDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
                         <?php } ?>
                         <div id="audioDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputAudioTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
@@ -863,7 +863,7 @@
       html += '<td class="form-group"><input type="radio" name="main_demo" id="inputDemoMain' + demo_r + '" value="' + demo_r + '" /></td>';
     }
     html += '<td class="form-group"><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_URL_MAX_LENGTH ?>)" type="text" name="demo[' + demo_r + '][url]" class="form-control" id="inputDemoUrl' + demo_r + '" placeholder="<?php echo tt("URL address") ?>" value="" /></td>';
-    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#demoDescription<?php echo $language_id ?>-\' + demo_r).toggle(\'fast\');"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="demoDescription<?php echo $language_id ?>-' + demo_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[' + demo_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputDemoTitle' + demo_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
+    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#demoTitle<?php echo $language_id ?>-' + demo_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="demoTitle<?php echo $language_id ?>-' + demo_r + '" <?php echo ($language_id != $this_language_id && !empty($title) ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[' + demo_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputDemoTitle' + demo_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group"><input type="hidden" name="demo[' + demo_r + '][sort_order]" value="' + demo_r + '" /><span onclick="removeDemo(' + demo_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span></td>';
     html += '</tr>';
 
@@ -931,7 +931,7 @@
     html += '</td>';
 
     html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="image[' + image_r + '][watermark]" id="inputImageWatermark' + image_r + '" value="1" /> <?php echo tt("Protect") ?></label></td>';
-    html += '<td class="form-group"><?php foreach ($languages as $language) { ?><div><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="image[' + image_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputImageTitle' + image_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
+    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#imageTitle<?php echo $language_id ?>-' + image_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="imageTitle<?php echo $language_id ?>-' + image_r + '" <?php echo ($language_id != $this_language_id && !empty($title) ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="image[' + image_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputImageTitle' + image_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group">';
     html += '  <input type="hidden" name="image[' + image_r + '][product_image_id]" value="" id="productImageId' + image_r + '" />';
     html += '  <input type="hidden" name="image[' + image_r + '][sort_order]" value="' + image_r + '" /><span onclick="removeImage(' + image_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span>';
@@ -973,7 +973,7 @@
     html  = '<tr id="productVideoTr' + video_r + '">';
     html += '<td class="form-group"><select name="video[' + video_r + '][source]" class="form-control" id="videoSource' + video_r + '"><?php foreach ($video_servers as $video_server_id => $video_server_name) { ?><option value="<?php echo $video_server_id ?>"><?php echo $video_server_name ?></option><?php } ?></select></td>';
     html += '<td class="form-group"><input type="text" name="video[' + video_r + '][id]" class="form-control" id="inputVideoId' + video_r + '" placeholder="<?php echo tt("ID") ?>" value="" /></td>';
-    html += '<td class="form-group"><?php foreach ($languages as $language) { ?><div><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[' + video_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputVideoTitle' + video_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
+    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#videoTitle<?php echo $language_id ?>-' + video_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="videoTitle<?php echo $language_id ?>-' + video_r + '" <?php echo ($language_id != $this_language_id && !empty($title) ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[' + video_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputVideoTitle' + video_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group"><input type="hidden" name="video[' + video_r + '][sort_order]" value="' + video_r + '" /><span onclick="removeVideo(' + video_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span></td>';
     html += '</tr>';
 
@@ -1012,7 +1012,7 @@
     html  = '<tr id="productAudioTr' + audio_r + '">';
     html += '<td class="form-group"><select name="audio[' + audio_r + '][source]" class="form-control" id="audioSource' + audio_r + '"><?php foreach ($audio_servers as $audio_server_id => $audio_server_name) { ?><option value="<?php echo $audio_server_id ?>"><?php echo $audio_server_name ?></option><?php } ?></select></td>';
     html += '<td class="form-group"><input type="text" name="audio[' + audio_r + '][id]" class="form-control" id="inputAudioId' + audio_r + '" placeholder="<?php echo tt("ID") ?>" value="" /></td>';
-    html += '<td class="form-group"><?php foreach ($languages as $language) { ?><div><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[' + audio_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputAudioTitle' + audio_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
+    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#audioTitle<?php echo $language_id ?>-' + audio_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="audioTitle<?php echo $language_id ?>-' + audio_r + '" <?php echo ($language_id != $this_language_id && !empty($title) ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[' + audio_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputAudioTitle' + audio_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group"><input type="hidden" name="audio[' + audio_r + '][sort_order]" value="' + audio_r + '" /><span onclick="removeAudio(' + audio_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span></td>';
     html += '</tr>';
 
