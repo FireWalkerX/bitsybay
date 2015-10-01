@@ -31,22 +31,22 @@
         <div class="col-lg-4 text-center">
           <img src="<?php echo URL_BASE ?>image/team/eugene.jpg" />
           <h2>Eugene Kulihin<br /><small>@Lifescale, @Shaman</small></h2>
-          <p>Project Creator, Developer</p>
+          <p><?php echo tt('Project Creator, Developer') ?></p>
         </div>
         <div class="col-lg-4 text-center jumbotron">
-          <p>Our team is only peoples, who love this project and make it better <i class="glyphicon glyphicon-thumbs-up"></i></p>
-          <p>There are no corporation and authorized fund. We fund our support and contribution instead money.</p>
+          <p><?php echo tt('Our team is only peoples, who love this project and make it better') ?> <i class="glyphicon glyphicon-thumbs-up"></i></p>
+          <p><?php echo tt('There are no corporation and authorized fund. We fund our support and contribution instead money.') ?></p>
         </div>
         <div class="col-lg-4 text-center">
           <img src="<?php echo URL_BASE ?>image/team/larisa.jpg" />
           <h2>Larisa Bodnar<br /><small>@Barbaryska</small></h2>
-          <p>Content Analyst, Support</p>
+          <p><?php echo tt('Content Analyst, Support') ?></p>
         </div>
       </div>
       <?php if ($contributors) { ?>
         <div class="row contributors text-center">
           <div class="col-lg-12">
-            <h2>Contributors</h2>
+            <h2><?php echo tt('Contributors') ?></h2>
             <?php foreach ($contributors as $contributor) { ?>
               <?php $contribution = $contributor['contributions'] * 100 / $contributions ?>
               <div class="contributor">
@@ -61,7 +61,7 @@
             <div class="contributor">
               <a href="<?php echo URL_GITHUB ?>" class="join" rel="nofollow" target="_blank">+</a>
               <a href="<?php echo URL_GITHUB ?>" rel="nofollow" target="_blank">
-                <h5>Join Us</h5>
+                <h5><?php echo tt('Join Us') ?></h5>
               </a>
             </div>
           </div>

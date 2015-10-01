@@ -29,53 +29,53 @@
     <div class="col-lg-12">
       <section>
         <article>
-          <h2>If you&rsquo;re a buyer</h2>
+          <h2><?php echo tt('If you’re a buyer') ?></h2>
           <div style="padding-top:20px">
             <div class="glyphicon glyphicon-shopping-cart" style="color:#CCC;float:left;font-size:5em"></div>
             <div style="margin-left:6em">
               <ul>
-                <li>All commercial (non-public) submissions to this site are subject to <a href="licenses">Licensing Policy</a>;</li>
-                <li>Full responsibility for all commercial content of this site remains with the author's of such content;</li>
-                <li>The author reserves the right to change, add to or delete all or part of the commercial content without prior notice or to discontinue publication of all or part of the commercial content temporarily or permanently;</li>
-                <li>We do not provide any support or warranties for purchased content and do not refund any payments.</li>
+                <li><?php echo tt('All commercial (non-public) submissions to this site are subject to') ?> <a href="licenses"><?php echo tt('Licensing Policy') ?></a>;</li>
+                <li><?php echo tt('Full responsibility for all commercial content of this site remains with the author’s of such content') ?>;</li>
+                <li><?php echo tt('The author reserves the right to change, add to or delete all or part of the commercial content without prior notice or to discontinue publication of all or part of the commercial content temporarily or permanently') ?>;</li>
+                <li><?php echo tt('We do not provide any support or warranties for purchased content and do not refund any payments.') ?></li>
               </ul>
             </div>
           </div>
-          <h2>If you&rsquo;re a seller</h2>
+          <h2><?php echo tt('If you’re a seller') ?></h2>
           <div style="padding-top:20px">
             <div class="glyphicon glyphicon-bitcoin" style="color:#CCC;float:left;font-size:5em"></div>
             <div style="margin-left:6em">
               <ul>
-                <li>You represent and warrant that you are the owner of, or that you have all rights to all your submissions;</li>
-                <li>You responsible for any copyright violations;</li>
-                <li>If you provide any content that is fraudulent, untrue, inaccurate, incomplete, not current, or illegal to <?php echo HOST_COUNTRY ?> laws, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website.</li>
-                <li>We charge a 11% fee (0% fee up to 2016) on the selling price except <a href="team">project contributors</a>. It's free for them forever.</li>
+                <li><?php echo tt('You represent and warrant that you are the owner of, or that you have all rights to all your submissions') ?>;</li>
+                <li><?php echo tt('You responsible for any copyright violations') ?>;</li>
+                <li><?php echo tt('If you provide any content that is fraudulent, untrue, inaccurate, incomplete, not current, or illegal to') ?> <?php echo tt(HOST_COUNTRY) ?> <?php echo tt('laws, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website') ?>;</li>
+                <li><?php echo tt('We charge a 11% fee (0% fee up to 2016) on the selling price except') ?> <a href="team"><?php echo tt('project contributors') ?></a>. <?php echo tt('It\'s free for them forever') ?>.</li>
               </ul>
             </div>
           </div>
-          <h2>Data Privacy</h2>
+          <h2><?php echo tt('Data Privacy') ?></h2>
           <div style="padding-top:20px">
             <div class="glyphicon glyphicon-user" style="color:#CCC;float:left;font-size:5em"></div>
             <div style="margin-left:6em">
               <ul>
-                <li>We save and use your personal information only for providing services of this website and for contacting you;</li>
-                <li>We do not give your personal information to third parties;</li>
-                <li>We add cookies in various places on our website. They serve only to ensure correct login and for providing affiliate program;</li>
-                <li>Social iframes from Youtube, Vimeo and SoundCloud may be integrated into our product pages;</li>
-                <li>For further information or questions regarding data protection at <?php echo PROJECT_NAME ?>, please <a href="contact">contact us</a>.</li>
+                <li><?php echo tt('We save and use your personal information only for providing services of this website and for contacting you') ?>;</li>
+                <li><?php echo tt('We do not give your personal information to third parties') ?>;</li>
+                <li><?php echo tt('We add cookies in various places on our website. They serve only to ensure correct login and for providing affiliate program') ?>;</li>
+                <li><?php echo tt('Social iframes from Youtube, Vimeo and SoundCloud may be integrated into our product pages') ?>;</li>
+                <li><?php echo sprintf(tt('For further information or questions regarding data protection at %s, please'), PROJECT_NAME) ?> <a href="contact"><?php echo tt('contact us') ?></a>.</li>
               </ul>
             </div>
           </div>
-          <h2>General</h2>
+          <h2><?php echo tt('General Terms') ?></h2>
           <div style="padding-top:20px">
             <div class="glyphicon glyphicon-hand-right" style="color:#CCC;float:left;font-size:5em"></div>
             <div style="margin-left:6em">
               <ul>
-                <li>We reserve the right to update or modify these Terms and Conditions at any time without prior notice;</li>
-                <li>Should you believe that any material or content published on this website, infringe on copyright, or is illegal, or that of another, please <a href="contact">contact us</a>;</li>
-                <li>We make no representations that this website will meet your requirements;</li>
-                <li>This Service / Software is provided "as is", without warranty of any kind, express or implied;</li>
-                <li>If you do not agree to this Terms &amp; Conditions, do not use this website.</li>
+                <li><?php echo tt('We reserve the right to update or modify these Terms and Conditions at any time without prior notice') ?>;</li>
+                <li><?php echo tt('Should you believe that any material or content published on this website, infringe on copyright, or is illegal, or that of another, please') ?> <a href="contact"><?php echo tt('contact us') ?></a>;</li>
+                <li><?php echo tt('We make no representations that this website will meet your requirements') ?>;</li>
+                <li><?php echo tt('This Service / Software is provided "as is", without warranty of any kind, express or implied') ?>;</li>
+                <li><?php echo tt('If you do not agree to this Terms & Conditions, do not use this website') ?>.</li>
               </ul>
             </div>
           </div>
