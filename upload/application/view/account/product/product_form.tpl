@@ -288,7 +288,7 @@
                           <div class="language-version" onclick="$('#imageDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
                         <?php } ?>
                         <div id="imageDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
-                          <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="demo[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputDemoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
+                          <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="image[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputImageTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="image[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputImageTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
                           <?php if (isset($error['image'][$row]['title'][$language_id])) { ?>
                             <div class="text-danger"><?php echo $error['image'][$row]['title'][$language_id] ?></div>
