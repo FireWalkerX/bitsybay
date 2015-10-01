@@ -24,7 +24,7 @@ class ValidatorProduct {
 
         if (mb_strlen($title) > VALIDATOR_PRODUCT_TITLE_MAX_LENGTH) {
             return false;
-        } else if (!empty($title) && !preg_match('/^[\w\s\d\(\)\-\+\.\%\/]+$/i', $title)) {
+        } else if (!empty($title) && !preg_match('/^[\w\s\d\(\)\-\+\.\%\/]+$/ui', $title)) {
             return false;
         } else {
             return true;
@@ -83,7 +83,7 @@ class ValidatorProduct {
 
             if ($tags_length < VALIDATOR_PRODUCT_TAGS_MIN_LENGTH || $tags_length > VALIDATOR_PRODUCT_TAGS_MAX_LENGTH) {
                 return false;
-            } else if (!preg_match('/^[\,\.\-\s\d\w]+$/i', $tags)) {
+            } else if (!preg_match('/^[\,\.\-\s\d\w]+$/ui', $tags)) {
                 return false;
             }
         }
@@ -105,7 +105,7 @@ class ValidatorProduct {
 
             if ($tag_length < VALIDATOR_PRODUCT_TAG_MIN_LENGTH || $tag_length > VALIDATOR_PRODUCT_TAG_MAX_LENGTH) {
                 return false;
-            } else if (!preg_match('/^[\,\.\-\s\d\w]+$/i', $tag)) {
+            } else if (!preg_match('/^[\,\.\-\s\d\w]+$/ui', $tag)) {
                 return false;
             }
         }
