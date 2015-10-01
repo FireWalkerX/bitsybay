@@ -61,7 +61,7 @@ class ControllerOrderBitcoin extends Controller {
         }
 
         // Try to get product
-        if (!$product_info = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], $this->auth->getId(), ORDER_APPROVED_STATUS_ID)) {
+        if (!$product_info = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID)) {
             $this->security_log->write('Try to order not exists product');
             exit;
         }

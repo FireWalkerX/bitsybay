@@ -783,7 +783,7 @@ class ControllerAccountProduct extends Controller {
 
         // Get saved info
         if (isset($this->request->get['product_id'])) {
-            $product_info = $this->model_catalog_product->getProduct($this->request->get['product_id'], $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
+            $product_info = $this->model_catalog_product->getProduct($this->request->get['product_id'], $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
             $this->document->setTitle(sprintf(tt('Edit %s'), $product_info->title));
             $data['title'] = sprintf(tt('Edit %s'), $product_info->title);
         } else {

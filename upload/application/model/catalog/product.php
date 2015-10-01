@@ -18,11 +18,12 @@ class ModelCatalogProduct extends Model {
     * Get product
     *
     * @param int $product_id
+    * @param int $language_id
     * @param int $session_user_id
     * @param int $approved_order_status_id
     * @return resource|bool Resource product row or FALSE if throw exception
     */
-    public function getProduct($product_id, $session_user_id, $approved_order_status_id) {
+    public function getProduct($product_id, $language_id, $session_user_id, $approved_order_status_id) {
 
         // todo: unstable priority [`o`.`order_status_id` DESC]
         try {
@@ -59,11 +60,11 @@ class ModelCatalogProduct extends Model {
             JOIN `user` AS `u` ON (`u`.`user_id` = `p`.`user_id`)
             LEFT JOIN `product_special` AS `ps` ON (`ps`.`product_id` = `p`.`product_id` AND `ps`.`date_start` < NOW() AND `ps`.`date_end` > NOW())
 
-            WHERE `p`.`product_id` = :product_id AND (`p`.`status` = 1 OR (`p`.`user_id` = :session_user_id AND `p`.`status` = 0))
+            WHERE `p`.`product_id` = :product_id AND `pd`.`language_id` = :language_id AND (`p`.`status` = 1 OR (`p`.`user_id` = :session_user_id AND `p`.`status` = 0))
             HAVING (`order_status_id` = :approved_order_status_id OR `sold_as_exclusive` <> 1 OR (`p`.`user_id` = :session_user_id AND `sold_as_exclusive` <> 0))
             LIMIT 1');
 
-            $statement->execute(array(':session_user_id' => $session_user_id, ':product_id' => $product_id, ':approved_order_status_id' => $approved_order_status_id));
+            $statement->execute(array(':language_id' => $language_id, ':session_user_id' => $session_user_id, ':product_id' => $product_id, ':approved_order_status_id' => $approved_order_status_id));
 
             return $statement->rowCount() ? $statement->fetch() : array();
 

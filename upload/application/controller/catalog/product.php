@@ -46,7 +46,7 @@ class ControllerCatalogProduct extends Controller {
 
 
         // Check dependencies
-        if (!isset($this->request->get['product_id']) || !$product_info = $this->model_catalog_product->getProduct((int) $this->request->get['product_id'], $this->auth->getId(), ORDER_APPROVED_STATUS_ID)) {
+        if (!isset($this->request->get['product_id']) || !$product_info = $this->model_catalog_product->getProduct((int) $this->request->get['product_id'], $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID)) {
             $this->security_log->write('Try to get product file without product_id parameter' . isset($this->request->get['product_id']) ? (int) $this->request->get['product_id'] : false);
             $this->response->redirect($this->url->link('error/not_found'));
         }
@@ -299,7 +299,7 @@ class ControllerCatalogProduct extends Controller {
             $this->security_log->write('Try to get product demo page without product_id parameter');
             $this->response->redirect($this->url->link('common/home'));
 
-        } else if (!$product_info = $this->model_catalog_product->getProduct($product_demo_info->product_id, $this->auth->getId(), ORDER_APPROVED_STATUS_ID)) {
+        } else if (!$product_info = $this->model_catalog_product->getProduct($product_demo_info->product_id, $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID)) {
             $this->security_log->write('Try to get product info by fail demo product_id parameter');
             $this->response->redirect($this->url->link('common/home'));
         }
@@ -404,7 +404,7 @@ class ControllerCatalogProduct extends Controller {
 
         // Get additional info
         $total   = $this->model_catalog_product->getProductFavoritesTotal($product_id);
-        $product = $this->model_catalog_product->getProduct($product_id, $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
+        $product = $this->model_catalog_product->getProduct($product_id, $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
         $user    = $this->model_account_user->getUser($product->user_id);
 
         // Favorite
@@ -556,7 +556,7 @@ class ControllerCatalogProduct extends Controller {
             if ($this->model_catalog_product->createProductReview((int)$this->request->post['product_id'], $this->request->post['review'], $this->auth->getId(), $this->language->getId(), 1)) {
 
                 // Get requires
-                $product = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
+                $product = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
                 $user    = $this->model_account_user->getUser($product->user_id);
 
                 // Is not seller
