@@ -129,7 +129,7 @@ class ControllerAccountProduct extends Controller {
                                                                         $this->request->post['regular_price'],
                                                                         $this->request->post['exclusive_price'],
                                                                         $this->request->post['withdraw_address'],
-                                                                        FilterUri::alias($this->request->post['product_description'][DEFAULT_LANGUAGE_ID]['title']),
+                                                                        FilterUri::alias($this->request->post['product_description'][$this->language->getId()]['title']),
                                                                         (int) $this->auth->isVerified());
 
             // Add product description
@@ -351,18 +351,22 @@ class ControllerAccountProduct extends Controller {
                                                         $this->request->post['regular_price'],
                                                         $this->request->post['exclusive_price'],
                                                         $this->request->post['withdraw_address'],
-                                                        FilterUri::alias($this->request->post['product_description'][DEFAULT_LANGUAGE_ID]['title']),
+                                                        FilterUri::alias($this->request->post['product_description'][$this->language->getId()]['title']),
                                                         (int) $this->auth->isVerified());
 
             // Add 301 rule if product has new URI
 
-            $url = new Url($this->db, $this->request, $this->response, URL_BASE);
+            $url = new Url($this->db, $this->request, $this->response, $this->url->link('common/home'));
 
             $old_url = $this->url->link('catalog/product', 'product_id=' . $product_id);
             $new_url = $url->link('catalog/product', 'product_id=' . $product_id);
 
             if ($old_url != $new_url) {
-                $this->model_common_redirect->createRedirect(301, str_replace(URL_BASE, $old_url), str_replace(URL_BASE, $new_url));
+                $this->model_common_redirect->createRedirect(
+                    301,
+                    str_replace($this->url->link('common/home'), false, $old_url),
+                    str_replace($this->url->link('common/home'), false, $new_url)
+                );
             }
 
             // Add product description

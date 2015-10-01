@@ -22,6 +22,6 @@ class FilterUri {
     */
     static public function alias($string) {
 
-        return preg_replace(array('/\s/', '/[^a-z0-9-]/', '/-{2,}/'), array('-', '', '-'), mb_strtolower($string));
+        return preg_replace(array('/\s/', '/[^\w\d-]/ui', '/-{2,}/'), array('-', '', '-'), mb_strtolower($string));
     }
 }
