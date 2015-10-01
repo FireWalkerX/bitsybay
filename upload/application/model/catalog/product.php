@@ -322,13 +322,14 @@ class ModelCatalogProduct extends Model {
     * Get product image descriptions
     *
     * @param int $product_image_id
+    * @param int $language_id
     * @return array|bool Product image descriptions rows or FALSE if throw exception
     */
-    public function getProductImageDescriptions($product_image_id) {
+    public function getProductImageDescriptions($product_image_id, $language_id = 0) {
 
         try {
-            $statement = $this->db->prepare('SELECT * FROM `product_image_description` WHERE `product_image_id` = ?');
-            $statement->execute(array($product_image_id));
+            $statement = $this->db->prepare('SELECT * FROM `product_image_description` WHERE `product_image_id` = ? ORDER BY `language_id` = ? DESC');
+            $statement->execute(array($product_image_id, $language_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
 
@@ -412,13 +413,14 @@ class ModelCatalogProduct extends Model {
     * Get product video descriptions
     *
     * @param int $product_video_id
+    * @param int $language_id
     * @return array|bool Product video descriptions rows or FALSE if throw exception
     */
-    public function getProductVideoDescriptions($product_video_id) {
+    public function getProductVideoDescriptions($product_video_id, $language_id = 0) {
 
         try {
-            $statement = $this->db->prepare('SELECT * FROM `product_video_description` WHERE `product_video_id` = ?');
-            $statement->execute(array($product_video_id));
+            $statement = $this->db->prepare('SELECT * FROM `product_video_description` WHERE `product_video_id` = ? ORDER BY `language_id` = ? DESC');
+            $statement->execute(array($product_video_id, $language_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
 
@@ -476,13 +478,14 @@ class ModelCatalogProduct extends Model {
     * Get product audio descriptions
     *
     * @param int $product_audio_id
+    * @param int $language_id
     * @return array|bool Product audio descriptions rows or FALSE if throw exception
     */
-    public function getProductAudioDescriptions($product_audio_id) {
+    public function getProductAudioDescriptions($product_audio_id, $language_id = 0) {
 
         try {
-            $statement = $this->db->prepare('SELECT * FROM `product_audio_description` WHERE `product_audio_id` = ?');
-            $statement->execute(array($product_audio_id));
+            $statement = $this->db->prepare('SELECT * FROM `product_audio_description` WHERE `product_audio_id` = ? ORDER BY `language_id` = ? DESC');
+            $statement->execute(array($product_audio_id, $language_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
 
@@ -664,13 +667,14 @@ class ModelCatalogProduct extends Model {
     * Get product demo descriptions
     *
     * @param int $product_demo_id
+    * @param int $language_id
     * @return array|bool Product demo descriptions rows or FALSE if throw exception
     */
-    public function getProductDemoDescriptions($product_demo_id) {
+    public function getProductDemoDescriptions($product_demo_id, $language_id = 0) {
 
         try {
-            $statement = $this->db->prepare('SELECT * FROM `product_demo_description` WHERE `product_demo_id` = ?');
-            $statement->execute(array($product_demo_id));
+            $statement = $this->db->prepare('SELECT * FROM `product_demo_description` WHERE `product_demo_id` = ? ORDER BY `language_id` = ? DESC');
+            $statement->execute(array($product_demo_id, $language_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
 
@@ -690,13 +694,14 @@ class ModelCatalogProduct extends Model {
     * Get product descriptions
     *
     * @param int $product_id
+    * @param int $language_id
     * @return array|bool Product descriptions row or FALSE if throw exception
     */
-    public function getProductDescriptions($product_id) {
+    public function getProductDescriptions($product_id, $language_id = 0) {
 
         try {
-            $statement = $this->db->prepare('SELECT * FROM `product_description` WHERE `product_id` = ?');
-            $statement->execute(array($product_id));
+            $statement = $this->db->prepare('SELECT * FROM `product_description` WHERE `product_id` = ? ORDER BY `language_id` = ? DESC');
+            $statement->execute(array($product_id, $language_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
 

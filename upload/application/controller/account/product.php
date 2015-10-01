@@ -864,7 +864,7 @@ class ControllerAccountProduct extends Controller {
 
 
 
-            foreach ($this->model_catalog_product->getProductDescriptions($this->request->get['product_id']) as $product_description) {
+            foreach ($this->model_catalog_product->getProductDescriptions($this->request->get['product_id'], $this->language->getId()) as $product_description) {
                 $data['product_description'][$product_description->language_id] = array('title'       => $product_description->title,
                                                                                         'description' => $product_description->description,
                                                                                         'tags'        => isset($product_tag_descriptions[$product_description->language_id]) ? implode(', ', $product_tag_descriptions[$product_description->language_id]) : false);
@@ -905,7 +905,7 @@ class ControllerAccountProduct extends Controller {
 
                 $demo_titles = array();
 
-                foreach ($this->model_catalog_product->getProductDemoDescriptions($product_demo->product_demo_id) as $demo_description) {
+                foreach ($this->model_catalog_product->getProductDemoDescriptions($product_demo->product_demo_id, $this->language->getId()) as $demo_description) {
                     $demo_titles[$demo_description->language_id] = $demo_description->title;
                 }
 
@@ -959,7 +959,7 @@ class ControllerAccountProduct extends Controller {
                 $image_rows[] = $row;
                 $image_titles = array();
 
-                foreach ($this->model_catalog_product->getProductImageDescriptions($image->product_image_id) as $image_description) {
+                foreach ($this->model_catalog_product->getProductImageDescriptions($image->product_image_id, $this->language->getId()) as $image_description) {
                     $image_titles[$image_description->language_id] = $image_description->title;
                 }
 
@@ -1005,7 +1005,7 @@ class ControllerAccountProduct extends Controller {
 
                 $video_titles = array();
 
-                foreach ($this->model_catalog_product->getProductVideoDescriptions($product_video->product_video_id) as $video_description) {
+                foreach ($this->model_catalog_product->getProductVideoDescriptions($product_video->product_video_id, $this->language->getId()) as $video_description) {
                     $video_titles[$video_description->language_id] = $video_description->title;
                 }
 
@@ -1047,7 +1047,7 @@ class ControllerAccountProduct extends Controller {
 
                 $audio_titles = array();
 
-                foreach ($this->model_catalog_product->getProductAudioDescriptions($product_audio->product_audio_id) as $audio_description) {
+                foreach ($this->model_catalog_product->getProductAudioDescriptions($product_audio->product_audio_id, $this->language->getId()) as $audio_description) {
                     $audio_titles[$audio_description->language_id] = $audio_description->title;
                 }
 
