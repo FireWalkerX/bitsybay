@@ -74,7 +74,7 @@
           <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
             <ul class="list-unstyled pull-right">
               <li>
-                <?php echo tt('The') ?> <a href="/"><?php echo tt('BitsyBay') ?></a> <?php echo tt('Project') ?> &copy; <?php echo date('Y') ?> Beta
+                <?php echo sprintf(tt('The %s Project'), '<a href="' . $href_common_home . '">' . PROJECT_NAME . '</a>') ?> &copy; <?php echo date('Y') ?> Beta
                 <div style="font-size:9px">
                   <?php echo tt('Powered by') ?> <a href="https://github.com/bitsybay" target="_blank" rel="nofollow"><?php echo tt('BitsyBay Engine') ?></a>,
                   <!--
