@@ -26,7 +26,7 @@ class ValidatorYoutube {
             return false;
         } else if (mb_strlen($string) < 2 || mb_strlen($string) > 100) {
             return false;
-        } else if (!preg_match('/^[a-z\d\-]+$/i', $string)) {
+        } else if (!preg_match('/^[a-z\d\-\_]+$/i', $string)) {
             return false;
         } else {
             return true;
