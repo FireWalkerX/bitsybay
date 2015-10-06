@@ -66,7 +66,7 @@ class BitCoin {
         $this->url           = $url;
 
         // Set some defaults
-        $this->proto         = 'http';
+        $this->proto         = $port == 443 ? 'https' : 'http';
         $this->CACertificate = null;
     }
 
