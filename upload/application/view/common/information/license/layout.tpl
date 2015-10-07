@@ -31,9 +31,9 @@
         <article>
           <h2></h2>
           <?php echo $definitions ?>
-          <h2>Regular License</h2>
+          <h2><?php echo tt('Regular License') ?></h2>
           <?php echo $regular ?>
-          <h2 class="text-warning">Exclusive License</h2>
+          <h2 class="text-warning"><?php echo tt('Exclusive License') ?></h2>
           <?php echo $exclusive ?>
         </article>
       </section>
