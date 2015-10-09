@@ -26,7 +26,7 @@ class ModelCatalogTag extends Model {
         try {
             $statement = $this->db->prepare('SELECT `t`.`tag_id`
                                              FROM `tag` AS `t`
-                                             LEFT JOIN `tag_description` AS `td` ON (`t`.`tag_id` = `td`.`tag_id`)
+                                             JOIN `tag_description` AS `td` ON (`t`.`tag_id` = `td`.`tag_id`)
                                              WHERE `td`.`name` = :name
                                              AND `td`.`language_id` = :language_id
                                              LIMIT 1');
@@ -115,7 +115,7 @@ class ModelCatalogTag extends Model {
 
         $sql = 'SELECT `t`.`tag_id`, `td`.`name`
                     FROM `tag` AS `t`
-                    LEFT JOIN `tag_description` AS `td` ON (`t`.`tag_id` = `td`.`tag_id`)
+                    JOIN `tag_description` AS `td` ON (`t`.`tag_id` = `td`.`tag_id`)
                     WHERE `td`.`language_id` = :language_id';
 
         if (isset($filter_data['limit'])) {
