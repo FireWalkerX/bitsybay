@@ -13,7 +13,7 @@
  */
 
 // Load dependencies
-require('../../config.php');
+require('../../../config.php');
 
 // Init Database
 try {

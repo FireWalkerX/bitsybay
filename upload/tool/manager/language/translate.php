@@ -13,8 +13,8 @@
  */
 
 // Load dependencies
-require('../../config.php');
-require('../../system/library/translate.php');
+require('../../../config.php');
+require('../../../system/library/translate.php');
 
 // Init Database
 try {
@@ -72,7 +72,7 @@ if ($statement->rowCount()) {
 
             // Translate title
             if (empty($untranslated->title) &&
-                false !== $title = $translate->translate($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $title = $translate->string($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `product_description` SET `title` = ? WHERE `product_id` = ? AND `language_id` = ? LIMIT 1");
@@ -83,7 +83,7 @@ if ($statement->rowCount()) {
 
             // Translate description
             if (empty($untranslated->description) &&
-                false !== $description = $translate->translate($translated->description, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $description = $translate->string($translated->description, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `product_description` SET `description` = ? WHERE `product_id` = ? AND `language_id` = ? LIMIT 1");
@@ -111,7 +111,7 @@ if ($statement->rowCount()) {
 
             // Translate name
             if (empty($untranslated->name) &&
-                false !== $name = $translate->translate($translated->name, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $name = $translate->string($translated->name, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `tag_description` SET `name` = LCASE(?) WHERE `tag_id` = ? AND `language_id` = ? LIMIT 1");
@@ -139,7 +139,7 @@ if ($statement->rowCount()) {
 
             // Translate title
             if (empty($untranslated->title) &&
-                false !== $title = $translate->translate($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $title = $translate->string($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `product_demo_description` SET `title` = ? WHERE `product_demo_id` = ? AND `language_id` = ? LIMIT 1");
@@ -167,7 +167,7 @@ if ($statement->rowCount()) {
 
             // Translate title
             if (empty($untranslated->title) &&
-                false !== $title = $translate->translate($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $title = $translate->string($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `product_image_description` SET `title` = ? WHERE `product_image_id` = ? AND `language_id` = ? LIMIT 1");
@@ -195,7 +195,7 @@ if ($statement->rowCount()) {
 
             // Translate title
             if (empty($untranslated->title) &&
-                false !== $title = $translate->translate($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $title = $translate->string($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `product_video_description` SET `title` = ? WHERE `product_video_id` = ? AND `language_id` = ? LIMIT 1");
@@ -223,7 +223,7 @@ if ($statement->rowCount()) {
 
             // Translate title
             if (empty($untranslated->title) &&
-                false !== $title = $translate->translate($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
+                false !== $title = $translate->string($translated->title, $languages[$translated->language_id], $languages[$untranslated->language_id])
             ) {
 
                 $update = $db->prepare("UPDATE `product_audio_description` SET `title` = ? WHERE `product_audio_id` = ? AND `language_id` = ? LIMIT 1");
