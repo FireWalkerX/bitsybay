@@ -23,7 +23,7 @@ final class Translate {
      */
     function myMemory($text, $source, $target) {
 
-        $url = 'http://mymemory.translated.net/api/get?q=' . rawurlencode($text) . '&langpair=' . $source . '|' . $target;
+        $url = 'http://mymemory.translated.net/api/get?q=' . $text . '&langpair=' . $source . '|' . $target;
 
         $handle = curl_init($url);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
