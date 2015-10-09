@@ -33,7 +33,7 @@ final class Translate {
         $response = json_decode($response, true);
 
         if ($response['responseStatus'] == 200 && isset($response['responseData']['translatedText'])) {
-            return $response['responseData'];
+            return $response['responseData']['translatedText'];
         } else {
             return false;
         }
