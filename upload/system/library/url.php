@@ -119,6 +119,10 @@ final class Url {
         // Order
         $this->_addRewrite('order/bitcoin/create', 'ajax/order/bitcoin/create');
 
+        // Other
+        $this->_addRewrite('account/account/captcha', 'account/captcha');
+        $this->_addRewrite('common/contact/captcha', 'contact/captcha');
+
         // Create categories rewrite rules
         $statement = $this->_db->query('SELECT
         `c`.`category_id`,
