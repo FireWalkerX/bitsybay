@@ -23,7 +23,6 @@ $_translation = array(
 'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
 'Then here you are:' => 'Тогда вы именно там, где нужно:',
 'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
-'Royalty Free and Exclusive licenses' => 'Поддержка эксклюзивных и роялти-фри лицензий',
 '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Бесплатно %s Мб дискового пространства +%s Мб за каждую сделку',
 '0% seller fee up to 2016, 11% later' => 'Комиссия 0% до 2016 года и 11% после',
 '0% seller fee for project contributors forever' => 'Комиссия 0% для всех контрибуторов!',
@@ -71,11 +70,15 @@ $_translation = array(
 'Edit' => 'Править',
 'Yes' => 'Да',
 'No' => 'Нет',
+'Buy' => 'Купить',
+'Remove Frame' => 'Удалить фрейм',
+'Buy %s with BitCoin' => 'Купить %s за BitCoin',
+'%s Purchase' => 'Покупка товара «%s»',
 'Report successfully sent!' => 'Ваше сообщение успешно отправлено!',
 'Your message will be reviewed in the near time.' => 'Мы рассмотрим ваше сообщение в кратчайшие сроки.',
 
 // Payments
-'Use wallet' => 'Использовать кошелек',
+'Use wallet' => 'Кошелек',
 'Send exactly %s to this address:' => 'Оплатите точно %s по этому адресу:',
 
 // Plural
@@ -157,6 +160,7 @@ $_translation = array(
 'Signed in as' => 'Вы вошли как',
 'Profile' => 'Профиль',
 'Subscriptions' => 'Подписки',
+'You have successfully modified your subscriptions!' => 'Спасибо, ваши настройки успешно обновлены!',
 'Account settings' => 'Настройки',
 'Affiliate' => 'Партнерская программа',
 'Logout' => 'Выход',
@@ -410,7 +414,7 @@ $_translation = array(
 'We do not refund any payments and neither do we guarantee that your request will be approved.' => 'Мы не возвращаем средства и не гарантируем верификацию вашей учетной записи.',
 'The review and verification process takes between 1 to 14 days.' => 'Время рассмотрения заявки составляет от 1 до 14 дней.',
 'The Verification feature is intended primarily for sellers. Verified seller can be identified by this label' => 'Функция верификации предназначена в первую очередь для продавцов, хотя в будущем будет полезна и для покупателей. Верифицированный продавец отмечается знаком ',
-'Verified Seller' => 'Верифицированный продавец',
+'Verified Seller' => 'Проверенный продавец',
 'in the product pages.' => 'на страницах товаров.',
 'Verified sellers enjoy a greater deal of trust from buyers.' => 'Продавцы с данным знаком пользуются большим доверием среди покупателей, что позитивно отражается на продажах.',
 'Provide detailed information that in your opinion proves and verifies your identity. It should include at least one web page or social profile that presents your works:' => 'Предоставьте информацию, которая способна подтвердить подлинность вашего аккаунта. Также необходимо указать по крайней мере один веб-сайт или страницу социальной сети, где представлены ваши работы.',
