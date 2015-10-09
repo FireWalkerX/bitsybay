@@ -14,7 +14,6 @@
 
 // Load dependencies
 require('../../config.php');
-require('../../system/library/translate.php');
 
 // Init Database
 try {
@@ -41,9 +40,6 @@ try {
     $error[] = $e->getMessage();
     exit;
 }
-
-// Init translate API
-$translate = new Translate();
 
 // Init counters
 $total_added      = 0;
