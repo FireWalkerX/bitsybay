@@ -47,6 +47,7 @@ $translate = new Translate();
 
 // Init counters
 $total_translated = 0;
+$total_added      = 0;
 
 // Get language registry
 $statement = $db->query('SELECT * FROM `language`');
@@ -54,6 +55,122 @@ $statement = $db->query('SELECT * FROM `language`');
 $languages = array();
 foreach ($statement->fetchAll() as $language) {
     $languages[$language->language_id] = $language->code;
+
+
+    /*
+     * Language upgrade mode: begin
+     * Uncomment to add new language rows
+
+
+    // Product descriptions
+    $products = $db->query("SELECT `product_id` FROM `product`");
+    if ($products->rowCount()) {
+
+        // Check all products
+        foreach ($products->fetchAll() as $product) {
+
+            // Product description
+            $product_description = $db->prepare("SELECT NULL FROM `product_description` WHERE `product_id` = ? AND `language_id` = ? LIMIT 1");
+            $product_description->execute(array($product->product_id, $language->language_id));
+
+            // Add new language row if not exist
+            if (!$product_description->rowCount()) {
+                $insert = $db->prepare("INSERT INTO `product_description` SET `product_id` = ?, `language_id` = ?, `title` = '', `description` = ''");
+                $insert->execute(array($product->product_id, $language->language_id));
+
+                $total_added++;
+            }
+        }
+    }
+
+    // Product demo descriptions
+    $product_demos = $db->query("SELECT `product_demo_id` FROM `product_demo`");
+    if ($product_demos->rowCount()) {
+
+        // Check all products
+        foreach ($product_demos->fetchAll() as $product_demo) {
+
+            // Product description
+            $product_demo_description = $db->prepare("SELECT NULL FROM `product_demo_description` WHERE `product_demo_id` = ? AND `language_id` = ? LIMIT 1");
+            $product_demo_description->execute(array($product_demo->product_demo_id, $language->language_id));
+
+            // Add new language row if not exist
+            if (!$product_demo_description->rowCount()) {
+                $insert = $db->prepare("INSERT INTO `product_demo_description` SET `product_demo_id` = ?, `language_id` = ?, `title` = ''");
+                $insert->execute(array($product_demo->product_demo_id, $language->language_id));
+
+                $total_added++;
+            }
+        }
+    }
+
+    // Product image descriptions
+    $product_images = $db->query("SELECT `product_image_id` FROM `product_image`");
+    if ($product_images->rowCount()) {
+
+        // Check all products
+        foreach ($product_images->fetchAll() as $product_image) {
+
+            // Product description
+            $product_image_description = $db->prepare("SELECT NULL FROM `product_image_description` WHERE `product_image_id` = ? AND `language_id` = ? LIMIT 1");
+            $product_image_description->execute(array($product_image->product_image_id, $language->language_id));
+
+            // Add new language row if not exist
+            if (!$product_image_description->rowCount()) {
+                $insert = $db->prepare("INSERT INTO `product_image_description` SET `product_image_id` = ?, `language_id` = ?, `title` = ''");
+                $insert->execute(array($product_image->product_image_id, $language->language_id));
+
+                $total_added++;
+            }
+        }
+    }
+
+    // Product video descriptions
+    $product_videos = $db->query("SELECT `product_video_id` FROM `product_video`");
+    if ($product_videos->rowCount()) {
+
+        // Check all products
+        foreach ($product_videos->fetchAll() as $product_video) {
+
+            // Product description
+            $product_video_description = $db->prepare("SELECT NULL FROM `product_video_description` WHERE `product_video_id` = ? AND `language_id` = ? LIMIT 1");
+            $product_video_description->execute(array($product_video->product_video_id, $language->language_id));
+
+            // Add new language row if not exist
+            if (!$product_video_description->rowCount()) {
+                $insert = $db->prepare("INSERT INTO `product_video_description` SET `product_video_id` = ?, `language_id` = ?, `title` = ''");
+                $insert->execute(array($product_video->product_video_id, $language->language_id));
+
+                $total_added++;
+            }
+        }
+    }
+
+    // Product audio descriptions
+    $product_audios = $db->query("SELECT `product_audio_id` FROM `product_audio`");
+    if ($product_audios->rowCount()) {
+
+        // Check all products
+        foreach ($product_audios->fetchAll() as $product_audio) {
+
+            // Product description
+            $product_audio_description = $db->prepare("SELECT NULL FROM `product_audio_description` WHERE `product_audio_id` = ? AND `language_id` = ? LIMIT 1");
+            $product_audio_description->execute(array($product_audio->product_audio_id, $language->language_id));
+
+            // Add new language row if not exist
+            if (!$product_audio_description->rowCount()) {
+                $insert = $db->prepare("INSERT INTO `product_audio_description` SET `product_audio_id` = ?, `language_id` = ?, `title` = ''");
+                $insert->execute(array($product_audio->product_audio_id, $language->language_id));
+
+                $total_added++;
+            }
+        }
+    }
+
+    * Language upgrade mode: end
+    *
+    */
+
 }
 
 
@@ -91,10 +208,6 @@ if ($statement->rowCount()) {
 
                 $total_translated++;
             }
-
-            // Upgrade mode
-            #$insert = $db->prepare("INSERT IGNORE INTO `product_description` SET  `product_id` = ?, `language_id` = ?, `title` = ?, `description` = ?");
-            #$insert->execute(array($untranslated->product_id, $untranslated->language_id, $title, $description));
         }
     }
 }
@@ -123,10 +236,6 @@ if ($statement->rowCount()) {
 
                 $total_translated++;
             }
-
-            // Upgrade mode
-            #$insert = $db->prepare("INSERT IGNORE INTO `product_demo_description` SET  `product_demo_id` = ?, `language_id` = ?, `title` = ?");
-            #$insert->execute(array($untranslated->product_demo_id, $untranslated->language_id, $title));
         }
     }
 }
@@ -155,10 +264,6 @@ if ($statement->rowCount()) {
 
                 $total_translated++;
             }
-
-            // Upgrade mode
-            #$insert = $db->prepare("INSERT IGNORE INTO `product_image_description` SET  `product_image_id` = ?, `language_id` = ?, `title` = ?");
-            #$insert->execute(array($untranslated->product_image_id, $untranslated->language_id, $title));
         }
     }
 }
@@ -187,10 +292,6 @@ if ($statement->rowCount()) {
 
                 $total_translated++;
             }
-
-            // Upgrade mode
-            #$insert = $db->prepare("INSERT IGNORE INTO `product_video_description` SET  `product_video_id` = ?, `language_id` = ?, `title` = ?");
-            #$insert->execute(array($untranslated->product_video_id, $untranslated->language_id, $title));
         }
     }
 }
@@ -219,14 +320,10 @@ if ($statement->rowCount()) {
 
                 $total_translated++;
             }
-
-            // Upgrade mode
-            #$insert = $db->prepare("INSERT IGNORE INTO `product_audio_description` SET  `product_audio_id` = ?, `language_id` = ?, `title` = ?");
-            #$insert->execute(array($untranslated->product_audio_id, $untranslated->language_id, $title));
         }
     }
 }
 
 
 // Response
-die($total_translated);
+die(sprintf('total added: %s, total translated: %s', $total_added, $total_translated));
