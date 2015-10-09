@@ -21,7 +21,7 @@ $_translation = array(
 
 // Welcome module
 'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
-'Then here you are:' => 'Тогда вы именно там, где нужно:',
+'Then here you are:' => 'Тогда вы там где нужно:',
 'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
 '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Бесплатно %s Мб дискового пространства +%s Мб за каждую сделку',
 '0% seller fee up to 2016, 11% later' => 'Комиссия 0% до 2016 года и 11% после',
@@ -47,7 +47,7 @@ $_translation = array(
 'Cancel' => 'Отмена',
 'Submit' => 'Отправить',
 'Search' => 'Поиск',
-'Do not forget' => 'Также не забудьте',
+'Do not forget' => 'Не забудьте',
 'Visit the F.A.Q. page' => 'Посетить раздел F.A.Q.',
 'Use search to find specific content' => 'Использовать поиск по сайту',
 'View Terms of Service and License Policy' => 'Ознакомиться с Условиями использования и Политикой лицензирования',
@@ -76,6 +76,7 @@ $_translation = array(
 '%s Purchase' => 'Покупка товара «%s»',
 'Report successfully sent!' => 'Ваше сообщение успешно отправлено!',
 'Your message will be reviewed in the near time.' => 'Мы рассмотрим ваше сообщение в кратчайшие сроки.',
+'Your message was sent successfully!' => 'Ваше сообщение успешно отправлено!',
 
 // Payments
 'Use wallet' => 'Кошелек',
@@ -178,7 +179,7 @@ $_translation = array(
 'Username can only contain latin letters, numbers and hyphen' => 'Когнитивный диссонанс, латинские символы, цифры и дефис, пожалуйста!',
 'Create an Account' => 'Создание аккаунта',
 'Please login or create your account' => 'Представьтесь или сделайте себе аккаунт',
-'Don’t have an account?' => 'Все еще ходите тут да там?',
+'Don’t have an account?' => 'Ходите тут да там?',
 'Account Settings' => 'Настройки учетной записи',
 'Settings' => 'Настройки',
 'Change username' => 'Изменить логин',
