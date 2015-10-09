@@ -83,6 +83,27 @@ foreach ($statement->fetchAll() as $language) {
         }
     }
 
+    // Product tags
+    $tags = $db->query("SELECT `tag_id` FROM `tag`");
+    if ($tags->rowCount()) {
+
+        // Check all products
+        foreach ($tags->fetchAll() as $tag) {
+
+            // Product description
+            $tag_description = $db->prepare("SELECT NULL FROM `tag_description` WHERE `tag_id` = ? AND `language_id` = ? LIMIT 1");
+            $tag_description->execute(array($tag->tag_id, $language->language_id));
+
+            // Add new language row if not exist
+            if (!$tag_description->rowCount()) {
+                $insert = $db->prepare("INSERT INTO `tag_description` SET `tag_id` = ?, `language_id` = ?, `name` = ''");
+                $insert->execute(array($tag->tag_id, $language->language_id));
+
+                $total_added++;
+            }
+        }
+    }
+
     // Product demo descriptions
     $product_demos = $db->query("SELECT `product_demo_id` FROM `product_demo`");
     if ($product_demos->rowCount()) {
@@ -205,6 +226,34 @@ if ($statement->rowCount()) {
 
                 $update = $db->prepare("UPDATE `product_description` SET `description` = ? WHERE `product_id` = ? AND `language_id` = ? LIMIT 1");
                 $update->execute(array($description, $untranslated->product_id, $untranslated->language_id));
+
+                $total_translated++;
+            }
+        }
+    }
+}
+
+
+// Translate tag descriptions
+$statement = $db->query("SELECT * FROM `tag_description` WHERE `name` = ''");
+
+if ($statement->rowCount()) {
+
+    foreach ($statement->fetchAll() as $untranslated) {
+
+        // Get translated data
+        $translated = $db->prepare("SELECT `tag_id`, `language_id`, `name` FROM `tag_description` WHERE `name` <> '' AND `tag_id` = ? LIMIT 1");
+        $translated->execute(array($untranslated->tag_id));
+
+        if ($translated->rowCount() && $translated = $translated->fetch()) {
+
+            // Translate name
+            if (empty($untranslated->name) &&
+                false !== $name = $translate->myMemory($translated->name, $languages[$translated->language_id], $languages[$untranslated->language_id])
+            ) {
+
+                $update = $db->prepare("UPDATE `tag_description` SET `name` = LCASE(?) WHERE `tag_id` = ? AND `language_id` = ? LIMIT 1");
+                $update->execute(array($name, $untranslated->tag_id, $untranslated->language_id));
 
                 $total_translated++;
             }
