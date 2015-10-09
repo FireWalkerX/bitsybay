@@ -64,8 +64,10 @@
             <ul class="list-unstyled">
               <li><h5><?php echo tt('Language') ?></h5>
                 <ul class="list-unstyled menu">
+                  <?php $l = 0; ?>
                   <?php foreach ($languages as $language) { ?>
-                    <li><a href="<?php echo $language['href'] ?>"><?php echo $language['name'] ?></a></li>
+                    <?php $l++; ?>
+                    <li><a href="<?php echo $language['href'] ?>"><?php echo $language['name'] ?></a> <?php echo ($l > 1 ? '<sup class="text-danger">Beta</sup>' : false) ?></li>
                   <?php } ?>
                 </ul>
               </li>
