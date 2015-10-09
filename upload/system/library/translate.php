@@ -14,6 +14,9 @@
 
 final class Translate {
 
+    private $_error  = false;
+    private $_status = false;
+
     /**
      * @param string $text
      * @param string $source
@@ -21,21 +24,21 @@ final class Translate {
      *
      * @return string|false translatedText
      */
-    function myMemory($text, $source, $target) {
+    public function string($text, $source, $target) {
+        return $text;
+    }
 
-        $url = 'http://mymemory.translated.net/api/get?q=' . rawurlencode($text) . '&langpair=' . $source . '|' . $target;
+    /**
+     * @return string|false
+     */
+    public function getError() {
+        return $this->_error;
+    }
 
-        $handle = curl_init($url);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($handle);
-        curl_close($handle);
-
-        $response = json_decode($response, true);
-
-        if ($response['responseStatus'] == 200 && isset($response['responseData']['translatedText'])) {
-            return $response['responseData']['translatedText'];
-        } else {
-            return false;
-        }
+    /**
+     * @return string|false
+     */
+    public function getStatus() {
+        return $this->_status;
     }
 }
