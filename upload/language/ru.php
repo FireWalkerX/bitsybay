@@ -25,14 +25,14 @@ $_translation = array(
 'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
 '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Бесплатно %s Мб дискового пространства +%s Мб за каждую сделку',
 '0% seller fee up to 2016, 11% later' => 'Комиссия 0% до 2016 года и 11% после',
-'0% seller fee for project contributors forever' => 'Комиссия 0% для всех контрибуторов!',
+'0% seller fee for project contributors forever' => 'Комиссия 0% для контрибуторов!',
 
 // Others modules
 'Last offers' => 'Новые товары',
 'Products not found. Try again later' => 'Товары не найдены. Попробуйте чуть позже!',
 
 // Common
-'Make coins +' => 'Продавать +',
+'Make coins +' => 'Магазин +',
 'Collection' => 'Коллекция',
 'Purchased' => 'Покупки',
 'Favorites' => 'Фавориты',
@@ -80,7 +80,7 @@ $_translation = array(
 
 // Payments
 'Use wallet' => 'Кошелек',
-'Send exactly %s to this address:' => 'Оплатите точно %s по этому адресу:',
+'Send exactly %s to this address:' => 'Сумма к оплате: %s',
 
 // Plural
 'offer' => 'предложение',
@@ -151,7 +151,7 @@ $_translation = array(
 'Invite friend' => 'Пригласить друга',
 'Who are you?' => 'Кто вы?',
 'Password is required' => 'Необходимо указать пароль!',
-'Username is required' => 'Необходимо указать кто вы будете!',
+'Username is required' => 'Необходимо указать кем вы будете!',
 'Username is not exists' => 'Пользователя с таким логином не существует!',
 'E-Mail is not exists' => 'Пользователя с таким e-mail не существует!',
 'Password must be between %s and %s characters' => 'Пароль не может быть короче %s символов или больше %s!',
@@ -178,7 +178,7 @@ $_translation = array(
 'Invalid email address' => 'Похоже, ваш e-mail не из нашего измерения!',
 'Username can only contain latin letters, numbers and hyphen' => 'Когнитивный диссонанс, латинские символы, цифры и дефис, пожалуйста!',
 'Create an Account' => 'Создание аккаунта',
-'Please login or create your account' => 'Представьтесь или сделайте себе аккаунт',
+'Please login or create your account' => 'Представьтесь или создайте аккаунт',
 'Don’t have an account?' => 'Ходите тут да там?',
 'Account Settings' => 'Настройки учетной записи',
 'Settings' => 'Настройки',
@@ -226,10 +226,10 @@ $_translation = array(
 'Forgot Password?' => 'Таки забыли?',
 
 // Account recovery
-'Account recovery' => 'Восстановление доступа',
+'Account recovery' => 'Восстановление пароля',
 'Recovery' => 'Восстановление',
 'What’s your registered email?' => 'Введите e-mail, указанный при регистрации',
-'I’ve remember my password!' => 'Я таки припоминаю мой пароль!',
+'I’ve remember my password!' => 'Припоминаю пароль!',
 'Help resources' => 'Нужна помощь?',
 
 // FAQ Page
@@ -389,7 +389,7 @@ $_translation = array(
 'Sales: %s' => 'Продано копий: %s',
 'License' => 'Лицензия',
 'Reviews' => 'Отзывы',
-'There are no reviews for this product' => 'Ваш отзыв будет первым',
+'There are no reviews for this product' => 'Ваш отзыв будет первым!',
 'Thank you for your review!' => 'Спасибо за ваш отзыв!',
 'Please explain you review and click submit button' => 'Напишите ваше мнение об этом товаре и нажмите кнопку «Отправить»',
 'Update product' => 'Редактирование товара',
