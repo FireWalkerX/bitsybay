@@ -124,5 +124,13 @@ define('BITCOIN_ORDER_PREFIX', 'order_');
 define('BITCOIN_USER_VERIFICATION_PREFIX', 'user_verification_');
 define('BITCOIN_MIN_TRANSACTION_CONFIRMATIONS', 6); // Minimum BTC transaction confirmations requires before the order will be marked as APPROVED
 
+// SPHINX
+define('SPHINX_MATCH_MODE', 6);
+define('SPHINX_SERVER', 'localhost');
+define('SPHINX_PORT', '9312');
+define('SPHINX_LIMITS_START', 0);
+define('SPHINX_LIMITS_LIMIT', 1000);
+define('SPHINX_LIMITS_MAX_MATCHES', 0);
+
 // GITHUB API
 define('GITHUB_API_URL_CONTRIBUTORS', '');
