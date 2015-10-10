@@ -161,33 +161,10 @@ class ModelCatalogProduct extends Model {
             $having[] = '`order_status_id` = :approved_order_status_id';
         }
 
-        // Filter by search term
-        if (isset($filter_data['filter_query'])) {
-
-
-            $filter_data['filter_query'] = trim($filter_data['filter_query']);
-
-            if (strpos($filter_data['filter_query'], ' ')) {
-                $terms = explode(' ', $filter_data['filter_query']);
-
-                $term_where = array();
-                foreach ($terms as $key => $term) {
-                    $term_where[] = '`pd`.`title` LIKE :filter_query_' . $key;
-                    $place_holders[':filter_query_' . $key] = '%' . substr($term, 0, -1) . '%';
-                }
-
-                $where[] = '(' . implode(' OR ', $term_where) . ')';
-            } else {
-
-                $sql .= 'LEFT JOIN `product_to_tag` AS `p2t` ON (`p2t`.`product_id` = `p`.`product_id`)';
-                $sql .= 'LEFT JOIN `tag_description` AS `td` ON (`td`.`tag_id` = `p2t`.`tag_id` AND `td`.`language_id` = `pd`.`language_id`)';
-
-
-                $where[] = '(`pd`.`title` LIKE :filter_query OR `td`.`name` LIKE :filter_query)';
-                $place_holders[':filter_query'] = '%' . substr($filter_data['filter_query'], 0, -1) . '%';
-            }
+        // Filter by product_ids
+        if (isset($filter_data['filter_product_ids']) && is_array($filter_data['filter_product_ids'])) {
+            $where[] = '`p`.`product_id` IN (' . implode(',', $filter_data['filter_product_ids']) . ')';
         }
-
 
         // Custom user results
         $place_holders[':session_user_id'] = $session_user_id;

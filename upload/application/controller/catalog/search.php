@@ -24,6 +24,8 @@ class ControllerCatalogSearch extends Controller {
         $this->load->model('account/user');
         $this->load->model('common/log');
 
+        $this->load->library('sphinx');
+
         $this->load->helper('validator/product');
         $this->load->helper('plural');
     }
@@ -49,12 +51,28 @@ class ControllerCatalogSearch extends Controller {
             $filter_data['user_id'] = (int) $this->request->get['user_id'];
         }
 
-        // Filter by search term & tags
+        // Filter by search term
         if (isset($this->request->get['q']) && !empty($this->request->get['q']) && ValidatorProduct::titleValid($this->request->get['q'])) {
 
             $title .= sprintf(' ' . tt('containing %s'), ucfirst($this->request->get['q']));
             $meta_title .= sprintf(' ' . tt('Buy %s Thematic with Bitcoin | Royalty Free %s Thematic Store'), ucfirst($this->request->get['q']), ucfirst($this->request->get['q']));
-            $filter_data['filter_query'] = $this->request->get['q'];
+
+            // Sphinx search begin
+            $sphinx = new SphinxClient();
+
+            $search = $sphinx->EscapeString($this->request->get['q']);
+            $result = $sphinx->Query("({$search} | *{$search})*");
+
+            // If something found
+            if ($result !== false && !empty($result['matches'])) {
+                foreach ($result['matches'] as $product_id => $info) {
+                    $filter_data['filter_product_ids'][] = (int) $product_id;
+                }
+
+            // If products not found
+            } else {
+                $filter_data['filter_product_ids'][] = 0;
+            }
         }
 
         // Filter by favorites
