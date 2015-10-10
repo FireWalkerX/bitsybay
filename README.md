@@ -56,7 +56,7 @@ FEATURES
 * Product Licenses
 * Product Favorites
 * Product Tags
-* Basic Search
+* Morphological Search based on Sphinx
 * Search requests logging
 * Comment form
 * AJAX file uploading
@@ -81,7 +81,6 @@ COMING SOON
 -----------
 
 * Multi-currency implementation
-* Multi-language implementation
 
 REQUIREMENTS
 ------------
@@ -89,11 +88,12 @@ REQUIREMENTS
 
     apache2 
     php5 
-    mysql-server 
-    bitcoind 
+    mysql-server  
     php-gd 
     php-imagick 
     php-curl
+    bitcoind
+    sphinxsearch
 
 INSTALL
 -------
