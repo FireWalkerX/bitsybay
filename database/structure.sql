@@ -937,7 +937,7 @@ CREATE VIEW `catalog` AS SELECT `pd`.`product_id`  AS `product_id`,
                                 (SELECT GROUP_CONCAT(`cd`.`title`) FROM `category_description` AS `cd`
                                                                    JOIN `category` AS `c` ON (`c`.`category_id` = `cd`.`category_id`)
                                                                    JOIN `product`  AS `p` ON (`p`.`category_id` = `c`.`category_id`)
-                                                                   WHERE `cd`.`language_id` = `pd`.`language_id`) AS `category`,
+                                                                   WHERE `p`.`product_id` = `pd`.`product_id` AND `cd`.`language_id` = `pd`.`language_id`) AS `category`,
 
                                 (SELECT GROUP_CONCAT(`td`.`name`)  FROM `tag_description` AS `td`
                                                                    JOIN `product_to_tag`  AS `p2t` ON (`p2t`.`tag_id` = `td`.`tag_id`)
