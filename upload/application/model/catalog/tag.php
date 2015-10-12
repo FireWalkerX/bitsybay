@@ -15,51 +15,18 @@
 class ModelCatalogTag extends Model {
 
     /**
-    * Add tag
-    *
-    * @param string $name
-    * @param int $language_id
-    * @return int|bool tag_id or FALSE if throw exception
-    */
-    public function createTag($name, $language_id) {
+     * Add tag
+     *
+     * @return int|bool tag_id or FALSE if throw exception
+     */
+    public function addTag() {
 
         try {
-            $statement = $this->db->prepare('SELECT `t`.`tag_id`
-                                             FROM `tag` AS `t`
-                                             JOIN `tag_description` AS `td` ON (`t`.`tag_id` = `td`.`tag_id`)
-                                             WHERE `td`.`name` = :name
-                                             AND `td`.`language_id` = :language_id
-                                             LIMIT 1');
 
-            $statement->execute(array(
-                ':name'        => $name,
-                ':language_id' => $language_id));
+            $statement = $this->db->prepare('INSERT INTO `tag` SET `date_added` = NOW()');
+            $statement->execute();
 
-            if ($statement->rowCount()) {
-
-                $tag = $statement->fetch();
-
-                return $tag->tag_id;
-
-            } else {
-
-                $statement = $this->db->prepare('INSERT INTO `tag` SET `date_added` = NOW()');
-                $statement->execute();
-
-                $tag_id = $this->db->lastInsertId();
-
-                $statement = $this->db->prepare('INSERT INTO `tag_description` SET
-                                                `tag_id`      = :tag_id,
-                                                `language_id` = :language_id,
-                                                `name`        = :name');
-
-                $statement->execute(array(
-                    ':tag_id'      => $tag_id,
-                    ':language_id' => $language_id,
-                    ':name'        => $name));
-
-                return $tag_id;
-            }
+            return $this->db->lastInsertId();
 
         } catch (PDOException $e) {
 
@@ -73,13 +40,47 @@ class ModelCatalogTag extends Model {
         }
     }
 
+    /**
+     * Add tag description
+     *
+     * @param int $tag_id
+     * @param int $language_id
+     * @param string $name
+     * @return int|bool tag_description_id or FALSE if throw exception
+     */
+    public function addTagDescription($tag_id, $language_id, $name) {
 
+        try {
+
+            $statement = $this->db->prepare('INSERT INTO `tag_description` SET
+                                            `tag_id`      = :tag_id,
+                                            `language_id` = :language_id,
+                                            `name`        = :name');
+
+            $statement->execute(array(
+                ':tag_id'      => $tag_id,
+                ':language_id' => $language_id,
+                ':name'        => $name));
+
+            return $this->db->lastInsertId();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
 
     /**
     * Get tag descriptions
     *
     * @param int $tag_id
-    * @return array|bool Product descriptions row or FALSE if throw exception
+    * @return array|bool Tag description rows or FALSE if throw exception
     */
     public function getTagDescriptions($tag_id) {
 
@@ -102,6 +103,34 @@ class ModelCatalogTag extends Model {
     }
 
     /**
+    * Get tag description by multilingual tag name
+    *
+    * @param string $name
+    * @return array|false Tag description row or FALSE if throw exception
+    */
+    public function getTagIdByName($name) {
+
+        try {
+            $statement = $this->db->prepare('SELECT `tag_id` FROM `tag_description` WHERE `name` = ? LIMIT 1');
+            $statement->execute(array($name));
+
+            $tag = $statement->fetch();
+
+            return $statement->rowCount() ? $tag->tag_id: false;
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
     * Get tags
     *
     * @param array $filter_data
@@ -109,9 +138,6 @@ class ModelCatalogTag extends Model {
     * @return array|bool Tag rows or FALSE if throw exception
     */
     public function getTags($filter_data, $language_id) {
-
-        // $where = array();
-        // $place_holders = array();
 
         $sql = 'SELECT `t`.`tag_id`, `td`.`name`
                     FROM `tag` AS `t`
