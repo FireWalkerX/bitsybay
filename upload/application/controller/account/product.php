@@ -42,6 +42,7 @@ class ControllerAccountProduct extends Controller {
 
         $this->load->helper('filter/uri');
         $this->load->library('identicon');
+        $this->load->library('translate');
 
     }
 
@@ -119,6 +120,12 @@ class ControllerAccountProduct extends Controller {
 
         if ('POST' == $this->request->getRequestMethod() && $this->_validateProductForm()) {
 
+            // Load dependencies
+            $translate = new Translate();
+
+            // Create languages registry
+            $languages = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
+
             // Start transaction
             $this->db->beginTransaction();
 
@@ -134,23 +141,43 @@ class ControllerAccountProduct extends Controller {
 
             // Add product description
             foreach ($this->request->post['product_description'] as $language_id => $product_description) {
-                $this->model_catalog_product->createProductDescription( $product_id,
+                 $this->model_catalog_product->createProductDescription($product_id,
                                                                         $language_id,
-                                                                        $product_description['title'],
-                                                                        $product_description['description']);
+                                                                        (empty(trim($product_description['title']))       ? $translate->string($this->request->post['product_description'][$this->language->getId()]['title'],       $this->language->getCode(), $languages[$language_id]) : $product_description['title']),
+                                                                        (empty(trim($product_description['description'])) ? $translate->string($this->request->post['product_description'][$this->language->getId()]['description'], $this->language->getCode(), $languages[$language_id]) : $product_description['description']));
             }
 
             // Add Tags
             foreach ($this->request->post['product_description'] as $language_id => $product_description) {
-                if (!empty($product_description['tags'])) {
 
-                    $tags = explode(',', $product_description['tags']);
-                    foreach ($tags as $tag) {
+                // Process current language not empty field only
+                if (!empty($product_description['tags']) && $language_id == $this->language->getId()) {
 
-                        // Add a new global tag if not exists
-                        $tag_id = $this->model_catalog_tag->createTag(mb_strtolower(trim($tag)), $language_id);
+                    // Separate a tags string and create multilingual registry
+                    foreach (explode(',', $product_description['tags']) as $name) {
 
-                        // Add product to tag relation
+                        // Get tag id
+                        $name = mb_strtolower(trim($name));
+
+                        // Saved tags registry
+                        if ($tag = $this->model_catalog_tag->getTagByName($name)) {
+
+                            $tag_id = $tag->tag_id;
+
+                        } else {
+
+                            // Create new tag
+                            $tag_id = $this->model_catalog_tag->addTag();
+
+                            // Create descriptions for each language
+                            foreach ($languages as $language_id => $code) {
+                                $this->model_catalog_tag->addTagDescription($tag_id,
+                                                                            $language_id,
+                                                                            $translate->string($name, $this->language->getCode(), $code));
+                            }
+                        }
+
+                        // Save new relations
                         $this->model_catalog_product->addProductToTag($product_id, $tag_id);
                     }
                 }
@@ -181,7 +208,7 @@ class ControllerAccountProduct extends Controller {
                     foreach ($demo['title'] as $language_id => $title) {
                         $this->model_catalog_product->createProductDemoDescription( $product_demo_id,
                                                                                     $language_id,
-                                                                                    $title);
+                                                                                    (empty(trim($title)) ? $translate->string($demo['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }
@@ -199,7 +226,7 @@ class ControllerAccountProduct extends Controller {
                         foreach ($image['title'] as $language_id => $title) {
                             $this->model_catalog_product->createProductImageDescription($product_image_id,
                                                                                         $language_id,
-                                                                                        $title);
+                                                                                        (empty(trim($title)) ? $translate->string($image['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                         }
 
                         // Rename temporary file
@@ -218,9 +245,9 @@ class ControllerAccountProduct extends Controller {
 
                 // Generate image titles from product title
                 foreach ($this->request->post['product_description'] as $language_id => $product_description) {
-                    $this->model_catalog_product->createProductImageDescription($product_image_id,
-                                                                                $language_id,
-                                                                                $product_description['title']);
+                     $this->model_catalog_product->createProductImageDescription($product_image_id,
+                                                                                 $language_id,
+                                                                                 (empty(trim($product_description['title'])) ? $translate->string($this->request->post['product_description'][$this->language->getId()]['title'], $this->language->getCode(), $languages[$language_id]) : $product_description['title']));
                 }
 
                 $identicon = new Identicon();
@@ -241,9 +268,9 @@ class ControllerAccountProduct extends Controller {
                                                                                          $video['id']);
 
                     foreach ($video['title'] as $language_id => $title) {
-                        $this->model_catalog_product->createProductVideoDescription($product_video_id,
-                                                                                    $language_id,
-                                                                                    $title);
+                         $this->model_catalog_product->createProductVideoDescription($product_video_id,
+                                                                                     $language_id,
+                                                                                     (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }
@@ -258,9 +285,9 @@ class ControllerAccountProduct extends Controller {
                                                                                          $audio['id']);
 
                     foreach ($audio['title'] as $language_id => $title) {
-                        $this->model_catalog_product->createProductAudioDescription($product_audio_id,
-                                                                                    $language_id,
-                                                                                    $title);
+                         $this->model_catalog_product->createProductAudioDescription($product_audio_id,
+                                                                                     $language_id,
+                                                                                     (empty(trim($title)) ? $translate->string($audio['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }
@@ -341,6 +368,12 @@ class ControllerAccountProduct extends Controller {
 
         if ('POST' == $this->request->getRequestMethod() && $this->_validateProductForm()) {
 
+            // Load dependencies
+            $translate = new Translate();
+
+            // Create languages registry
+            $languages = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
+
             // Start transaction
             $this->db->beginTransaction();
 
@@ -355,7 +388,6 @@ class ControllerAccountProduct extends Controller {
                                                         (int) $this->auth->isVerified());
 
             // Add 301 rule if product has new URI
-
             $url = new Url($this->db, $this->request, $this->response, $this->url->link('common/home'));
 
             $old_url = $this->url->link('catalog/product', 'product_id=' . $product_id);
@@ -373,25 +405,50 @@ class ControllerAccountProduct extends Controller {
             $this->model_catalog_product->deleteProductDescriptions($product_id);
 
             foreach ($this->request->post['product_description'] as $language_id => $product_description) {
+
                 $this->model_catalog_product->createProductDescription( $product_id,
                                                                         $language_id,
-                                                                        $product_description['title'],
-                                                                        $product_description['description']);
+                                                                        (empty(trim($product_description['title']))       ? $translate->string($this->request->post['product_description'][$this->language->getId()]['title'],       $this->language->getCode(), $languages[$language_id]) : $product_description['title']),
+                                                                        (empty(trim($product_description['description'])) ? $translate->string($this->request->post['product_description'][$this->language->getId()]['description'], $this->language->getCode(), $languages[$language_id]) : $product_description['description']));
+
             }
+
 
             // Add Tags
             $this->model_catalog_product->deleteProductToTagByProductId($product_id);
 
+            // Prepare tags from request
             foreach ($this->request->post['product_description'] as $language_id => $product_description) {
-                if (!empty($product_description['tags'])) {
 
-                    $tags = explode(',', $product_description['tags']);
-                    foreach ($tags as $tag) {
+                // Process current language not empty field only
+                if (!empty($product_description['tags']) && $language_id == $this->language->getId()) {
 
-                        // Add a new global tag if not exists
-                        $tag_id = $this->model_catalog_tag->createTag(mb_strtolower(trim($tag)), $language_id);
+                    // Separate a tags string and create multilingual registry
+                    foreach (explode(',', $product_description['tags']) as $name) {
 
-                        // Add product to tag relation
+                        // Get tag id
+                        $name = mb_strtolower(trim($name));
+
+                        // Saved tags registry
+                        if ($tag = $this->model_catalog_tag->getTagByName($name)) {
+
+                            $tag_id = $tag->tag_id;
+
+                        } else {
+
+                            // Create new tag
+                            $tag_id = $this->model_catalog_tag->addTag();
+
+                            // Create descriptions for each language
+                            foreach ($languages as $language_id => $code) {
+                                $this->model_catalog_tag->addTagDescription($tag_id,
+                                                                            $language_id,
+                                                                            $translate->string($name, $this->language->getCode(), $code));
+
+                            }
+                        }
+
+                        // Save new relations
                         $this->model_catalog_product->addProductToTag($product_id, $tag_id);
                     }
                 }
@@ -419,7 +476,9 @@ class ControllerAccountProduct extends Controller {
                     $product_demo_id = $this->model_catalog_product->createProductDemo($product_id, $demo['sort_order'], $demo['url'], $this->request->post['main_demo'] == $row ? 1 : 0);
 
                     foreach ($demo['title'] as $language_id => $title) {
-                        $this->model_catalog_product->createProductDemoDescription($product_demo_id, $language_id, $title);
+                        $this->model_catalog_product->createProductDemoDescription( $product_demo_id,
+                                                                                    $language_id,
+                                                                                    (empty(trim($title)) ? $translate->string($demo['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }
@@ -438,7 +497,7 @@ class ControllerAccountProduct extends Controller {
                     foreach ($image['title'] as $language_id => $title) {
                         $this->model_catalog_product->createProductImageDescription($product_image_id,
                                                                                     $language_id,
-                                                                                    $title);
+                                                                                    (empty(trim($title)) ? $translate->string($image['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
 
                     // Rename temporary file
@@ -458,7 +517,7 @@ class ControllerAccountProduct extends Controller {
                 foreach ($this->request->post['product_description'] as $language_id => $product_description) {
                     $this->model_catalog_product->createProductImageDescription($product_image_id,
                                                                                 $language_id,
-                                                                                $product_description['title']);
+                                                                                (empty(trim($product_description['title'])) ? $translate->string($this->request->post['product_description'][$this->language->getId()]['title'], $this->language->getCode(), $languages[$language_id]) : $product_description['title']));
                 }
 
                 $identicon = new Identicon();
@@ -479,7 +538,9 @@ class ControllerAccountProduct extends Controller {
                     $product_video_id = $this->model_catalog_product->createProductVideo($product_id, $video['source'], $video['sort_order'], $video['id']);
 
                     foreach ($video['title'] as $language_id => $title) {
-                        $this->model_catalog_product->createProductVideoDescription($product_video_id, $language_id, $title);
+                         $this->model_catalog_product->createProductVideoDescription($product_video_id,
+                                                                                        $language_id,
+                                                                                        (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }
@@ -493,7 +554,9 @@ class ControllerAccountProduct extends Controller {
                     $product_audio_id = $this->model_catalog_product->createProductAudio($product_id, $audio['source'], $audio['sort_order'], $audio['id']);
 
                     foreach ($audio['title'] as $language_id => $title) {
-                        $this->model_catalog_product->createProductAudioDescription($product_audio_id, $language_id, $title);
+                         $this->model_catalog_product->createProductAudioDescription($product_audio_id,
+                                                                                     $language_id,
+                                                                                     (empty(trim($title)) ? $translate->string($audio['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }

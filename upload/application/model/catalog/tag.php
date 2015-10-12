@@ -108,15 +108,14 @@ class ModelCatalogTag extends Model {
     * @param string $name
     * @return array|false Tag description row or FALSE if throw exception
     */
-    public function getTagIdByName($name) {
+    public function getTagByName($name) {
 
         try {
             $statement = $this->db->prepare('SELECT `tag_id` FROM `tag_description` WHERE `name` = ? LIMIT 1');
             $statement->execute(array($name));
 
-            $tag = $statement->fetch();
 
-            return $statement->rowCount() ? $tag->tag_id: false;
+            return $statement->rowCount() ? $statement->fetch(): false;
 
         } catch (PDOException $e) {
 

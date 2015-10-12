@@ -132,7 +132,7 @@
                       <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['description'] ?></div>
                     <?php } ?>
                   </div>
-                  <div class="form-group <?php echo isset($error['general']['product_description'][$language_id]['tags']) ? 'has-error' : false ?>">
+                  <div <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?> class="form-group <?php echo isset($error['general']['product_description'][$language_id]['tags']) ? 'has-error' : false ?>">
                     <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TAGS_MAX_LENGTH ?>)" type="text" name="product_description[<?php echo $language_id ?>][tags]" class="form-control" id="inputGeneralTags<?php echo $language_id ?>" placeholder="<?php echo tt('Tags (comma separated)') ?>" value="<?php echo $description['tags'] ?>">
                     <?php if (isset($error['general']['product_description'][$language_id]['tags'])) { ?>
                       <div class="text-danger"><?php echo $error['general']['product_description'][$language_id]['tags'] ?></div>
