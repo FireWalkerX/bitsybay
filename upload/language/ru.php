@@ -78,6 +78,7 @@ $_translation = array(
 'Report successfully sent!' => 'Ваше сообщение успешно отправлено!',
 'Your message will be reviewed in the near time.' => 'Мы рассмотрим ваше сообщение в кратчайшие сроки.',
 'Your message was sent successfully!' => 'Ваше сообщение успешно отправлено!',
+'You have successfully modified your settings!' => 'Спасибо, настройки успешно изменены!',
 
 // Payments
 'Use wallet' => 'Кошелек',
@@ -500,4 +501,51 @@ $_translation = array(
 'Content Analyst, Support' => 'Контент-аналитика, поддержка',
 'Our team is only peoples, who love this project and make it better' => 'Здесь только люди, которые любят проект и делают его лучше',
 'There are no corporation and authorized fund. We fund our support and contribution instead money.' => 'Нет уставных фондов, компаний и галстуков. Мы инвестируем нашу поддержку и контрибуции вместо денег.',
+
+// Mailing and Notifications
+'Welcome to %s!' => 'Добро пожаловать в %s!',
+'Welcome and thank you for registering!' => 'Добро пожаловать и спасибо за регистрацию!',
+'We\'re so happy you\'ve joined us.' => 'Мы так рады, что вы присоединились к нам.',
+'Make every day awesome with inspired finds!' => 'Сделайте каждый день удивительным с интересными находками в нашем каталоге!',
+
+'Sent by' => 'Отправлено',
+'If you have any questions, please' => 'Если у вас есть вопросы, пожалуйста',
+'Click here to' => 'Нажмите здесь, чтобы',
+'unsubscribe' => 'отписаться',
+'or manage your mail preferences.' => 'или посетите страницу настроек почты.',
+
+'Please, approve your email' => 'Пожалуйста, подтвердите ваш email',
+'Approve' => 'Подтвердить',
+
+'Get it now:' => 'Скачайте прямо сейчас:',
+
+'Click here to change your password' => 'Нажмите здесь для выбора нового пароля',
+'Change' => 'Выбрать',
+'This link will be valid for 30 minutes.' => 'Эта ссылка будет доступна в течении',
+
+'Your affiliate settings has been updated - %s' => 'Настройки вашей партнерской программы были обновлены - %s',
+'Your account settings has been updated - %s' => 'Настройки вашего аккаунта были обновлены - %s',
+'If you did not make this change, please contact us.' => 'Если вы не осуществляли это действие, пожалуйста, свяжитесь с нами.',
+'Your account settings has been updated' => 'Настройки вашего аккаунта были обновлены',
+'If you did not make this change and believe your account has been compromised, please contact us.' => 'Если вы не осуществляли это действие, пожалуйста, свяжитесь с нами.',
+'Your affiliate settings has been updated' => 'Настройки вашей партнерской программы были изменены',
+
+'Your password has been updated' => 'Ваш пароль был обновлен',
+'Your new password has been successfully changed!' => 'Ваш пароль был успешно обновлен!',
+'Your password has been updated - %s' => 'Ваш пароль был обновлен - %s',
+'You recently changed the password associated with your @%s account.' => 'Пароль для учетной записи @%s был успешно изменен.',
+
+'Your verification request was sent successfully' => 'Запрос верификации успешно отправлен',
+'Your verification request was sent successfully!' => 'Запрос верификации успешно отправлен!',
+'We will process the request as quickly as possible.' => 'Мы обработаем его как можно быстрее',
+'Account Verification Request - %s' => 'Запрос на верификацию учетной записи - %s',
+'A new verification was requested.' => 'Запрошена верификация учетной записи.',
+
+'Your product has been marked as favorite' => 'Ваш товар был добавлен в фавориты',
+'Your product has been marked as favorite - %s' => 'Ваш товар был добавлен в фавориты - %s',
+'@%s has marked %s as favorite.\nCheers!' => '@%s добавил товар %s в фавориты.\nУра!',
+
+'Your product has been commented' => 'Ваш товар был прокомментирован',
+'Your product has been commented - %s' => 'Ваш товар был прокомментирован - %s',
+'@%s has posted a comment about your product %s.\n' => '@%s прокомментировал ваш товар %s.\n',
 );
