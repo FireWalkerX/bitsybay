@@ -557,9 +557,9 @@ class ModelCatalogProduct extends Model {
             (SELECT `username` FROM `user` AS `u` WHERE `u`.`user_id` = `pr`.`user_id` LIMIT 1) AS `username`,
             (SELECT COUNT(*) FROM `product_favorite` AS `pf` WHERE `pf`.`user_id` = `pr`.`user_id` AND `pf`.`product_id` = `pr`.`product_id` LIMIT 1) AS `favorite`
             FROM `product_review` AS `pr`
-            WHERE `pr`.`product_id` = ? AND `pr`.`language_id` = ? AND `pr`.`status` = 1');
+            WHERE `pr`.`product_id` = ? AND `pr`.`status` = 1');
 
-            $statement->execute(array($product_id, $language_id));
+            $statement->execute(array($product_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
 
