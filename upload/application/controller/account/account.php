@@ -143,7 +143,7 @@ class ControllerAccountAccount extends Controller {
                                                                        DEFAULT_LANGUAGE_ID,
                                                                        'common',
                                                                        sprintf(tt('Welcome to %s!'), PROJECT_NAME),
-                                                                       tt("We're so happy you've joined us.\n") .
+                                                                       tt("We're so happy you've joined us.") . "\n" .
                                                                        tt("Make every day awesome with inspired finds!"));
 
                     // Send greetings email with verification code
@@ -512,7 +512,7 @@ class ControllerAccountAccount extends Controller {
                         $mail_data['project_name'] = PROJECT_NAME;
 
                         $mail_data['subject'] = sprintf(tt('Your affiliate settings has been updated - %s'), PROJECT_NAME);
-                        $mail_data['message'] = tt('Your affiliate settings has been updated.') . ' ';
+                        $mail_data['message'] = tt('Your affiliate settings has been updated') . ' ';
                         $mail_data['message'].= tt('If you did not make this change, please contact us.');
 
                         $mail_data['href_home']         = $this->url->link('common/home');
