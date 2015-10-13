@@ -421,6 +421,7 @@ $_translation = array(
 '%s %s left' => 'осталось %s %s',
 'Special price' => 'Супер цена',
 'Default' => 'Стандартно',
+'All products' => 'Все товары',
 
 // Verification
 'Verification' => 'Верификация',
