@@ -153,6 +153,7 @@ $_translation = array(
 
 // Account
 'Account' => 'Учетная запись',
+'Account Edit' => 'Настройки учетной записи',
 'Account status' => 'Статус',
 'Active' => 'Активный',
 'Approved' => 'Подтвержден',
