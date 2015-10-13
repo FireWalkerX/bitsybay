@@ -144,8 +144,8 @@ class ControllerCatalogProduct extends Controller {
         $data['product_href_demo']     = $this->url->link('catalog/product/demo', 'product_demo_id=' . $product_info->main_product_demo_id);
         $data['product_href_user']     = $this->url->link('catalog/search', 'user_id=' . $product_info->user_id);
 
-        $data['product_date_added']    = date(DATE_FORMAT_DEFAULT, strtotime($product_info->date_added));
-        $data['product_date_modified'] = date(DATE_FORMAT_DEFAULT, strtotime($product_info->date_modified));
+        $data['product_date_added']    = date(tt('d.m.Y'), strtotime($product_info->date_added));
+        $data['product_date_modified'] = date(tt('d.m.Y'), strtotime($product_info->date_modified));
 
         $data['product_demos'] = array();
         foreach ($this->model_catalog_product->getProductDemos($product_info->product_id, $this->language->getId()) as $demo) {
@@ -530,8 +530,8 @@ class ControllerCatalogProduct extends Controller {
                     'review'        => $review->review,
                     'favorite'      => $review->favorite,
                     'href_user'     => $this->url->link('catalog/search', 'user_id=' . $review->user_id),
-                    'date_added'    => date(DATE_FORMAT_DEFAULT, strtotime($review->date_added)),
-                    'date_modified' => date(DATE_FORMAT_DEFAULT, strtotime($review->date_modified))
+                    'date_added'    => date(tt('d.m.Y'), strtotime($review->date_added)),
+                    'date_modified' => date(tt('d.m.Y'), strtotime($review->date_modified))
                 );
             }
         }

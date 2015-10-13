@@ -61,7 +61,7 @@ class ControllerAccountAccount extends Controller {
         $data['verified']      = $this->auth->isVerified();
         $data['active']        = $this->auth->isActive();
         $data['username']      = $this->auth->getUsername();
-        $data['date_added']    = date(DATE_FORMAT_DEFAULT, strtotime($this->auth->getDateAdded()));
+        $data['date_added']    = date(tt('j M, Y'), strtotime($this->auth->getDateAdded()));
         $data['avatar_url']    = $this->cache->image('thumb', $this->auth->getId(), 100, 100);
 
         $data['avatar_action']                     = $this->url->link('account/account/uploadAvatar');
@@ -604,7 +604,7 @@ class ControllerAccountAccount extends Controller {
                                          'requests'   => $referral->requests,
                                          'purchased'  => $referral->purchased,
                                          'conversion' => $data['total_joined'] ? ($referral->requests + $referral->purchased) / $data['total_joined'] * 100 : 0,
-                                         'date_added' => date(DATE_FORMAT_DEFAULT, strtotime($referral->date_added)),
+                                         'date_added' => date(tt('d.m.Y'), strtotime($referral->date_added)),
                                          'href'       => $this->url->link('catalog/search', 'user_id=' . $referral->user_id));
         }
 

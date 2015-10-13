@@ -14,6 +14,9 @@
 
 $_translation = array(
 
+// Locale
+'j M, Y' => 'd.m.Y',
+
 // Headers
 'BitsyBay - Sell and Buy Digital Creative with BitCoin' => 'BitsyBay - Магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin',
 'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Free seller fee up to 2016!' => 'Bitcoin супермаркет фотографий, графики, шаблонов, кода, приложений, книг и другого креатива за BitCoin. Качественные авторские товары. Нулевые комиссии до конца 2016!',
@@ -555,4 +558,7 @@ $_translation = array(
 'news' => 'новости',
 'security' => 'безопасность',
 'common' => 'общие',
+
+'Received' => 'Получено',
+'Label' => 'Маркер',
 );
