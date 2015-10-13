@@ -40,18 +40,11 @@ class ControllerCommonFooter extends Controller {
 
         $languages = $this->language->getLanguages();
         foreach ($languages as $language) {
-
-            if ($language['language_code'] == 'en') {
-                $data['languages'][] = array(
-                    'name' => $language['language_name'],
-                    'href' => URL_BASE
-                );
-            } else {
-                $data['languages'][] = array(
-                    'name' => $language['language_name'],
-                    'href' => URL_BASE . $language['language_code'] . '/'
-                );
-            }
+            $data['languages'][] = array(
+                'name'     => $language['language_name'],
+                'new_code' => $language['language_code'],
+                'old_code' => $this->language->getCode()
+            );
         }
 
         $data['href_facebook'] = URL_FACEBOOK;

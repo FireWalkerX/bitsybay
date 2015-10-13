@@ -96,10 +96,19 @@ final class Language {
                     $this->_language_name    = $language->name;
                 }
 
+                // Get active language
+                if (isset($request->get['language_id'])) {
+                    $_language_id = (int) $request->get['language_id'];
+                } else if (isset($request->cookie['language_id'])) {
+                    $_language_id = (int) $request->cookie['language_id'];
+                } else {
+                    $_language_id = (int) DEFAULT_LANGUAGE_ID;
+                }
+
                 // Set current language
                 $language_file = DIR_BASE . 'language' . DIR_SEPARATOR . $language->code . '.php';
 
-                if (isset($request->get['language_id']) && $request->get['language_id'] == $language->language_id && file_exists($language_file) && is_readable($language_file)) {
+                if ($_language_id == $language->language_id && file_exists($language_file) && is_readable($language_file)) {
 
                     $this->_language_id      = $language->language_id;
                     $this->_language_code    = $language->code;

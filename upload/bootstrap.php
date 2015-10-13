@@ -98,6 +98,11 @@ if (isset($request->get['ref'])) {
     setcookie('referrer', (int) $request->get['ref'], time() + 3600 * 24 * 1000, '/');
 }
 
+// Language
+if (isset($request->get['language_id'])) {
+    setcookie('language_id', (int) $request->get['language_id'], time() + 3600 * 24 * 1000, '/');
+}
+
 // Load text tools
 $_TRANSLATION = $language->getTranslation(); $loader->helper('tt');
 

@@ -147,6 +147,7 @@ function zoomAudio(url, title) {
     });
 }
 
+// Timer
 function timer(sec, block, direction) {
     var time    = sec;
     direction   = direction || false;
@@ -180,4 +181,9 @@ function timer(sec, block, direction) {
             location.reload();
         }
     }
+}
+
+// Locale
+function setLanguage(old_code, new_code) {
+    window.location = window.location.protocol + '//' + window.location.host + '/' + new_code + window.location.pathname.replace(old_code + '/', '');
 }

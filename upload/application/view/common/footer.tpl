@@ -67,7 +67,7 @@
                   <?php $l = 0; ?>
                   <?php foreach ($languages as $language) { ?>
                     <?php $l++; ?>
-                    <li><a href="<?php echo $language['href'] ?>"><?php echo $language['name'] ?></a> <?php echo ($l > 1 ? '<sup class="text-danger">Beta</sup>' : false) ?></li>
+                    <li><a rel="nofollow" onclick="setLanguage('<?php echo $language['old_code'] ?>', '<?php echo $language['new_code'] ?>')"><?php echo $language['name'] ?></a> <?php echo ($l > 1 ? '<sup class="text-danger">Beta</sup>' : false) ?></li>
                   <?php } ?>
                 </ul>
               </li>
