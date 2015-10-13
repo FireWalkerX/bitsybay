@@ -22,14 +22,17 @@ class ControllerAccountAccount extends Controller {
         parent::__construct($registry);
 
         // Load dependencies
+        $this->load->model('common/currency');
+        $this->load->model('common/language');
         $this->load->model('account/user');
         $this->load->model('account/notification');
         $this->load->model('account/subscription');
         $this->load->model('account/affiliate');
-        $this->load->model('common/currency');
+
         $this->load->helper('validator/user');
         $this->load->helper('validator/upload');
         $this->load->helper('validator/bitcoin');
+
         $this->load->library('bitcoin');
         $this->load->library('identicon');
         $this->load->library('captcha/captcha');
