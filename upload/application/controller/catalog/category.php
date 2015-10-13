@@ -89,11 +89,11 @@ class ControllerCatalogCategory extends Controller {
                 $special_left_days    = floor($special_left_hours   / 24);
 
                 if ($special_left_minutes < 60) {
-                    $special_expires = sprintf(tt('%s %s left'), $special_left_minutes, plural($special_left_minutes, array(tt('minute'), tt('minutes'), tt('minutes'))));
+                    $special_expires = sprintf(tt('%s %s left'), $special_left_minutes, plural($special_left_minutes, array(tt('minute'), tt('minutes'), tt('minutes '))));
                 } else if ($special_left_hours < 24) {
-                    $special_expires = sprintf(tt('%s %s left'), $special_left_hours, plural($special_left_hours, array(tt('hour'), tt('hours'), tt('hours'))));
+                    $special_expires = sprintf(tt('%s %s left'), $special_left_hours, plural($special_left_hours, array(tt('hour'), tt('hours'), tt('hours '))));
                 } else {
-                    $special_expires = sprintf(tt('%s %s left'), $special_left_days, plural($special_left_days, array(tt('day'), tt('days'), tt('days'))));
+                    $special_expires = sprintf(tt('%s %s left'), $special_left_days, plural($special_left_days, array(tt('day'), tt('days'), tt('days '))));
                 }
 
             } else {

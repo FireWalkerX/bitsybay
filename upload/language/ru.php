@@ -100,6 +100,18 @@ $_translation = array(
 'buyers' => 'покупателя',
 'buyers ' => 'покупателей',
 
+'day' => 'день',
+'days' => 'дня',
+'days ' => 'дней',
+
+'hour' => 'час',
+'hours' => 'часа',
+'hours ' => 'часов',
+
+'minute' => 'минута',
+'minutes' => 'минуты',
+'minutes ' => 'минут',
+
 // Footer
 'Explore' => 'Проект',
 'About Us' => 'О нас',
@@ -406,6 +418,9 @@ $_translation = array(
 'containing %s' => 'содержащие %s',
 'Live preview' => 'Демонстрация',
 'This is a human-readable summary of (and not a substitute for) the' => 'Это упрощенная версия лицензии. Чтобы узнать подробности, посетите раздел',
+'%s %s left' => 'осталось %s %s',
+'Special price' => 'Супер цена',
+'Default' => 'Стандартно',
 
 // Verification
 'Verification' => 'Верификация',
