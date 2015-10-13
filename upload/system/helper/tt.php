@@ -18,19 +18,18 @@
 * Convert all applicable characters to HTML entities
 *
 * @param string $string Raw string
+* @param array $custom_translation key => value array
 * @return string Prepared string
 */
-function tt($string) {
+function tt($string, array $custom_translation = array()) {
 
-    // Get global
+    // Get custom translation
+    if ($custom_translation) {
+        return htmlentities(isset($custom_translation[$string]) ? $custom_translation[$string] : $string);
+    }
+
+    // Get global translation
     global $_TRANSLATION;
 
-    // Try to translate
-    $string = isset($_TRANSLATION[$string]) ? $_TRANSLATION[$string] : $string;
-
-    // Prepare string to valid HTML
-    $string = htmlentities($string);
-
-    // Output
-    return $string;
+    return htmlentities(isset($_TRANSLATION[$string]) ? $_TRANSLATION[$string] : $string);
 }

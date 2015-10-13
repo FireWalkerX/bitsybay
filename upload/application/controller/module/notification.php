@@ -22,11 +22,9 @@ class ControllerModuleNotification extends Controller {
         $data = array();
 
         $data['total_unread'] = $this->model_account_notification->getTotalNotifications($this->auth->getId(),
-                                                                                         $this->language->getId(),
                                                                                          array('read' => 0));
 
-        $data['total_all']    = $this->model_account_notification->getTotalNotifications($this->auth->getId(),
-                                                                                         $this->language->getId());
+        $data['total_all']    = $this->model_account_notification->getTotalNotifications($this->auth->getId());
 
         $data['href_account_notification']     = $this->url->link('account/notification');
         $data['href_account_notification_all'] = $this->url->link('account/notification', 'all=1');

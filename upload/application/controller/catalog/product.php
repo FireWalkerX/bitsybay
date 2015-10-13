@@ -14,15 +14,18 @@
 
 class ControllerCatalogProduct extends Controller {
 
+    private $_languages = array();
 
     public function __construct($registry) {
 
         parent::__construct($registry);
 
         // Load dependencies
+        $this->load->model('common/order');
+        $this->load->model('common/language');
+
         $this->load->model('catalog/product');
         $this->load->model('catalog/category');
-        $this->load->model('common/order');
         $this->load->model('account/notification');
         $this->load->model('account/subscription');
         $this->load->model('account/user');
@@ -33,6 +36,11 @@ class ControllerCatalogProduct extends Controller {
         $this->load->helper('search_engines');
 
         $this->load->library('bitcoin');
+
+        // Set variables
+        foreach ($this->model_common_language->getLanguages() as $language) {
+            $this->_languages[$language->language_id] = $language->code;
+        }
     }
 
     // Common actions
@@ -401,10 +409,12 @@ class ControllerCatalogProduct extends Controller {
         // Preset variables
         $json       = array();
         $product_id = (int) $this->request->post['product_id'];
+        $languages  = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
+
 
         // Get additional info
         $total   = $this->model_catalog_product->getProductFavoritesTotal($product_id);
-        $product = $this->model_catalog_product->getProduct($product_id, $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
+        $product = $this->model_catalog_product->getProduct($product_id, DEFAULT_LANGUAGE_ID /* todo */, $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
         $user    = $this->model_account_user->getUser($product->user_id);
 
         // Favorite
@@ -414,11 +424,19 @@ class ControllerCatalogProduct extends Controller {
             if ($product->user_id != $this->auth->getId()) {
 
                 // Add notification
-                $this->model_account_notification->addNotification($product->user_id,
-                                                                   $this->language->getId(),
-                                                                   'activity',
-                                                                   tt('Your product has been marked as favorite'),
-                                                                   sprintf(tt("@%s has marked %s as favorite.\nCheers!"), $this->auth->getUsername(), $product->title));
+                if ($user_notification_id = $this->model_account_notification->addNotification($product->user_id, 'activity')) {
+
+                    // Add notification description for each system language
+                    foreach ($this->_languages as $language_id => $code) {
+
+                        $translation = $this->language->loadTranslation($language_id);
+
+                        $this->model_account_notification->addNotificationDescription($user_notification_id,
+                                                                                      $language_id,
+                                                                                      tt('Your product has been marked as favorite', $translation),
+                                                                                      sprintf(tt('@%s has marked %s as favorite. Cheers!', $translation), $this->auth->getUsername(), $product->title));
+                    }
+                }
 
                 // If subscription enabled
                 if ($this->model_account_subscription->checkUserSubscription($product->user_id, FAVORITE_SUBSCRIPTION_ID)) {
@@ -426,8 +444,8 @@ class ControllerCatalogProduct extends Controller {
                     // Send mail
                     $mail_data['project_name'] = PROJECT_NAME;
 
-                    $mail_data['subject'] = sprintf(tt('Your product has been marked as favorite - %s'), PROJECT_NAME);
-                    $mail_data['message'] = sprintf(tt("@%s has marked %s as favorite.\nCheers!"), $this->auth->getUsername(), $product->title);
+                    $mail_data['subject'] = sprintf('Your product has been marked as favorite - %s', PROJECT_NAME);
+                    $mail_data['message'] = sprintf('@%s has marked %s as favorite. Cheers!', $this->auth->getUsername(), $product->title);
 
                     $mail_data['href_home']         = $this->url->link('common/home');
                     $mail_data['href_contact']      = $this->url->link('common/contact');
@@ -556,19 +574,28 @@ class ControllerCatalogProduct extends Controller {
             if ($this->model_catalog_product->createProductReview((int)$this->request->post['product_id'], $this->request->post['review'], $this->auth->getId(), $this->language->getId(), 1)) {
 
                 // Get requires
-                $product = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], $this->language->getId(), $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
-                $user    = $this->model_account_user->getUser($product->user_id);
+                $product    = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], DEFAULT_LANGUAGE_ID /* todo */, $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
+                $user       = $this->model_account_user->getUser($product->user_id);
+                $languages  = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
+
 
                 // Is not seller
                 if ($product->user_id != $this->auth->getId()) {
 
                     // Add notification
-                    $this->model_account_notification->addNotification($product->user_id,
-                                                                       $this->language->getId(),
-                                                                       'activity',
-                                                                       tt('Your product has been commented'),
-                                                                       sprintf(tt("@%s has posted a comment about your product %s.\n"), $this->auth->getUsername(), $product->title));
+                    if ($user_notification_id = $this->model_account_notification->addNotification($product->user_id, 'activity')) {
 
+                        // Add notification description for each system language
+                        foreach ($this->_languages as $language_id => $code) {
+
+                            $translation = $this->language->loadTranslation($language_id);
+
+                            $this->model_account_notification->addNotificationDescription($user_notification_id,
+                                                                                          $language_id,
+                                                                                          tt('Your product has been commented', $translation),
+                                                                                          sprintf(tt('@%s has posted a comment about your product %s.', $translation), $this->auth->getUsername(), $product->title));
+                        }
+                    }
 
                     // If subscription enabled
                     if ($this->model_account_subscription->checkUserSubscription($product->user_id, REVIEW_SUBSCRIPTION_ID)) {
@@ -576,8 +603,8 @@ class ControllerCatalogProduct extends Controller {
                         // Send mail
                         $mail_data['project_name'] = PROJECT_NAME;
 
-                        $mail_data['subject'] = sprintf(tt('Your product has been commented - %s'), PROJECT_NAME);
-                        $mail_data['message'] = sprintf(tt("@%s has posted a comment about your product %s.\n"), $this->auth->getUsername(), $product->title);
+                        $mail_data['subject'] = sprintf('Your product has been commented - %s', PROJECT_NAME);
+                        $mail_data['message'] = sprintf('@%s has posted a comment about your product %s.', $this->auth->getUsername(), $product->title);
 
                         $mail_data['href_home']         = $this->url->link('common/home');
                         $mail_data['href_contact']      = $this->url->link('common/contact');

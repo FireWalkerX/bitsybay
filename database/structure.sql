@@ -737,11 +737,8 @@ DROP TABLE IF EXISTS `user_notification` ;
 CREATE TABLE IF NOT EXISTS `user_notification` (
   `user_notification_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` INT UNSIGNED NOT NULL,
-  `language_id` INT UNSIGNED NOT NULL,
   `read` TINYINT(1) NOT NULL,
   `label` ENUM('activity', 'secutity', 'news', 'common') NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
-  `description` MEDIUMTEXT NOT NULL,
   `date_added` DATETIME NOT NULL,
   `date_read` DATETIME NOT NULL,
   PRIMARY KEY (`user_notification_id`),
@@ -758,6 +755,35 @@ CREATE TABLE IF NOT EXISTS `user_notification` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `user_notification_description`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `user_notification_description`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_notification_description` (
+  `user_notification_description_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_notification_id` INT UNSIGNED NOT NULL,
+  `language_id` INT UNSIGNED NOT NULL,
+  `title` VARCHAR(255) NOT NULL,
+  `description` MEDIUMTEXT NOT NULL,
+  PRIMARY KEY (`user_notification_description_id`) ,
+  UNIQUE INDEX `UNIQUE` (`user_notification_id` ASC, `language_id` ASC) ,
+  KEY `fk_user_notification_description_notification_id` (`user_notification_id` ASC) ,
+  KEY `fk_user_notification_description_language_id` (`language_id` ASC) ,
+  CONSTRAINT `fk_user_notification_description_notification_id`
+  FOREIGN KEY (`user_notification_id`)
+  REFERENCES `user_notification` (`user_notification_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_notification_description_language_id`
+  FOREIGN KEY (`language_id`)
+  REFERENCES `language` (`language_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 -- -----------------------------------------------------

@@ -318,6 +318,7 @@ $_translation = array(
 'Available: %s Mb' => 'Доступно: %s Мб',
 'Demo' => 'Демо',
 'Main' => 'Главное',
+'this product' => 'этот товар',
 'Demo wrapper' => 'Ссылка',
 'Add demo' => 'Добавить',
 'Publish' => 'Опубликовать',
@@ -528,6 +529,7 @@ $_translation = array(
 'If you did not make this change, please contact us.' => 'Если вы не осуществляли это действие, пожалуйста, свяжитесь с нами.',
 'Your account settings has been updated' => 'Настройки вашего аккаунта были обновлены',
 'If you did not make this change and believe your account has been compromised, please contact us.' => 'Если вы не осуществляли это действие, пожалуйста, свяжитесь с нами.',
+'If you did not make this change and believe your affiliate has been compromised, please contact us.' => 'Если вы не осуществляли это действие, пожалуйста, свяжитесь с нами.',
 'Your affiliate settings has been updated' => 'Настройки вашей партнерской программы были изменены',
 
 'Your password has been updated' => 'Ваш пароль был обновлен',
@@ -543,9 +545,14 @@ $_translation = array(
 
 'Your product has been marked as favorite' => 'Ваш товар был добавлен в фавориты',
 'Your product has been marked as favorite - %s' => 'Ваш товар был добавлен в фавориты - %s',
-'@%s has marked %s as favorite.\nCheers!' => '@%s добавил товар %s в фавориты.\nУра!',
+'@%s has marked %s as favorite. Cheers!' => '@%s добавил товар %s в фавориты. Ура!',
 
 'Your product has been commented' => 'Ваш товар был прокомментирован',
 'Your product has been commented - %s' => 'Ваш товар был прокомментирован - %s',
-'@%s has posted a comment about your product %s.\n' => '@%s прокомментировал ваш товар %s.\n',
+'@%s has posted a comment about your product %s.' => '@%s прокомментировал ваш товар %s.',
+
+'activity' => 'активность',
+'news' => 'новости',
+'security' => 'безопасность',
+'common' => 'общие',
 );

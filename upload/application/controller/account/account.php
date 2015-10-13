@@ -14,7 +14,8 @@
 
 class ControllerAccountAccount extends Controller {
 
-    private $_error = array();
+    private $_error     = array();
+    private $_languages = array();
 
     public function __construct($registry) {
 
@@ -32,6 +33,11 @@ class ControllerAccountAccount extends Controller {
         $this->load->library('bitcoin');
         $this->load->library('identicon');
         $this->load->library('captcha/captcha');
+
+        // Set variables
+        foreach ($this->model_common_language->getLanguages() as $language) {
+            $this->_languages[$language->language_id] = $language->code;
+        }
     }
 
     // Actions
@@ -129,22 +135,30 @@ class ControllerAccountAccount extends Controller {
                                                                              USER_IMAGE_ORIGINAL_HEIGHT,
                                                                              IMG_FILTER_GRAYSCALE), true);
 
-                    $image->save(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . 'thumb.' . STORAGE_IMAGE_EXTENSION);
+                    $image->save(DIR_STORAGE . $user_id . DIR_SEPARATOR . 'thumb.' . STORAGE_IMAGE_EXTENSION);
 
                     // Subscription
                     $subscriptions = $this->model_account_subscription->getSubscriptions($this->language->getId());
 
                     foreach ($subscriptions as $subscription) {
-                        $this->model_account_subscription->addUserSubscription($this->auth->getId(), $subscription->subscription_id);
+                        $this->model_account_subscription->addUserSubscription($user_id, $subscription->subscription_id);
                     }
 
-                    // Add welcome notification
-                    $this->model_account_notification->addNotification($user_id,
-                                                                       DEFAULT_LANGUAGE_ID,
-                                                                       'common',
-                                                                       sprintf(tt('Welcome to %s!'), PROJECT_NAME),
-                                                                       tt("We're so happy you've joined us.") . "\n" .
-                                                                       tt("Make every day awesome with inspired finds!"));
+                    // Add notification
+                    if ($user_notification_id = $this->model_account_notification->addNotification($user_id, 'common')) {
+
+                        // Add notification description for each system language
+                        foreach ($this->_languages as $language_id => $code) {
+
+                            $translation = $this->language->loadTranslation($language_id);
+
+                            $this->model_account_notification->addNotificationDescription($user_notification_id,
+                                                                                          $language_id,
+                                                                                          sprintf(tt('Welcome to %s!', $translation), PROJECT_NAME),
+                                                                                          tt('We\'re so happy you\'ve joined us.', $translation) .
+                                                                                          tt('Make every day awesome with inspired finds!', $translation));
+                        }
+                    }
 
                     // Send greetings email with verification code
                     $mail_data['project_name'] = PROJECT_NAME;
@@ -260,14 +274,20 @@ class ControllerAccountAccount extends Controller {
                                                       $approval_code,
                                                       $approved)) {
 
-                // Add notification about new account settings
-                $this->model_account_notification->addNotification($this->auth->getId(),
-                                                                   DEFAULT_LANGUAGE_ID,
-                                                                   'security',
-                                                                   tt('Your account settings has been updated'),
-                                                                   tt('If you did not make this change and believe your account has been compromised, please contact us.'));
+                // Add notification
+                if ($user_notification_id = $this->model_account_notification->addNotification($this->auth->getId(), 'security')) {
 
+                    // Add notification description for each system language
+                    foreach ($this->_languages as $language_id => $code) {
 
+                        $translation = $this->language->loadTranslation($language_id);
+
+                        $this->model_account_notification->addNotificationDescription($user_notification_id,
+                                                                                      $language_id,
+                                                                                      tt('Your account settings has been updated', $translation),
+                                                                                      tt('If you did not make this change and believe your account has been compromised, please contact us.', $translation));
+                    }
+                }
 
                 // If subscription enabled
                 if ($this->model_account_subscription->checkUserSubscription($this->auth->getId(), SECURITY_ACCOUNT_SUBSCRIPTION_ID)) {
@@ -498,12 +518,20 @@ class ControllerAccountAccount extends Controller {
                                                                         $this->request->post['currency_id'],
                                                                         $this->request->post['withdraw_address']);
 
-                    // Add notification about new account settings
-                    $this->model_account_notification->addNotification($this->auth->getId(),
-                                                                       DEFAULT_LANGUAGE_ID,
-                                                                       'security',
-                                                                       tt('Your affiliate settings has been updated'),
-                                                                       tt('If you did not make this change and believe your affiliate has been compromised, please contact us.'));
+                    // Add notification
+                    if ($user_notification_id = $this->model_account_notification->addNotification($this->auth->getId(), 'security')) {
+
+                        // Add notification description for each system language
+                        foreach ($this->_languages as $language_id => $code) {
+
+                            $translation = $this->language->loadTranslation($language_id);
+
+                            $this->model_account_notification->addNotificationDescription($user_notification_id,
+                                                                                          $language_id,
+                                                                                          tt('Your affiliate settings has been updated', $translation),
+                                                                                          tt('If you did not make this change and believe your affiliate has been compromised, please contact us.', $translation));
+                        }
+                    }
 
                     // If subscription enabled
                     if ($this->model_account_subscription->checkUserSubscription($this->auth->getId(), SECURITY_ACCOUNT_SUBSCRIPTION_ID)) {
@@ -721,11 +749,19 @@ class ControllerAccountAccount extends Controller {
                 }
 
                 // Add notification
-                $this->model_account_notification->addNotification($user->user_id,
-                                                                   DEFAULT_LANGUAGE_ID,
-                                                                   'security',
-                                                                   tt('Your password has been updated'),
-                                                                   tt('If you did not make this change and believe your account has been compromised, please contact us.'));
+                if ($user_notification_id = $this->model_account_notification->addNotification($user->user_id, 'security')) {
+
+                    // Add notification description for each system language
+                    foreach ($this->_languages as $language_id => $code) {
+
+                        $translation = $this->language->loadTranslation($language_id);
+
+                        $this->model_account_notification->addNotificationDescription($user_notification_id,
+                                                                                      $language_id,
+                                                                                      tt('Your password has been updated', $translation),
+                                                                                      tt('If you did not make this change and believe your account has been compromised, please contact us.', $translation));
+                    }
+                }
 
                 // Set success message
                 $this->session->setUserMessage(array('success' => tt('Your new password has been successfully changed!')));
@@ -875,11 +911,19 @@ class ControllerAccountAccount extends Controller {
                                                                   $this->request->post['proof'])) {
 
                 // Add notification
-                $this->model_account_notification->addNotification($this->auth->getId(),
-                                                                   DEFAULT_LANGUAGE_ID,
-                                                                   'common',
-                                                                   tt('Your verification request was sent successfully'),
-                                                                   tt('We will process the request as quickly as possible.'));
+                if ($user_notification_id = $this->model_account_notification->addNotification($this->auth->getId(), 'common')) {
+
+                    // Add notification description for each system language
+                    foreach ($this->_languages as $language_id => $code) {
+
+                        $translation = $this->language->loadTranslation($language_id);
+
+                        $this->model_account_notification->addNotificationDescription($user_notification_id,
+                            $language_id,
+                            tt('Your verification request was sent successfully', $translation),
+                            tt('We will process the request as quickly as possible.', $translation));
+                    }
+                }
 
                 // Admin alert
                 $this->mail->setTo(MAIL_EMAIL_SUPPORT_ADDRESS);

@@ -117,6 +117,33 @@ final class Language {
 
 
     /**
+    * Load translation file for specific language
+    *
+    * @param int $language_id
+    * @return bool TRUE if exists or FALSE if else
+    */
+    public function loadTranslation($language_id) {
+
+        // Init custom non-empty translation array
+        $_translation = array('language_id' => $language_id);
+
+        // If requested language is exist
+        if (isset($this->_languages[$language_id])) {
+
+            // Prepare translation file path
+            $language_file = DIR_BASE . 'language' . DIR_SEPARATOR . $this->_languages[$language_id]['language_code'] . '.php';
+
+            // Load language file if exist
+            if (file_exists($language_file) && is_readable($language_file)) {
+
+                require($language_file);
+            }
+        }
+
+        return $_translation;
+    }
+
+    /**
     * Check language id exists
     *
     * @param int $language_id

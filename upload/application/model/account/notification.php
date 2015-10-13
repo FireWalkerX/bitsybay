@@ -15,33 +15,59 @@
 class ModelAccountNotification extends Model {
 
     /**
-    * Add new notification to specific user
+    * Add new notification
     *
     * @param  int $user_id
-    * @param  int $language_id
     * @param  string $label ENUM
-    * @param  string $title
-    * @param  string $description
-    * @return int|bool Email approved status or false if throw exception
+    * @return int|bool new user_notification_id or false if throw exception
     */
-    public function addNotification($user_id, $language_id, $label, $title, $description) {
+    public function addNotification($user_id, $label) {
 
         try {
 
             $statement = $this->db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
-                                                                                 `language_id` = :language_id,
                                                                                  `label`       = :label,
-                                                                                 `title`       = :title,
-                                                                                 `description` = :description,
                                                                                  `read`        = 0,
                                                                                  `date_added`  = NOW()');
             $statement->execute(
                 array(
-                    ':user_id'     => $user_id,
-                    ':language_id' => $language_id,
-                    ':label'       => $label,
-                    ':title'       => $title,
-                    ':description' => $description
+                    ':user_id' => $user_id,
+                    ':label'   => $label,
+                )
+            );
+
+            return $this->db->lastInsertId();
+
+        } catch (PDOException $e) {
+
+            trigger_error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+    * Add new notification description
+    *
+    * @param  int $user_notification_id
+    * @param  int $language_id
+    * @param  string $title
+    * @param  string $description
+    * @return int|bool new user_notification_description_id or false if throw exception
+    */
+    public function addNotificationDescription($user_notification_id, $language_id, $title, $description) {
+
+        try {
+
+            $statement = $this->db->prepare('INSERT INTO `user_notification_description` SET `user_notification_id` = :user_notification_id,
+                                                                                             `language_id`          = :language_id,
+                                                                                             `title`                = :title,
+                                                                                             `description`          = :description');
+            $statement->execute(
+                array(
+                    ':user_notification_id' => $user_notification_id,
+                    ':language_id'          => $language_id,
+                    ':title'                => $title,
+                    ':description'          => $description
                 )
             );
 
@@ -90,7 +116,13 @@ class ModelAccountNotification extends Model {
 
         try {
 
-            $statement = $this->db->prepare('SELECT * FROM `user_notification` WHERE `user_notification_id` = ? AND `user_id` = ? AND `language_id` = ? LIMIT 1');
+            $statement = $this->db->prepare('SELECT * FROM `user_notification` AS `un`
+                                                      JOIN `user_notification_description` AS `und` ON (`und`.`user_notification_id` = `un`.`user_notification_id`)
+                                                      WHERE `un`.`user_notification_id` = ?
+                                                      AND   `un`.`user_id`              = ?
+                                                      AND   `und`.`language_id`         = ?
+                                                      LIMIT 1');
+
             $statement->execute(array($notification_id, $user_id, $language_id));
 
             if ($statement->rowCount()) {
@@ -107,7 +139,7 @@ class ModelAccountNotification extends Model {
     }
 
     /**
-    * Get user notifications
+    * Get all user notifications
     *
     * @param int $user_id
     * @param int $language_id
@@ -118,17 +150,21 @@ class ModelAccountNotification extends Model {
 
         try {
 
-            $query = 'SELECT * FROM `user_notification` WHERE `user_id` = :user_id AND `language_id` = :language_id';
+            $query = 'SELECT * FROM `user_notification` AS `un`
+                               JOIN `user_notification_description` AS `und` ON (`und`.`user_notification_id` = `un`.`user_notification_id`)
+                               WHERE `un`.`user_id`      = :user_id
+                               AND   `und`.`language_id` = :language_id';
+
             $place_holders = array(':user_id'     => $user_id,
                                    ':language_id' => $language_id);
 
             // Filter by read status
             if (isset($filter_data['read'])) {
-                $query .= ' AND `read` = :read';
+                $query .= ' AND `un`.`read` = :read';
                 $place_holders[':read'] = $filter_data['read'];
             }
 
-            $query .= ' ORDER BY user_notification_id DESC';
+            $query .= ' ORDER BY `un`.user_notification_id DESC';
 
             $statement = $this->db->prepare($query);
             $statement->execute($place_holders);
@@ -146,17 +182,15 @@ class ModelAccountNotification extends Model {
     * Get total user notifications
     *
     * @param int $user_id
-    * @param int $language_id
     * @param array $filter_data
     * @return int|bool notification total count or false if throw exception
     */
-    public function getTotalNotifications($user_id, $language_id, array $filter_data = array()) {
+    public function getTotalNotifications($user_id, array $filter_data = array()) {
 
         try {
 
-            $query = 'SELECT COUNT(*) AS `total` FROM `user_notification` WHERE `user_id` = :user_id AND `language_id` = :language_id';
-            $place_holders = array(':user_id'     => $user_id,
-                                   ':language_id' => $language_id);
+            $query = 'SELECT COUNT(*) AS `total` FROM `user_notification` WHERE `user_id` = :user_id';
+            $place_holders = array(':user_id' => $user_id);
 
             // Filter by read status
             if (isset($filter_data['read'])) {
