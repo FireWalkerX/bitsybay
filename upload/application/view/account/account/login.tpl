@@ -80,13 +80,13 @@
     <div class="bs-component">
       <h3><?php echo tt('Don’t have an account?') ?></h3>
       <ul>
-        <li>Please visit the <a href="<?php echo $href_account_account_create ?>">Registration page</a></li>
-        <li>You can recover your password <a href="<?php echo $href_account_account_forgot ?>">here</a></li>
+        <li><?php echo tt('Please visit the') ?> <a href="<?php echo $href_account_account_create ?>"><?php echo tt('Registration page') ?></a></li>
+        <li><?php echo tt('You can recover your password') ?> <a href="<?php echo $href_account_account_forgot ?>"><?php echo tt('here') ?></a></li>
       </ul>
       <h4><?php echo tt('If you have any questions') ?></h4>
       <ul>
-        <li>Visit the <a href="<?php echo $href_common_information_faq ?>">F.A.Q page</a></li>
-        <li>To get specific answers <a href="<?php echo $href_common_contact ?>">Contact Us</a></li>
+        <li><?php echo tt('Visit the') ?> <a href="<?php echo $href_common_information_faq ?>"><?php echo tt('F.A.Q page') ?></a></li>
+        <li><?php echo tt('To get specific answers') ?> <a href="<?php echo $href_common_contact ?>"><?php echo tt('Contact Us') ?></a></li>
       </ul>
     </div>
   </div>

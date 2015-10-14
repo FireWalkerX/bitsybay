@@ -83,12 +83,12 @@
       <div class="bs-component">
         <h3><?php echo tt('Do not forget') ?></h3>
         <ul>
-          <li>Visit the <a href="<?php echo $href_common_information_faq ?>">F.A.Q. page</a></li>
-          <li>Use search to find specific content</li>
-          <li>View <a href="<?php echo $href_common_information_terms ?>">Terms of Service</a> and <a href="<?php echo $href_common_information_licenses ?>">License Policy</a></li>
+          <li><?php echo tt('Visit the ') ?> <a href="<?php echo $href_common_information_faq ?>"><?php echo tt('F.A.Q. page') ?></a></li>
+          <li><?php echo tt('Use search to find specific content') ?></li>
+          <li><?php echo tt('View') ?> <a href="<?php echo $href_common_information_terms ?>"><?php echo tt('Terms of Service') ?></a> <?php echo tt('and') ?> <a href="<?php echo $href_common_information_licenses ?>"><?php echo tt('License Policy') ?></a></li>
         </ul>
         <h3><?php echo tt('Physical address') ?></h3>
-        <p><a href="/">BitsyBay</a> do not have a physical address at present as its only a software resource started by a <a href="team">few enthusiasts</a>. We can however be contacted by means of email through the above form.</p>
+        <p><a href="/"><?php echo PROJECT_NAME ?></a> <?php echo tt('do not have a physical address at present as its only a software resource started by a') ?> <a href="team"><?php echo tt('few enthusiasts') ?></a>. <?php echo tt('We can however be contacted by means of email through the above form.') ?></p>
       </div>
     </div>
   </div>

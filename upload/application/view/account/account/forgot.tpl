@@ -54,13 +54,13 @@
     <div class="bs-component">
       <h3><?php echo tt('I’ve remember my password!') ?></h3>
       <ul>
-        <li>Nice, visit the <a href="<?php echo $href_account_account_login ?>">Login page</a></li>
-        <li>If you don’t have an Account, please visit the <a href="<?php echo $href_account_account_create ?>">Registration page</a></li>
+        <li><?php echo tt('Nice, visit the') ?> <a href="<?php echo $href_account_account_login ?>"><?php echo tt('Login page') ?></a></li>
+        <li><?php echo tt('If you don’t have an Account, please visit the') ?> <a href="<?php echo $href_account_account_create ?>"><?php echo tt('Registration page') ?></a></li>
       </ul>
       <h4><?php echo tt('Help resources') ?></h4>
       <ul>
-        <li>Visit the <a href="<?php echo $href_common_information_faq ?>">F.A.Q page</a></li>
-        <li>To get specific answers <a href="<?php echo $href_common_contact ?>">Contact Us</a></li>
+        <li><?php echo tt('Visit the') ?> <a href="<?php echo $href_common_information_faq ?>"><?php echo tt('F.A.Q page') ?></a></li>
+        <li><?php echo tt('To get specific answers') ?> <a href="<?php echo $href_common_contact ?>"><?php echo tt('Contact Us') ?></a></li>
       </ul>
     </div>
   </div>
