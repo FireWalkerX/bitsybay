@@ -22,6 +22,14 @@ $_translation = array(
 'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Free seller fee up to 2016!' => 'Bitcoin супермаркет фотографий, графики, шаблонов, кода, приложений, книг и другого креатива за BitCoin. Качественные авторские товары. Нулевые комиссии до конца 2016!',
 'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, photos, arts, illustrations, 3d, templates, codes, extensions, books, content, digital, creative, quality, legal' => 'bitsybay, bitcoin, биткойн, btc, инди, супермаркет, магазин, купить, продать, royalty-free, фото, изображения, иллюстрации, 3d, шаблоны, открытый код, приложения, книги, цифровой контент, креатив, качество, легально',
 
+'Buy %s Thematic with Bitcoin | Royalty Free %s Thematic Store' => 'Купить %s за Bitcoin | Поиск авторских товаров %s',
+'Buy %s with BitCoin | Royalty Free %s Store' => 'Купить %s за Bitcoin | Магазин оригинальных авторских товаров %s',
+'Royalty-free %s with BitCoin. Only quality and legal %s from them authors. Buy with BTC easy - Download instantly!' => 'Роялти-фри %s за Bitcoin | Только качественный и оригинальный контент %s от авторов. Покупай с BTC просто - скачивай моментально!',
+'Royalty-free %s %s by %s with BitCoin. %s. Buy with BTC easy - Download instantly!' => 'Роялти-фри %s %s от %s за Bitcoin. %s. Покупай с BTC просто - скачивай моментально! ',
+'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, %s' => 'bitsybay, bitcoin, btc, инди, супермаркет, магазин, купить, продать, royalty-free, роялти-фри, %s',
+'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, %s, %s, %s' => 'bitsybay, bitcoin, btc, инди, супермаркет, магазин, купить, продать, royalty-free, роялти-фри, %s, %s, %s',
+
+
 // Welcome module
 'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
 'Then here you are:' => 'Тогда вы там где нужно:',
@@ -91,9 +99,6 @@ $_translation = array(
 'do not have a physical address at present as its only a software resource started by a' => 'не имеет фактического офиса и функционирует исключительно как программный ресурс, сопровождаемый',
 'few enthusiasts' => 'небольшой командой',
 'We can however be contacted by means of email through the above form.' => 'На данный момент, лучший способ связаться с нами — написать нам письмо!',
-
-// Search
-'Buy %s Thematic with Bitcoin | Royalty Free %s Thematic Store' => 'Купить %s за Bitcoin | Поиск авторских товаров',
 
 // Payments
 'Use wallet' => 'Кошелек',
