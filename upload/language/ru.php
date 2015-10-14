@@ -92,6 +92,9 @@ $_translation = array(
 'few enthusiasts' => 'небольшой командой',
 'We can however be contacted by means of email through the above form.' => 'На данный момент, лучший способ связаться с нами — написать нам письмо!',
 
+// Search
+'Buy %s Thematic with Bitcoin | Royalty Free %s Thematic Store' => 'Купить %s за Bitcoin | Поиск авторских товаров',
+
 // Payments
 'Use wallet' => 'Кошелек',
 'Send exactly %s to this address:' => 'Сумма к оплате: %s',
