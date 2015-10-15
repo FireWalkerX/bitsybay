@@ -48,9 +48,7 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
-              <a href="/" class="brand-logo">
-                <span>B</span><span>i</span><span>t</span><span>s</span><span>y</span>Bay
-              </a>
+              <a href="<?php echo $href_common_home ?>" class="navbar-brand"><img src="<?php echo URL_BASE ?>image/common/logo.png" alt="<?php echo PROJECT_NAME ?>" title="<?php echo PROJECT_NAME ?>" /></a>
             </div>
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 text-muted small">
               <h1><i class="glyphicon glyphicon-eye-open"></i> <?php echo $title ?></h1>
