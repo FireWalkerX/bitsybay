@@ -63,7 +63,6 @@
             <li><?php echo sprintf(tt('Allowed audios per product: %s'), QUOTA_AUDIO_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productPriceHints">
-            <li><?php echo tt('Еnter a price for at least one license') ?> (<a href="licenses" target="_blank"><?php echo tt('Available Licenses') ?></a>)</li>
             <li><?php echo tt('The regular price should not be greater than exclusive price') ?></li>
             <li><?php echo sprintf(tt('Minimum price: %s'), ALLOWED_PRODUCT_MIN_PRICE) ?></li>
             <li><?php echo sprintf(tt('Allowed specials per product: %s'), QUOTA_SPECIALS_PER_PRODUCT) ?></li>

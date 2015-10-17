@@ -114,7 +114,7 @@ $_translation = array(
 'sellers ' => 'продавцов',
 
 'buyer' => 'покупатель',
-'buyers' => 'покупателя',
+'buyers' => 'покупатель',
 'buyers ' => 'покупателей',
 
 'day' => 'день',
@@ -346,10 +346,8 @@ $_translation = array(
 'Upload your audios to supported audio hosting site' => 'Укажите ссылку на любимый сервис, где размещено аудио',
 'Allowed audios per product: %s' => 'Максимальное количество аудио: %s',
 'The regular price should not be greater than exclusive price' => 'Обычная цена не должна превышать эксклюзивную цену',
-'Minimum price: %s' => 'Минимальная цена',
+'Minimum price: %s' => 'Минимальная цена: %s',
 'Allowed specials per product: %s' => 'Максимальное количество специальных предложений: %s',
-'Еnter a price for at least one license' => 'Укажите цену для выбранной лицензии',
-'Available Licenses' => 'Доступные лицензии',
 'Show in category' => 'Отображать в категории',
 'Description' => 'Описание',
 'General' => 'Общие',
@@ -517,7 +515,7 @@ $_translation = array(
 'Should you believe that any material or content published on this website, infringe on copyright, or is illegal, or that of another, please' => 'Если вы считаете, что контент на этом веб-сайте является незаконным, незамедлительно',
 'We make no representations that this website will meet your requirements' => 'Мы не гарантируем, что данный веб-сайт будет отвечать вашим требованиям',
 'This Service / Software is provided "as is", without warranty of any kind, express or implied' => 'Данный Сервис / Программное обеспечение предоставляется «как есть», без любых гарантий, прямых или косвенных',
-'If you do not agree to this Terms & Conditions, do not use this website' => 'Если вы не согласны с любым из положений данного Регламента, пожалуйста, не используйте этот веб-сайт',
+'If you do not agree to this Terms & Conditions, do not use this website' => 'Если вы не согласны с каждым пунктом данного Регламента, пожалуйста, не используйте этот веб-сайт',
 
 // Licenses
 'Licenses' => 'Лицензии',
