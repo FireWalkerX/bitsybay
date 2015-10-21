@@ -24,7 +24,7 @@ class ValidatorProduct {
 
         if (mb_strlen($title) > VALIDATOR_PRODUCT_TITLE_MAX_LENGTH) {
             return false;
-        } else if (!empty($title) && !preg_match('/^[\w\s\d\(\)\-\+\.\%\/]+$/ui', $title)) {
+        } else if (!empty($title) && !preg_match('/^[\w\s\d\(\)\-\+\.\%\/:]+$/ui', $title)) {
             return false;
         } else {
             return true;
