@@ -43,7 +43,7 @@ class ControllerCommonHome extends Controller {
         }
 
         $total_products  = $this->model_catalog_product->getTotalProducts(array());
-        $data['total_products'] = sprintf(tt('%s %s'), $total_products, plural($total_products, array(tt('original and high-quality offer'), tt('original and high-quality offers'), tt('original and high-quality offers '))));
+        $data['total_products'] = sprintf(tt('%s %s'), $total_products, plural($total_products, array(tt('original high-quality offer'), tt('original high-quality offers'), tt('original high-quality offers '))));
 
         $total_categories  = $this->model_catalog_category->getTotalCategories();
         $data['total_categories'] = sprintf(tt('%s %s'), $total_categories, plural($total_categories, array(tt('category'), tt('categories'), tt('categories '))));

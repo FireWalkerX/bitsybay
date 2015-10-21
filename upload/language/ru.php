@@ -111,9 +111,9 @@ $_translation = array(
 'offers' => 'предложения',
 'offers ' => 'предложений',
 
-'original and high-quality offer' => 'оригинальное предложение',
-'original and high-quality offers' => 'оригинальные предложения',
-'original and high-quality offers ' => 'оригинальных предложений',
+'original high-quality offer' => 'оригинальное предложение',
+'original high-quality offers' => 'оригинальные предложения',
+'original high-quality offers ' => 'оригинальных предложений',
 
 'seller' => 'продавец',
 'sellers' => 'продавца',
