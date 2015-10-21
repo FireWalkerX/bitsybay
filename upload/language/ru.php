@@ -32,11 +32,12 @@ $_translation = array(
 
 // Welcome module
 'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
-'Then here you are:' => 'Тогда вы там где нужно:',
-'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
+'Then here you are:' => 'Тогда вы там, где нужно:',
+#'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
 '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Бесплатно %s Мб дискового пространства +%s Мб за каждую сделку',
-'0% seller fee up to 2016, 11% later' => 'Комиссия 0% до 2016 года и 11% после',
-'0% seller fee for project contributors forever' => 'Комиссия 0% для контрибуторов!',
+'0% seller fee up to 2016, 11% later and 0% for project contributors forever' => 'Комиссия 0% до 2016 года, 11% после и 0% для контрибуторов',
+'Freedom for peoples: 100% open engine for contributions and healthy competition' => 'Мы ♥ свободу: 100% открытая платформа для участия и здоровой конкуренции',
+'Respect for your privacy without third party injections and additional agreements' => 'Уважение к приватности без использования сторонних скриптов и лицензий',
 
 // Others modules
 'Last offers' => 'Новые товары',
@@ -110,9 +111,17 @@ $_translation = array(
 'offers' => 'предложения',
 'offers ' => 'предложений',
 
+'original and high-quality offer' => 'оригинальное предложение',
+'original and high-quality offers' => 'оригинальные предложения',
+'original and high-quality offers ' => 'оригинальных предложений',
+
 'seller' => 'продавец',
 'sellers' => 'продавца',
 'sellers ' => 'продавцов',
+
+'verified seller' => 'продавец',
+'verified sellers' => 'продавца',
+'verified sellers ' => 'продавцов',
 
 'buyer' => 'покупатель',
 'buyers' => 'покупатель',

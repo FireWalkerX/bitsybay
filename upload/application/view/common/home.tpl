@@ -28,10 +28,10 @@
             <?php echo tt('Then here you are:') ?>
             <ul>
               <li><?php echo $total_products ?> <?php echo tt('by') ?> <?php echo $total_sellers ?> <?php echo tt('for') ?> <?php echo $total_buyers ?></li>
-              <li><?php echo tt('Trade from any country without bank fees and other restrictions') ?></li>
+              <li><?php echo tt('0% seller fee up to 2016, 11% later and 0% for project contributors forever') ?></li>
               <li><?php echo sprintf(tt('%s Mb free disk space for all new sellers and +%s Mb for every next sale'), QUOTA_FILE_SIZE_BY_DEFAULT, QUOTA_BONUS_SIZE_PER_ORDER) ?></li>
-              <li><?php echo tt('0% seller fee up to 2016, 11% later') ?></li>
-              <li><?php echo tt('0% seller fee for project contributors forever') ?></li>
+              <li><?php echo tt('Respect for your privacy without third party injections and additional agreements') ?></li>
+              <li><?php echo tt('Freedom for peoples: 100% open engine for contributions and healthy competition') ?></li>
             </ul>
           </div>
           <div class="col-lg-4 col-lg-offset-1">
