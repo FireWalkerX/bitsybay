@@ -565,3 +565,15 @@ table img {
 .contributors a.join:hover {
     opacity: 1
 }
+
+/* Helpers */
+
+.highlight-license-condition.allow {
+    font-weight: bold;
+    color:#3c763d
+}
+
+.highlight-license-condition.disallow, .highlight-license-condition.disallow span {
+    font-weight: bold;
+    color:#a94442!important;
+}

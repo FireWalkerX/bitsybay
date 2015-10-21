@@ -1,0 +1,4 @@
+INSERT INTO `license_description` VALUES
+(1,1,1,'Regular','Regular License, RL, refers to the right to use copyrighted Item, with conditions.'),
+(2,1,2,'Регулярная','Регулярная лицензия, RL, предоставляет Покупателю право использовать копию Товара согласно условиям.'),
+(3,2,1,'Exclusive','Exclusive License, EL, refers to the right to use copyrighted Item, with conditions. Exclusive License does not mean one and only license granted, but only that the licensor agrees not to put up purchased Item for sale again.'),(4,2,2,'Эксклюзивная','Эксклюзивная лицензия, EL, предоставляет Покупателю право использовать копию Товара согласно условиям. Эксклюзивная лицензия не подразумевает предоставление исключительного права, но то, что Продавец обязуется повторно не выставлять проданный Товар на продажу.');

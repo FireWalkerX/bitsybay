@@ -26,6 +26,7 @@ class ControllerAccountProduct extends Controller {
         $this->load->model('common/video_server');
         $this->load->model('common/audio_server');
         $this->load->model('common/redirect');
+        $this->load->model('common/license');
 
         $this->load->model('account/user');
 
@@ -41,6 +42,8 @@ class ControllerAccountProduct extends Controller {
         $this->load->helper('validator/soundcloud');
 
         $this->load->helper('filter/uri');
+        $this->load->helper('highlight');
+
         $this->load->library('identicon');
         $this->load->library('translate');
 
@@ -301,6 +304,13 @@ class ControllerAccountProduct extends Controller {
                                                                         $special['date_start'],
                                                                         $special['date_end'],
                                                                         $special['sort_order']);
+                }
+            }
+
+            // Add license conditions
+            if (isset($this->request->post['license_conditions'])) {
+                foreach ($this->request->post['license_conditions'] as $license_condition_id => $value) {
+                    $this->model_catalog_product->addLicenseConditionValue($product_id, $license_condition_id);
                 }
             }
 
@@ -575,6 +585,14 @@ class ControllerAccountProduct extends Controller {
                 }
             }
 
+            // Add license conditions
+            $this->model_catalog_product->deleteLicenseConditions($product_id);
+            if (isset($this->request->post['license_conditions'])) {
+                foreach ($this->request->post['license_conditions'] as $license_condition_id => $value) {
+                    $this->model_catalog_product->addLicenseConditionValue($product_id, $license_condition_id);
+                }
+            }
+
             $this->db->commit();
 
             // Cleaning
@@ -686,6 +704,9 @@ class ControllerAccountProduct extends Controller {
 
         // Delete reviews
         $this->model_catalog_product->deleteProductReviews($product_id);
+
+        // Delete license conditions
+        $this->model_catalog_product->deleteLicenseConditions($product_id);
 
         // Reconfigure orders relations
         $this->model_catalog_product->reconfigureProductToOrders($product_id);
@@ -900,6 +921,61 @@ class ControllerAccountProduct extends Controller {
                 'language_id' => $language->language_id,
                 'code'        => $language->code,
                 'name'        => $language->name
+            );
+        }
+
+
+        // Licenses
+        $licenses = $this->model_common_license->getLicenses($this->language->getId());
+
+        $data['licenses'] = array();
+        foreach ($licenses as $license) {
+
+            // Get license conditions
+            $license_conditions = $this->model_common_license->getLicenseConditions($license->license_id, $this->language->getId());
+
+            $conditions = array();
+            foreach ($license_conditions as $license_condition) {
+
+                // Get product's license condition value
+                if (isset($this->request->post['license_conditions'][$license_condition->license_condition_id])) {
+                    $license_condition_value = true;
+                } else if ($product_info) {
+                    $license_condition_value = $this->model_catalog_product->getLicenseConditionValue($product_info->product_id, $license_condition->license_condition_id);
+                } else {
+                    $license_condition_value = false;
+                }
+
+
+                if ($license_condition->optional) {
+
+                    $condition = sprintf(
+                        $license_condition->condition,
+                        tt('may')
+                    );
+
+                    $conditions[$license_condition->license_condition_id] = array(
+                        'license_condition_id' => $license_condition->license_condition_id,
+                        'optional'             => true,
+                        'checked'              => $license_condition_value,
+                        'text'                 => highlight_license_condition($condition, tt('may'), tt('shall not')),
+                    );
+
+                } else {
+                    $conditions[$license_condition->license_condition_id] = array(
+                        'license_condition_id' => $license_condition->license_condition_id,
+                        'optional'             => false,
+                        'checked'              => true,
+                        'text'                 => highlight_license_condition($license_condition->condition, tt('may'), tt('shall not')),
+                    );
+                }
+            }
+
+            // Merge
+            $data['licenses'][$license->license_id] = array(
+                'name'        => $license->name . ' ' . tt('License'),
+                'description' => $license->description,
+                'conditions'  => $conditions
             );
         }
 
@@ -1943,6 +2019,57 @@ class ControllerAccountProduct extends Controller {
                 unset($this->request->post['special']);
             }
         }
+
+
+        // License conditions validation: begin
+
+        // Check license conditions for existing
+        if (!isset($this->request->post['license_conditions']) || !$this->request->post['license_conditions'] || !is_array($this->request->post['license_conditions'])) {
+
+            $this->_error['license']['common'] = tt('License conditions are not defined');
+
+            // Filter critical request
+            $this->security_log->write('License conditions are not defined');
+            unset($this->request->post['license_conditions']);
+        }
+
+
+        // Validate each license condition
+        foreach ($this->request->post['license_conditions'] as $license_condition_id => $value) {
+
+            // Check for license_condition_id existing
+            if (!$this->model_common_license->getLicenseCondition($license_condition_id)) {
+                $this->_error['license']['common'] = tt('Invalid license condition ID');
+
+                // Filter critical request
+                $this->security_log->write('Requested license condition is not exist in the database');
+                unset($this->request->post['license_conditions']);
+                break;
+            }
+        }
+
+        // Check for required license conditions
+        $licenses = $this->model_common_license->getLicenses($this->language->getId());
+        foreach ($licenses as $license) {
+
+            // Get license conditions
+            $license_conditions = $this->model_common_license->getLicenseConditions($license->license_id, $this->language->getId());
+
+            foreach ($license_conditions as $license_condition) {
+
+                if (!$license_condition->optional && !isset($this->request->post['license_conditions'][$license_condition->license_condition_id])) {
+
+                    $this->_error['license']['common'] = tt('Required license conditions are not defined');
+
+                    // Filter critical request
+                    $this->security_log->write('Required license conditions are not defined');
+                    unset($this->request->post['license_conditions']);
+                    break;
+                }
+            }
+        }
+
+        // License conditions validation: end
 
         return !$this->_error;
     }

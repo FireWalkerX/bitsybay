@@ -14,6 +14,15 @@
 
 class ControllerCommonInformation extends Controller {
 
+    public function __construct($registry) {
+
+        parent::__construct($registry);
+
+        // Load dependencies
+        $this->load->model('common/license');
+        $this->load->helper('highlight');
+    }
+
     public function about() {
 
         $this->document->setTitle(tt('About Us'));
@@ -41,23 +50,40 @@ class ControllerCommonInformation extends Controller {
             array('name' => tt('Licensing Policy'), 'href' => $this->url->link('common/information/licenses'), 'active' => true),
         ));
 
-        $data['definitions'] = $this->load->controller('common/information/licensesCommon');
-        $data['regular']     = $this->load->controller('common/information/licensesRegular');
-        $data['exclusive']   = $this->load->controller('common/information/licensesExclusive');
+        // Get all licenses
+        $licenses = $this->model_common_license->getLicenses($this->language->getId());
 
-        $this->response->setOutput($this->load->view('common/information/license/layout.tpl', $data));
-    }
+        $data['licenses'] = array();
+        foreach ($licenses as $license) {
 
-    public function licensesCommon() {
-        return $this->load->view('common/information/license/common.tpl');
-    }
+            // Get license conditions
+            $license_conditions = $this->model_common_license->getLicenseConditions($license->license_id, $this->language->getId());
 
-    public function licensesRegular() {
-        return $this->load->view('common/information/license/regular.tpl');
-    }
+            $conditions = array();
+            foreach ($license_conditions as $license_condition) {
 
-    public function licensesExclusive() {
-        return $this->load->view('common/information/license/exclusive.tpl');
+                if ($license_condition->optional) {
+
+                    $condition = sprintf(
+                        $license_condition->condition,
+                        tt('may') . tt(' or ') . tt('shall not')
+                    );
+
+                    $conditions[$license_condition->license_condition_id] = highlight_license_condition($condition, tt('may'), tt('shall not'));
+                } else {
+                    $conditions[$license_condition->license_condition_id] = highlight_license_condition($license_condition->condition, tt('may'), tt('shall not'));
+                }
+            }
+
+            // Merge
+            $data['licenses'][$license->license_id] = array(
+                'name'        => $license->name . ' ' . tt('License'),
+                'description' => $license->description,
+                'conditions'  => $conditions
+            );
+        }
+
+        $this->response->setOutput($this->load->view('common/information/license.tpl', $data));
     }
 
     public function terms() {

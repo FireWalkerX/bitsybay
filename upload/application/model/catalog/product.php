@@ -2146,4 +2146,84 @@ class ModelCatalogProduct extends Model {
             return false;
         }
     }
+
+    /**
+    * Get product's license condition value
+    *
+    * @param int $product_id
+    * @param int $license_condition_id
+    * @return bool TRUE|FALSE
+    */
+    public function getLicenseConditionValue($product_id, $license_condition_id) {
+
+        try {
+            $statement = $this->db->prepare('SELECT NULL FROM `product_to_license_condition` WHERE `product_id` = ? AND `license_condition_id` = ? LIMIT 1');
+            $statement->execute(array($product_id, $license_condition_id));
+
+            return (bool) $statement->rowCount();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+    * Add license condition value
+    *
+    * @param int $product_id
+    * @param int $license_condition_id
+    * @return int|FALSE product_to_license_condition_id
+    */
+    public function addLicenseConditionValue($product_id, $license_condition_id) {
+
+        try {
+            $statement = $this->db->prepare('INSERT INTO `product_to_license_condition` SET `product_id` = ?, `license_condition_id` = ?');
+            $statement->execute(array($product_id, $license_condition_id));
+
+            return $this->db->lastInsertId();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+    * Remove license conditions
+    *
+    * @param int $product_id
+    * @return int|FALSE
+    */
+    public function deleteLicenseConditions($product_id) {
+
+        try {
+            $statement = $this->db->prepare('DELETE FROM `product_to_license_condition` WHERE `product_id` = ?');
+            $statement->execute(array($product_id));
+
+            return $statement->rowCount();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
 }

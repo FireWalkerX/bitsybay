@@ -201,7 +201,17 @@
             <p><?php echo $product_description ?></p>
           </div>
           <div class="tab-pane fade" id="productLicense">
-            <?php echo $license ?>
+            <?php foreach ($licenses as $license) { ?>
+              <div class="well">
+                <p><?php echo $license['description'] ?></p>
+              </div>
+              <?php foreach ($license['conditions'] as $condition) { ?>
+                <div style="margin-left:20px">
+                  <span class="glyphicon glyphicon-circle-arrow-right"></span> <?php echo $condition ?>
+                </div>
+              <?php } ?>
+            <?php } ?>
+            <p>&nbsp;</p>
             <p><?php echo tt('This is a human-readable summary of (and not a substitute for) the') ?> <a href="licenses"><?php echo tt('Licensing Policy') ?></a>.</p>
           </div>
           <div class="tab-pane fade" id="productReviews">

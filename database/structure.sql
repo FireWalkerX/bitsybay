@@ -951,6 +951,82 @@ CREATE TABLE IF NOT EXISTS `user_subscription` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `license`
+-- -----------------------------------------------------
+
+CREATE TABLE `license` (
+  `license_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sort_order` int(11) NOT NULL,
+  `code` varchar(45) NOT NULL,
+  PRIMARY KEY (`license_id`),
+  UNIQUE KEY `UNIQUE` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- -----------------------------------------------------
+-- Table `license_description`
+-- -----------------------------------------------------
+
+CREATE TABLE `license_description` (
+  `license_description_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `license_id` int(10) unsigned NOT NULL,
+  `language_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `description` text NOT NULL,
+  PRIMARY KEY (`license_description_id`),
+  UNIQUE KEY `UNIQUE` (`license_id`,`language_id`),
+  KEY `fk_license_description_license_id` (`license_id`),
+  KEY `fk_license_description_language_id` (`language_id`),
+  CONSTRAINT `fk_license_description_license_id` FOREIGN KEY (`license_id`) REFERENCES `license` (`license_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_license_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- -----------------------------------------------------
+-- Table `license_condition`
+-- -----------------------------------------------------
+
+CREATE TABLE `license_condition` (
+  `license_condition_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `license_id` int(10) unsigned NOT NULL,
+  `sort_order` int(11) NOT NULL,
+  `optional` enum('1','0') NOT NULL,
+  PRIMARY KEY (`license_condition_id`),
+  KEY `fk_ license_condition_license_id` (`license_id`),
+  CONSTRAINT `fk_ license_condition_license_id` FOREIGN KEY (`license_id`) REFERENCES `license` (`license_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- -----------------------------------------------------
+-- Table `license_condition_description`
+-- -----------------------------------------------------
+
+CREATE TABLE `license_condition_description` (
+  `license_condition_description_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `license_condition_id` int(10) unsigned NOT NULL,
+  `language_id` int(10) unsigned NOT NULL,
+  `condition` varchar(255) NOT NULL,
+  PRIMARY KEY (`license_condition_description_id`),
+  UNIQUE KEY `UNIQUE` (`license_condition_id`,`language_id`),
+  KEY `fk_ license_condition_description_language_id` (`language_id`),
+  KEY `fk_ license_condition_description_license_condition_id` (`license_condition_id`),
+  CONSTRAINT `fk_ license_condition_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ license_condition_description_license_condition_id` FOREIGN KEY (`license_condition_id`) REFERENCES `license_condition` (`license_condition_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+  -- -----------------------------------------------------
+  -- Table `product_to_license_condition`
+  -- -----------------------------------------------------
+
+CREATE TABLE `product_to_license_condition` (
+  `product_to_license_condition_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL,
+  `license_condition_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`product_to_license_condition_id`),
+  UNIQUE KEY `UNIQUE` (`product_id`,`license_condition_id`),
+  KEY `fk_product_to_license_condition_product_id` (`product_id`),
+  KEY `fk_product_to_license_condition_license_condition` (`license_condition_id`),
+  CONSTRAINT `fk_product_to_license_condition_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_to_license_condition_license_condition` FOREIGN KEY (`license_condition_id`) REFERENCES `license_condition` (`license_condition_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Structure for view `catalog` (SPHINX SEARCH INDEX SOURCE)

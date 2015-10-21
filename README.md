@@ -53,9 +53,9 @@ FEATURES
 * Product Videos
 * Product Audios
 * Product Specials
-* Product Licenses
 * Product Favorites
 * Product Tags
+* Flexible Licenses
 * Morphological Search based on Sphinx
 * Search requests logging
 * Comment form

@@ -67,6 +67,10 @@
             <li><?php echo sprintf(tt('Minimum price: %s'), ALLOWED_PRODUCT_MIN_PRICE) ?></li>
             <li><?php echo sprintf(tt('Allowed specials per product: %s'), QUOTA_SPECIALS_PER_PRODUCT) ?></li>
           </ul>
+          <ul id="productLicenseHints">
+            <li><?php echo tt('Change your license conditions') ?></li>
+            <li><?php echo tt('These terms will overwrite original product license') ?></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -86,6 +90,7 @@
           <li><a href="#videos" data-toggle="tab"><?php echo tt('Video') ?><?php echo isset($error['video']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#audios" data-toggle="tab"><?php echo tt('Audio') ?><?php echo isset($error['audio']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#prices" data-toggle="tab"><?php echo tt('Price') ?><?php echo isset($error['price']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
+          <li><a href="#license" data-toggle="tab"><?php echo tt('License') ?><?php echo isset($error['license']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
         </ul>
         <div id="ProductFormTabContent" class="tab-content">
           <div class="tab-pane fade in active" id="general">
@@ -596,6 +601,30 @@
               </table>
             </fieldset>
           </div>
+
+          <div class="tab-pane fade" id="license">
+            <?php if (isset($error['license']['common'])) { ?>
+            <div class="alert alert-dismissible alert-danger">
+              <?php echo $error['license']['common'] ?>
+            </div>
+            <?php } ?>
+            <?php foreach ($licenses as $license) { ?>
+              <fieldset>
+                <legend><?php echo $license['name'] ?></legend>
+                  <?php foreach ($license['conditions'] as $condition_id => $condition) { ?>
+                    <div class="checkbox <?php echo ($condition['optional'] ? false : 'disabled') ?>">
+                      <label>
+                        <input type="checkbox" name="license_conditions[<?php echo $condition['license_condition_id'] ?>]" value="1" <?php echo ($condition['optional'] ? false : 'disabled="disabled"') ?> <?php echo ($condition['checked'] ? 'checked="checked"' : false) ?> />
+                        <?php echo $condition['text'] ?>
+                      </label>
+                      <?php if (!$condition['optional']) { ?>
+                        <input type="hidden" name="license_conditions[<?php echo $condition['license_condition_id'] ?>]" value="1" />
+                      <?php } ?>
+                    </div>
+                <?php } ?>
+              </fieldset>
+            <?php } ?>
+          </div>
         </div>
       </form>
     </div>
@@ -609,7 +638,7 @@
   <!-- Hints -->
 
   function hideHints() {
-    $('#productDescriptionHints, #productPackageHints, #productDemoHints, #productImageHints, #productVideoHints, #productAudioHints, #productPriceHints').addClass('hide');
+    $('#productDescriptionHints, #productPackageHints, #productDemoHints, #productImageHints, #productVideoHints, #productAudioHints, #productPriceHints, #productLicenseHints').addClass('hide');
   }
 
   // Init
@@ -649,6 +678,11 @@
   $('a[href=#prices]').click(function () {
     hideHints();
     $('#productPriceHints').removeClass('hide');
+  });
+
+  $('a[href=#license]').click(function () {
+    hideHints();
+    $('#productLicenseHints').removeClass('hide');
   });
 
   <!-- Submit form -->
