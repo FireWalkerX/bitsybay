@@ -62,7 +62,7 @@ final class Document {
     * @return null
     */
     public function setTitle($title, $template = true) {
-        $this->title = $title . ($template ? ' | ' . PROJECT_NAME : false);
+        $this->title = $title . ($template ? sprintf(tt('%s BTC Marketplace %s'), ' | ', PROJECT_NAME) : false);
     }
 
     /**

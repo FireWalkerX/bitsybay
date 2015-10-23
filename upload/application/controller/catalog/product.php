@@ -277,7 +277,7 @@ class ControllerCatalogProduct extends Controller {
         }
 
         // Add meta-tags
-        $this->document->setTitle(sprintf(tt('%s Buy with BitCoin'), $product_info->title) . ' | Royalty Free ' . implode(' ', $categories));
+        $this->document->setTitle(sprintf(tt('%s Buy with BitCoin'), $product_info->title) . ' | ' . implode(' ', $categories));
 
         $this->document->setDescription(sprintf(tt('Royalty-free %s %s by %s with BitCoin. %s. Buy with BTC easy - Download instantly!'),   $categories[0],
                                                                                                                                             $product_info->title,
