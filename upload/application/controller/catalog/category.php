@@ -159,7 +159,7 @@ class ControllerCatalogCategory extends Controller {
 
             $category_tags = $this->model_catalog_tag->getTags(array('category_id' => (int) $this->request->get['category_id']), $this->language->getId());
             $tags = array(); foreach ($category_tags as $category_tag) {
-                $tags[] = $category_tag->name;
+                $tags[$category_tag->name] = $category_tag->name;
             }
 
             $data['description'] = sprintf(html_entity_decode($category_info->description), implode(', ', $tags), PROJECT_NAME);
