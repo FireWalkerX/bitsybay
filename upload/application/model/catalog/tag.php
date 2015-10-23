@@ -136,12 +136,18 @@ class ModelCatalogTag extends Model {
     * @param int $language_id
     * @return array|bool Tag rows or FALSE if throw exception
     */
-    public function getTags($filter_data, $language_id) {
+    public function getTags(array $filter_data = array(), $language_id) {
 
         $sql = 'SELECT `t`.`tag_id`, `td`.`name`
                     FROM `tag` AS `t`
                     JOIN `tag_description` AS `td` ON (`t`.`tag_id` = `td`.`tag_id`)
+                    LEFT JOIN `product_to_tag` AS `p2t` ON (`p2t`.`tag_id` = `t`.`tag_id`)
+                    LEFT JOIN `product` AS `p` ON (`p`.`product_id` = `p2t`.`product_id`)
                     WHERE `td`.`language_id` = :language_id';
+
+        if (isset($filter_data['category_id'])) {
+            $sql .= ' AND `p`.`category_id` = ' . (int) $filter_data['category_id'];
+        }
 
         if (isset($filter_data['limit'])) {
             $sql .= ' LIMIT ' . (int) $filter_data['limit'];

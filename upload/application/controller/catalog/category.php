@@ -21,6 +21,7 @@ class ControllerCatalogCategory extends Controller {
         // Load dependencies
         $this->load->model('catalog/category');
         $this->load->model('catalog/product');
+        $this->load->model('catalog/tag');
 
         $this->load->helper('plural');
     }
@@ -146,14 +147,26 @@ class ControllerCatalogCategory extends Controller {
             );
         }
 
-
         // Create meta-tags
         $this->document->setTitle(sprintf(tt('%s Buy with BitCoin | %s Store'), implode(' ', $categories), $categories[0]));
         $this->document->setDescription(sprintf(tt('Royalty-free %s with BitCoin. Only quality and legal %s from them authors. Buy with BTC easy - Download instantly!'), implode(' ', $categories), implode(' and ', $categories)));
         $this->document->setKeywords(sprintf(tt('bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, %s'), strtolower(implode(', ', $categories))));
 
         // Load layout
-        $data['title']  = $category_info->title;
+        $data['title'] = $category_info->title;
+
+        if (!empty($category_info->description)) {
+
+            $category_tags = $this->model_catalog_tag->getTags(array('category_id' => (int) $this->request->get['category_id']), $this->language->getId());
+            $tags = array(); foreach ($category_tags as $category_tag) {
+                $tags[] = $category_tag->name;
+            }
+
+            $data['description'] = sprintf(html_entity_decode($category_info->description), implode(', ', $tags), PROJECT_NAME);
+        } else {
+            $data['description'] = false;
+        }
+
 
         $data['footer'] = $this->load->controller('common/footer');
         $data['header'] = $this->load->controller('common/header');

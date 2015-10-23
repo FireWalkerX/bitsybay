@@ -33,10 +33,11 @@ class ModelCatalogCategory extends Model {
 
             ' . ($count_product ? ' (SELECT COUNT(*) FROM `product` AS `p` WHERE `p`.`category_id` = `c`.`category_id`) AS `total_products`, ' : false) . '
 
-            `cd`.`title`
+            `cd`.`title`,
+            `cd`.`description`
 
              FROM `category` AS `c`
-             LEFT JOIN `category_description` AS `cd` ON (`cd`.`category_id` = `c`.`category_id`)
+             JOIN `category_description` AS `cd` ON (`cd`.`category_id` = `c`.`category_id`)
              WHERE `c`.`parent_category_id` ' . (is_null($category_id) ? 'IS' : '=') . ' ? AND `cd`.`language_id` = ? ORDER BY `c`.`sort_order`, LCASE(`cd`.`title`)');
 
             $statement->execute(array($category_id, $language_id));
@@ -99,10 +100,11 @@ class ModelCatalogCategory extends Model {
             `c`.`alias`,
             `c`.`sort_order`,
 
-            `cd`.`title`
+            `cd`.`title`,
+            `cd`.`description`
 
              FROM `category` AS `c`
-             LEFT JOIN `category_description` AS `cd` ON (`cd`.`category_id` = `c`.`category_id`)
+             JOIN `category_description` AS `cd` ON (`cd`.`category_id` = `c`.`category_id`)
              WHERE `c`.`category_id` = ? AND `cd`.`language_id` = ? LIMIT 1');
 
             $statement->execute(array($category_id, $language_id));
