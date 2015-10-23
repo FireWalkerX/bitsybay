@@ -112,8 +112,8 @@
   </div>
 </div>
 <?php if (isset($description) && !empty($description)) { ?>
-  <div class="row">
-    <div class="col-lg-12 text-muted small">
+  <div class="row border-top">
+    <div class="col-lg-12 text-justify text-muted small">
       <?php echo $description ?>
     </div>
   </div>

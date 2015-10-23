@@ -223,6 +223,20 @@ td input[type=checkbox] {
     display: block;
 }
 
+.row.border-top {
+    border-top: 1px solid #eee;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+.row.border-bottom {
+    border-bottom: 1px solid #eee;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
 footer .row.footer {
     border-top: 1px solid #eee;
     margin: 20px auto;
