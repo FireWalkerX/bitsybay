@@ -47,7 +47,7 @@ class ControllerCommonHome extends Controller {
         if (!$this->auth->isLogged()) {
 
             // Get tags
-            $tags = array(); foreach ($this->model_catalog_tag->getTags(array('limit' => 100, 'order' => 'RAND()'), $this->language->getId()) as $category_tag) {
+            $tags = array(); foreach ($this->model_catalog_tag->getTags(array('limit' => 15, 'order' => 'RAND()'), $this->language->getId()) as $category_tag) {
                 $tags[$category_tag->name] = $category_tag->name;
             }
 
