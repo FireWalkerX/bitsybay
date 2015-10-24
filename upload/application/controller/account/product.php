@@ -943,7 +943,7 @@ class ControllerAccountProduct extends Controller {
                 } else if ($product_info) {
                     $license_condition_value = $this->model_catalog_product->getLicenseConditionValue($product_info->product_id, $license_condition->license_condition_id);
                 } else {
-                    $license_condition_value = false;
+                    $license_condition_value = true;
                 }
 
 
