@@ -127,7 +127,7 @@ $_translation = array(
 'verified sellers ' => 'продавцов',
 
 'buyer' => 'покупатель',
-'buyers' => 'покупатель',
+'buyers' => 'покупателя',
 'buyers ' => 'покупателей',
 
 'day' => 'день',
