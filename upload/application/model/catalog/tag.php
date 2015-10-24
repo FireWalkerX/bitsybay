@@ -151,7 +151,7 @@ class ModelCatalogTag extends Model {
             $sql .= ' AND `p`.`category_id` = ' . (int) $filter_data['category_id'];
         }
 
-        $sql .= ' GROUP BY `t`.`tag_id`';
+        $sql .= ' GROUP BY `t`.`tag_id` ';
 
         if (isset($filter_data['limit'])) {
             $sql .= ' LIMIT ' . (int) $filter_data['limit'];
