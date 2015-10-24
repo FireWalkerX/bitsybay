@@ -153,6 +153,10 @@ class ModelCatalogTag extends Model {
 
         $sql .= ' GROUP BY `t`.`tag_id` ';
 
+        if (isset($filter_data['order']) && in_array(mb_strtolower($filter_data['order']), array('rand()'))) {
+            $sql .= ' ORDER BY ' . $filter_data['order'];
+        }
+
         if (isset($filter_data['limit'])) {
             $sql .= ' LIMIT ' . (int) $filter_data['limit'];
         }

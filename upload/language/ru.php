@@ -31,6 +31,8 @@ $_translation = array(
 
 '%s BTC Marketplace %s' => '%s BTC Супермаркет %s',
 
+'%s is a simple and minimalistic marketplace to help you buy and or sell creative digital products with cryptocurrency like BitCoin. %s provides only high-quality offers from verified authors. It\'s include a BTC marketplace for %s about %s. Buy or sell original content with Bitcoin fast, directly and safely from any country without compromises!' => '%s — это BTC супермаркет оригинальных авторских товаров за Bitcoin. Только на %s можно купить легальный контент за Bitcoin от проверенных авторов а также продать авторские товары из любой точки мира без ограничений и банковских комиссий. Здесь можно моментально купить и продать за BTC товары для рубрик %s на различные тематики %s и многое другое. Только высокое качество товаров, быстрая оплата в Bitcoin, безопасность и легкость использования!',
+
 // Welcome module
 'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
 'Then here you are:' => 'Тогда вы там, где нужно:',
