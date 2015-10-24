@@ -155,7 +155,8 @@ class ControllerCatalogCategory extends Controller {
         // Load layout
         $data['title'] = $category_info->title;
 
-        if (!empty($category_info->description)) {
+        // Show SEO description for guests (and search engines)
+        if (!$this->auth->isLogged() && !empty($category_info->description)) {
 
             $category_tags = $this->model_catalog_tag->getTags(array('category_id' => (int) $this->request->get['category_id']), $this->language->getId());
             $tags = array(); foreach ($category_tags as $category_tag) {

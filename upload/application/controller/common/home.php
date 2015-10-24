@@ -43,31 +43,37 @@ class ControllerCommonHome extends Controller {
             $data['user_is_logged'] = false;
         }
 
-        // Get tags
-        $tags = array(); foreach ($this->model_catalog_tag->getTags(array('limit' => 100, 'order' => 'RAND()'), $this->language->getId()) as $category_tag) {
-            $tags[$category_tag->name] = $category_tag->name;
-        }
+        // Show SEO description for guests (and search engines)
+        if (!$this->auth->isLogged()) {
 
-        // Get active categories
-        $categories = array(); foreach ($this->model_catalog_category->getCategories(null, $this->language->getId()) as $category) {
+            // Get tags
+            $tags = array(); foreach ($this->model_catalog_tag->getTags(array('limit' => 100, 'order' => 'RAND()'), $this->language->getId()) as $category_tag) {
+                $tags[$category_tag->name] = $category_tag->name;
+            }
 
-            $categories[$category->title] = mb_strtolower($category->title);
+            // Get active categories
+            $categories = array(); foreach ($this->model_catalog_category->getCategories(null, $this->language->getId()) as $category) {
 
-            // Get child categories
-            foreach ($this->model_catalog_category->getCategories($category->category_id, $this->language->getId(), true) as $child_category) {
-                if ($child_category->total_products) {
-                    $categories[$child_category->title] = mb_strtolower($child_category->title);
+                $categories[$category->title] = mb_strtolower($category->title);
+
+                // Get child categories
+                foreach ($this->model_catalog_category->getCategories($category->category_id, $this->language->getId(), true) as $child_category) {
+                    if ($child_category->total_products) {
+                        $categories[$child_category->title] = mb_strtolower($child_category->title);
+                    }
                 }
             }
-        }
 
-        $data['description'] = sprintf(
-            tt('%s is a simple and minimalistic marketplace to help you buy and or sell creative digital products with cryptocurrency like BitCoin. %s provides only high-quality offers from verified authors. It\'s include a BTC marketplace for %s about %s. Buy or sell original content with Bitcoin fast, directly and safely from any country without compromises!'),
-            PROJECT_NAME,
-            PROJECT_NAME,
-            implode(', ', $categories),
-            implode(', ', $tags)
-        );
+            $data['description'] = sprintf(
+                tt('%s is a simple and minimalistic marketplace to help you buy and or sell creative digital products with cryptocurrency like BitCoin. %s provides only high-quality offers from verified authors. It\'s include a BTC marketplace for %s about %s. Buy or sell original content with Bitcoin fast, directly and safely from any country without compromises!'),
+                PROJECT_NAME,
+                PROJECT_NAME,
+                implode(', ', $categories),
+                implode(', ', $tags)
+            );
+        } else {
+            $data['description'] = false;
+        }
 
         $total_products  = $this->model_catalog_product->getTotalProducts(array());
         $data['total_products'] = sprintf(tt('%s %s'), $total_products, plural($total_products, array(tt('original high-quality offer'), tt('original high-quality offers'), tt('original high-quality offers '))));
