@@ -77,6 +77,12 @@
             <p><?php echo tt('However, if your product has justified the need for additional space, we will consider such a request. Please send your request via our') ?> <a href="contact"><?php echo tt('Contact Us') ?></a> <?php echo tt('page.') ?></p>
           </div>
 
+          <h2 class="text-right"><a class="anchor" name="troubleshooting"></a><a href="faq#troubleshooting"><i class="glyphicon glyphicon-link" style="font-size:0.8em;color:#CCC"></i></a> <?php echo tt('Troubleshooting') ?></h2>
+          <h4><?php echo tt('Error message when clicking Use Wallet button: Unknown address type') ?></h4>
+          <div class="well">
+            <p><?php echo tt('Seems that your local Bitcoin Wallet is not installed. Try to') ?> <a href="https://bitcoin.org/en/choose-your-wallet" rel="nofollow" target="_blank"><?php echo tt('Get it now!') ?></a></p>
+          </div>
+
           <h2 class="text-right"><a class="anchor" name="other"></a><a href="faq#other"><i class="glyphicon glyphicon-link" style="font-size:0.8em;color:#CCC"></i></a> <?php echo tt('Other') ?></h2>
           <h4><?php echo tt('Do you plan on supporting additional currencies like Litecoin, Dogecoin, Paycoin, etc?') ?></h4>
           <div class="well">

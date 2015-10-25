@@ -256,11 +256,11 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-6 text-left">
+              <div class="col-lg-3 text-left">
                 <a id="initBitcoinWallet" class="btn btn-primary" href=""><?php echo tt('Use wallet') ?></a>
               </div>
-              <div class="col-lg-6 text-right">
-                <div id="paymentTimer" class="text-muted">15:00</div>
+              <div class="col-lg-9 text-muted small">
+                <i class="glyphicon glyphicon-info-sign"></i> <?php echo tt('Don\'t have a Wallet?') ?> <a href="https://bitcoin.org/en/choose-your-wallet" rel="nofollow" target="_blank"><?php echo tt('Get it now!') ?></a>
               </div>
             </div>
           </div>
@@ -297,9 +297,9 @@
                 $('#productPurchase .modal-loading').hide();
                 $('#productPurchase pre').html(e['address']);
                 $('#productPurchase p').html(e['text']);
+                $('#productPurchase p').prepend('<span style="float:right" id="paymentTimer"></span>');
                 $('#paymentResultImg').html('<img src="' + e['src'] + '" alt="' + e['address'] + '" />');
                 $('#initBitcoinWallet').attr('href', e['href']);
-
                 timer(900, document.getElementById('paymentTimer'));
               } else {
                 $('#productPurchase .modal-loading').html('Maintenance mode. Please wait a few minutes and try again.');

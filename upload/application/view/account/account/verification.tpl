@@ -67,8 +67,11 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-6 text-left">
-                    <a class="btn btn-default" href="<?php echo $payment_wallet_href ?>"><?php echo tt('Use wallet') ?></a>
+                  <div class="col-lg-3 text-left">
+                    <a id="initBitcoinWallet" class="btn btn-primary" href=""><?php echo tt('Use wallet') ?></a>
+                  </div>
+                  <div class="col-lg-9 text-muted small">
+                    <i class="glyphicon glyphicon-info-sign"></i> <?php echo tt('Don\'t have a Wallet?') ?> <a href="https://bitcoin.org/en/choose-your-wallet" rel="nofollow" target="_blank"><?php echo tt('Get it now!') ?></a>
                   </div>
                 </div>
               </div>

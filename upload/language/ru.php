@@ -91,6 +91,8 @@ $_translation = array(
 'Buy' => 'Купить',
 'View' => 'Посмотреть',
 'and' => 'и',
+'Don\'t have a Wallet?' => 'Нет кошелька?',
+'Get it now!' => 'Скачать!',
 'Remove Frame' => 'Удалить фрейм',
 '%s Buy with BitCoin' => '%s купить за BitCoin',
 '%s Purchase' => 'Покупка товара «%s»',
@@ -327,6 +329,9 @@ $_translation = array(
 'contact form' => 'контактная форма',
 '. If you\'re a developer and would like to contribute, fork us on' => ' ). Если вы разработчик, примите участие в проекте на',
 'I found a bug on the site' => 'Я нашел ошибку на сайте',
+'Troubleshooting' => 'Решение проблем',
+'Error message when clicking Use Wallet button: Unknown address type' => 'После нажатия на кнопку «Кошелек» открывается страница «Неизвестный тип адреса»',
+'Seems that your local Bitcoin Wallet is not installed. Try to' => 'Возможно, кошелек Bitcoin еще не установлен на вашем устройстве. Если это так, перейдите по ссылке',
 
 // Notifications
 'Notifications' => 'Оповещения',
