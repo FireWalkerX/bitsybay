@@ -103,7 +103,8 @@ INSTALL
 * Enable rewrite module
 * Create the database from the dump **/database/structure.sql**
 * Import custom database content from the dump **/database/data/*.sql**
-* Set your server settings in the **config.php** file
+* Rename **/upload/config-default.php** to **/upload/config.php**
+* Change your settings in the **/upload/config.php** file
 * Set write-access to the following directories:
 
 
