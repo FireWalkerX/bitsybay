@@ -47,6 +47,7 @@ $_translation = array(
 'Products not found. Try again later' => 'Товары не найдены. Попробуйте чуть позже!',
 
 // Common
+'Please, wait...' => 'Пожалуйста, подождите...',
 'Make coins +' => 'Магазин +',
 'Collection' => 'Коллекция',
 'Purchased' => 'Покупки',
