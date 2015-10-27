@@ -131,5 +131,9 @@ define('SPHINX_LIMITS_START', 0);
 define('SPHINX_LIMITS_LIMIT', 1000);
 define('SPHINX_LIMITS_MAX_MATCHES', 0);
 
+// FFMPEG
+define('FFMPEG_PATH', '/usr/bin/ffmpeg');
+
+
 // GITHUB API
 define('GITHUB_API_URL_CONTRIBUTORS', '');
