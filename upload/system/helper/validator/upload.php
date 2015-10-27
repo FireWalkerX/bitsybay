@@ -19,129 +19,139 @@ class ValidatorUpload {
     *
     * @param array $file
     * @param int $max_file_size MB
-    * @param string $STORAGE_FILE_EXTENSION
+    * @param string $allowed_file_extensions
     * @return bool TRUE if valid ot FALSE if else
     */
-    static public function fileValid($file, $max_file_size, $STORAGE_FILE_EXTENSION) {
-
+    static public function fileValid($file, $max_file_size, $allowed_file_extensions) {
+        
         // Dependencies test
         if (!isset($file['tmp_name']) || !isset($file['name'])) {
             return false;
 
+        // Check for array keys existing
         } else if (empty($file['tmp_name']) || empty($file['name'])) {
             return false;
-        } else {
 
-            // ClamAV test for viruses
-            $virus = false;
-            $code  = cl_scanfile($file['tmp_name'], $virus);
+        // Test for allowed extension
+        } else if (mb_strtolower($allowed_file_extensions) != @pathinfo($file['name'], PATHINFO_EXTENSION)) {
+            return false;
 
-            if (CL_VIRUS == $code) {
-
-                // Remove infected file
-                unlink($file);
-
-                // Security log
-                trigger_error(
-                    sprintf(
-                        'File path: %s Return code: %s Virus found name: %s',
-                        $file['tmp_name'],
-                        cl_pretcode($code),
-                        $virus
-                    )
-                );
-
-            // Test for allowed extension
-            } else if (mb_strtolower($STORAGE_FILE_EXTENSION) != @pathinfo($file['name'], PATHINFO_EXTENSION)) {
-                return false;
-
-            // Test for max size
-            } else if ($max_file_size < @filesize($file['tmp_name']) / 1000000) {
-                return false;
-            }
-
-            // Extension test
-            if (mb_strtolower($STORAGE_FILE_EXTENSION) == 'zip') {
-                $zip = new ZipArchive();
-                if (true !== $zip->open($file['tmp_name'], ZipArchive::CHECKCONS)) {
-
-                    $zip->close();
-                    return false;
-                }
-
-                $zip->close();
-            }
-
+        // Test for maximum file size
+        } else if ($max_file_size < @filesize($file['tmp_name']) / 1000000) {
+            return false;
+            
+        // ClamAV scanning for viruses
+        } else if (CL_VIRUS == cl_scanfile($file['tmp_name'])) {
+            return false;
         }
 
+        // Success
         return true;
     }
 
     /**
+     * Validate package
+     *
+     * @param array $package
+     * @param int $max_file_size MB
+     * @param array $allowed_file_extensions
+     * @return bool TRUE if valid ot FALSE if else
+     */
+    static public function packageValid($package, $max_file_size, array $allowed_file_extensions = array('zip')) {
+
+        foreach ($allowed_file_extensions as $extension) {
+            if (self::fileValid($package, $max_file_size, $extension)) {
+
+                // Manipulation test
+                $zip = new ZipArchive();
+                if (true === $zip->open($package['tmp_name'], ZipArchive::CHECKCONS)) {
+
+                    $zip->close();
+                    return true;
+                }
+
+                $zip->close();
+
+                break;
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
     * Validate image
-    *
-    * JPEG only
     *
     * @param array $image
     * @param int $max_file_size MB
     * @param int $min_width PX
     * @param int $min_height PX
-    * @param array $STORAGE_FILE_EXTENSION
+    * @param array $allowed_file_extensions
     * @return bool TRUE if valid ot FALSE if else
     */
-    static public function imageValid($image, $max_file_size, $min_width, $min_height, array $STORAGE_FILE_EXTENSION = array('jpg', 'jpeg', 'png')) {
+    static public function imageValid($image, $max_file_size, $min_width, $min_height, array $allowed_file_extensions = array('jpg', 'jpeg', 'png')) {
 
-        // File validation
-        $file_validation = false;
-        $file_extension  = false;
-
-        foreach ($STORAGE_FILE_EXTENSION as $extension) {
+        foreach ($allowed_file_extensions as $extension) {
             if (self::fileValid($image, $max_file_size, $extension)) {
-                $file_validation = true;
-                $file_extension  = $extension;
-                break;
+
+                // Manipulation test
+                if (!$image_size = @getimagesize($image['tmp_name'])) {
+                    return false;
+                }
+
+                // Image size test
+                if (!isset($image_size[0]) || !isset($image_size[1]) ||
+                    empty($image_size[0]) ||  empty($image_size[1]) ||
+                    $image_size[0] < $min_width || $image_size[1] < $min_height) {
+
+                    return false;
+                }
+
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+    * Validate image
+    *
+    * @param array $audio
+    * @param int $max_file_size MB
+    * @param array $allowed_file_extensions
+    * @return bool TRUE if valid ot FALSE if else
+    */
+    static public function audioValid($audio, $max_file_size, array $allowed_file_extensions = array('mp3', 'ogg', 'waw', 'wawe', 'mka', 'wma', 'mp4', 'm4a')) {
+        
+        foreach ($allowed_file_extensions as $extension) {
+            if (self::fileValid($audio, $max_file_size, $extension)) {
+
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    /**
+    * Validate video
+    *
+    * @param array $video
+    * @param int $max_file_size MB
+    * @param array $allowed_file_extensions
+    * @return bool TRUE if valid ot FALSE if else
+    */
+    static public function videoValid($video, $max_file_size, array $allowed_file_extensions = array('mov', 'mpeg4', 'avi', 'wmv', 'mpegps', 'flv', '3gpp', 'webm')) {
+
+        foreach ($allowed_file_extensions as $extension) {
+            if (self::fileValid($video, $max_file_size, $extension)) {
+
+                return true;
             }
         }
 
-        if (!$file_validation) {
-            return false;
-        }
-
-        // Allowed image extension check
-        if (!in_array(@pathinfo($image['name'], PATHINFO_EXTENSION), $STORAGE_FILE_EXTENSION)) {
-            return false;
-        }
-
-        // Image size test
-        if (!$image_size = @getimagesize($image['tmp_name'])) {
-            return false;
-        }
-
-        // Size limits
-        if (!isset($image_size[0]) || !isset($image_size[1]) ||
-             empty($image_size[0]) || empty($image_size[1]) ||
-             $image_size[0] < $min_width || $image_size[1] < $min_height) {
-
-            return false;
-        }
-
-        // Image creation test
-        switch ($file_extension) {
-            case 'jpg':
-            case 'jpeg':
-                if (!$image_copy = @imagecreatefromjpeg($image['tmp_name'])) {
-                    imagedestroy($image_copy);
-                    return false;
-                }
-            break;
-            case 'png':
-                if (!$image_copy = @imagecreatefrompng($image['tmp_name'])) {
-                    imagedestroy($image_copy);
-                    return false;
-                }
-            break;
-        }
-
-        return true;
+        return false;
     }
 }
