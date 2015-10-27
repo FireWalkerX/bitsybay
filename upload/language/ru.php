@@ -472,6 +472,7 @@ $_translation = array(
 'Special price' => 'Супер цена',
 'Default' => 'Стандартно',
 'All products' => 'Все товары',
+'Are you sure that you want to permanently delete %s?' => 'Вы уверенны, что хотите безвозвратно удалить товар %s?',
 
 // Verification
 'Verification' => 'Верификация',

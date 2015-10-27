@@ -96,7 +96,7 @@
                       <?php } ?>
                       <li><a href="<?php echo $product['href_download'] ?>"><?php echo tt('Download') ?></a></li>
                       <li class="divider"></li>
-                      <li><a href="<?php echo $product['href_delete'] ?>" onclick="return confirm('Are you sure that you want to permanently delete <?php echo $product['title'] ?>?')"><?php echo tt('Delete') ?></a></li>
+                      <li><a href="<?php echo $product['href_delete'] ?>" onclick="return confirm('<?php echo sprintf(tt('Are you sure that you want to permanently delete %s?'), $product['title']) ?>')"><?php echo tt('Delete') ?></a></li>
                     </ul>
                   </div>
                 </td>
