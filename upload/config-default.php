@@ -28,6 +28,7 @@ define('URL_GITHUB', '');
 define('DIR_BASE', '/var/www/html/');
 define('DIR_STORAGE', '/var/www/html/storage/');
 define('DIR_IMAGE', '/var/www/html/public/image/');
+define('DIR_AUDIO', '/var/www/html/public/audio/');
 define('DIR_SEPARATOR', '/');
 
 // DB
@@ -50,6 +51,7 @@ define('DEFAULT_CURRENCY_ID', 1);
 // EXTENSIONS
 define('STORAGE_FILE_EXTENSION', 'zip');
 define('STORAGE_IMAGE_EXTENSION', 'jpg');
+define('STORAGE_AUDIO_EXTENSION', 'ogg');
 
 // IMAGES
 define('PRODUCT_IMAGE_ORIGINAL_WIDTH', 800);
@@ -88,7 +90,9 @@ define('SECURITY_ACCOUNT_SUBSCRIPTION_ID', 8); // INT subscription_id in subscri
 // QUOTA
 define('QUOTA_FILE_SIZE_BY_DEFAULT', 100); // int Mb
 define('QUOTA_BONUS_SIZE_PER_ORDER', 1);   // int Mb
-define('QUOTA_IMAGE_MAX_FILE_SIZE', 500);  // int Kb
+define('QUOTA_IMAGE_MAX_FILE_SIZE', 50);   // int Mb
+define('QUOTA_AUDIO_MAX_FILE_SIZE', 100);  // int Mb
+define('QUOTA_VIDEO_MAX_FILE_SIZE', 100);  // int Mb
 define('QUOTA_IMAGES_PER_PRODUCT', 6);     // int Qty
 define('QUOTA_DEMO_PER_PRODUCT', 5);       // int Qty
 define('QUOTA_VIDEO_PER_PRODUCT', 5);      // int Qty

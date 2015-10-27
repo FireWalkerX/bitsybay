@@ -41,10 +41,12 @@ final class FFmpeg {
      * @param string $target Path to file
      * @param bool $overwrite TRUE|FALSE
      * @param int $bit_rate kbps
+     * @param bool|int $start seconds
+     * @param bool|int $end seconds
      *
      * @return bool TRUE|FALSE response
      */
-    public function convertToOGG($source, $target, $overwrite = false, $bit_rate = 320) {
+    public function convertToOGG($source, $target, $overwrite = false, $bit_rate = 320, $start = false, $end = false) {
 
         // If source file is not exists or not readable
         if (!file_exists($source)) {
@@ -79,8 +81,10 @@ final class FFmpeg {
         // Execute
         exec(
             sprintf(
-                '%s -i %s -ab %sk -f ogg %s',
+                '%s %s %s -i %s -ab %sk -f ogg %s',
                 $this->_ffmpeg,
+               ($start ? sprintf('-ss %s', $start) : ''),
+               ($end ? sprintf('-t %s', $end) : ''),
                 $source,
                 $bit_rate,
                 $target

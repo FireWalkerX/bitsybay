@@ -24,7 +24,6 @@ final class Cache {
     * Image caching
     *
     * Resize & cache image into the file system. Returns the template image if product image is not exists
-    * At this time supports JPG images only
     *
     * @param mixed $name
     * @param int $user_id
@@ -80,7 +79,64 @@ final class Cache {
     }
 
     /**
-    * Reset image cache
+    * Audio caching
+    *
+    * @param mixed $name
+    * @param int $user_id
+    * @param int $bit_rate kbps
+    * @param bool $overwrite
+    * @param bool|int $start
+    * @param bool|int $end
+    * @return string Cached Audio URL
+    */
+    public function audio($name, $user_id, $bit_rate = 320, $overwrite = true, $start = false, $end = false) {
+
+        $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
+        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
+        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
+
+        // Force reset
+        if ($overwrite) {
+            unlink($cache);
+        }
+
+        // If audio is cached
+        if (file_exists($cache)) {
+
+            return $cached_url;
+
+        // If audio not cached
+        } else {
+
+            // Create directories by path if not exists
+            $directories = explode(DIR_SEPARATOR, $cache);
+            $path = '';
+            foreach ($directories as $directory) {
+                $path .= DIR_SEPARATOR . $directory;
+                if (!is_dir($path) && false === strpos($directory, '.')) {
+                    mkdir($path, 0755);
+                }
+            }
+
+            // Cache new audio
+            $audio = new FFmpeg(FFMPEG_PATH);
+
+            // Create new cached file
+            $audio->convertToOGG(
+                $storage,
+                $cache,
+                $overwrite,
+                $bit_rate,
+                $start,
+                $end
+            );
+        }
+
+        return $cached_url;
+    }
+
+    /**
+    * Reset cache for specific user
     *
     * @param int|bool $user_id
     */

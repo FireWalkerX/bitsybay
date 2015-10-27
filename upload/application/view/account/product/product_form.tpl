@@ -58,8 +58,6 @@
           </ul>
           <ul id="productAudioHints">
             <li><?php echo tt('The audio used for demonstration or tutorial of your product') ?></li>
-            <li><?php echo tt('Upload your audios to supported audio hosting site') ?></li>
-            <li><?php echo tt('Then copy share ID to this form') ?></li>
             <li><?php echo sprintf(tt('Allowed audios per product: %s'), QUOTA_AUDIO_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productPriceHints">

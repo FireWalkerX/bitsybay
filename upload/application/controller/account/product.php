@@ -45,6 +45,7 @@ class ControllerAccountProduct extends Controller {
         $this->load->helper('highlight');
 
         $this->load->library('color');
+        $this->load->library('ffmpeg');
         $this->load->library('identicon');
         $this->load->library('translate');
 
@@ -840,6 +841,50 @@ class ControllerAccountProduct extends Controller {
 
         } else if (isset($this->_error['image']['common'])) {
             $json = array('error_message' => $this->_error['image']['common']);
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function uploadAudio() {
+
+        if (!$this->auth->isLogged()) {
+            $this->security_log->write('Try to upload audio from guest request');
+            exit;
+        }
+
+        if (!$this->request->isAjax()) {
+            $this->security_log->write('Try to upload audio without ajax request');
+            exit;
+        }
+
+        $json = array('error_message' => tt('Undefined upload error'));
+
+        if ('POST' == $this->request->getRequestMethod() && $this->_validateAudio()) {
+
+            // Create user's folder if not exists
+            if (!is_dir(DIR_STORAGE . $this->auth->getId())) mkdir(DIR_STORAGE . $this->auth->getId(), 0755);
+
+            // Init variables
+            $audio_path     = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
+            $audio_filename = '_' . sha1(rand().microtime().$this->auth->getId());
+
+            // Save audio to the temporary file
+            $audio = new FFmpeg(FFMPEG_PATH);
+            $audio->convertToOGG(
+                $this->request->files['audio']['tmp_name'][$this->request->get['row']],
+                $audio_path . $audio_filename  . '.' . STORAGE_AUDIO_EXTENSION
+            );
+
+            $json = array(
+                'success_message'   => tt('Audio successfully uploaded!'),
+                'url'               => $this->cache->audio($audio_filename, $this->auth->getId(), true),
+                'product_audio_id'  => $audio_filename
+            );
+
+        } else if (isset($this->_error['audio']['common'])) {
+            $json = array('error_message' => $this->_error['audio']['common']);
         }
 
         $this->response->addHeader('Content-Type: application/json');
@@ -2124,7 +2169,7 @@ class ControllerAccountProduct extends Controller {
         } else if (!isset($this->request->files['image']['tmp_name'][$this->request->get['row']]) || !isset($this->request->files['image']['name'][$this->request->get['row']])) {
 
             $this->_error['image']['common'] = tt('Image file is wrong!');
-            $this->security_log->write('Uploaded image file is wrong (tmp_name or name indexes is not exists)');
+            $this->security_log->write('Uploaded image file is wrong');
 
         } else if (!ValidatorUpload::imageValid(array('name'     => $this->request->files['image']['name'][$this->request->get['row']],
                                                       'tmp_name' => $this->request->files['image']['tmp_name'][$this->request->get['row']]),
@@ -2144,13 +2189,29 @@ class ControllerAccountProduct extends Controller {
         if (!isset($this->request->files['package']['tmp_name']) || !isset($this->request->files['package']['name'])) {
 
             $this->_error['file']['common'] = tt('Uploaded package file is wrong!');
-            $this->security_log->write('Uploaded package file is wrong (tmp_name or name indexes is not exists)');
+            $this->security_log->write('Uploaded package file is wrong');
 
         } else if (!ValidatorUpload::packageValid($this->request->files['package'],
                                                   $this->auth->getFileQuota() - ($this->storage->getUsedSpace($this->auth->getId()) - filesize($this->request->files['package']['tmp_name']) / 1000000))) {
 
             $this->_error['file']['common'] = tt('Package file is a not valid!');
             $this->security_log->write('Uploaded package file is not valid');
+        }
+
+        return !$this->_error;
+    }
+
+    private function _validateAudio() {
+
+        if (!isset($this->request->files['audio']['tmp_name']) || !isset($this->request->files['audio']['name'])) {
+
+            $this->_error['audio']['common'] = tt('Uploaded audio file is wrong!');
+            $this->security_log->write('Uploaded audio file is wrong');
+
+        } else if (!ValidatorUpload::audioValid($this->request->files['audio'], QUOTA_AUDIO_MAX_FILE_SIZE)) {
+
+            $this->_error['audio']['common'] = tt('Audio is a not valid!');
+            $this->security_log->write('Uploaded audio file is not valid');
         }
 
         return !$this->_error;
