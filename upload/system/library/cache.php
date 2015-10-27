@@ -142,6 +142,7 @@ final class Cache {
     */
     public function clean($user_id = false) {
         $this->_removeDirectory(DIR_IMAGE . 'cache' . DIR_SEPARATOR . $user_id);
+        $this->_removeDirectory(DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id);
     }
 
     /**
