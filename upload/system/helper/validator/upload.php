@@ -32,10 +32,30 @@ class ValidatorUpload {
             return false;
         } else {
 
-            // Common test
-            if (mb_strtolower($STORAGE_FILE_EXTENSION) != @pathinfo($file['name'], PATHINFO_EXTENSION)) {
+            // ClamAV test for viruses
+            $virus = false;
+            $code  = cl_scanfile($file['tmp_name'], $virus);
+
+            if (CL_VIRUS == $code) {
+
+                // Remove infected file
+                unlink($file);
+
+                // Security log
+                trigger_error(
+                    sprintf(
+                        'File path: %s Return code: %s Virus found name: %s',
+                        $file['tmp_name'],
+                        cl_pretcode($code),
+                        $virus
+                    )
+                );
+
+            // Test for allowed extension
+            } else if (mb_strtolower($STORAGE_FILE_EXTENSION) != @pathinfo($file['name'], PATHINFO_EXTENSION)) {
                 return false;
 
+            // Test for max size
             } else if ($max_file_size < @filesize($file['tmp_name']) / 1000000) {
                 return false;
             }

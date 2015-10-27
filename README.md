@@ -94,6 +94,8 @@ REQUIREMENTS
     php-curl
     bitcoind
     sphinxsearch
+    ffmpeg
+    clamav, php-clamav
 
 INSTALL
 -------
