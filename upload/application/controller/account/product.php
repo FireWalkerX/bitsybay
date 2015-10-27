@@ -2146,11 +2146,10 @@ class ControllerAccountProduct extends Controller {
             $this->_error['file']['common'] = tt('Uploaded package file is wrong!');
             $this->security_log->write('Uploaded package file is wrong (tmp_name or name indexes is not exists)');
 
-        } else if (!ValidatorUpload::fileValid( $this->request->files['package'],
-                                                $this->auth->getFileQuota() - ($this->storage->getUsedSpace($this->auth->getId()) - filesize($this->request->files['package']['tmp_name']) / 1000000),
-                                                STORAGE_FILE_EXTENSION)) {
+        } else if (!ValidatorUpload::packageValid($this->request->files['package'],
+                                                  $this->auth->getFileQuota() - ($this->storage->getUsedSpace($this->auth->getId()) - filesize($this->request->files['package']['tmp_name']) / 1000000))) {
 
-            $this->_error['file']['common'] = sprintf(tt('Package file is a not valid %s archive!'), mb_strtoupper(STORAGE_FILE_EXTENSION));
+            $this->_error['file']['common'] = tt('Package file is a not valid!');
             $this->security_log->write('Uploaded package file is not valid');
         }
 
