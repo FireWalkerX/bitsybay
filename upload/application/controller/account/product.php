@@ -44,6 +44,7 @@ class ControllerAccountProduct extends Controller {
         $this->load->helper('filter/uri');
         $this->load->helper('highlight');
 
+        $this->load->library('color');
         $this->load->library('identicon');
         $this->load->library('translate');
 
@@ -125,9 +126,13 @@ class ControllerAccountProduct extends Controller {
 
             // Load dependencies
             $translate = new Translate();
+            $color     = new Color();
 
             // Create languages registry
             $languages = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
+
+            // Set active directory
+            $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
 
             // Start transaction
             $this->db->beginTransaction();
@@ -187,8 +192,6 @@ class ControllerAccountProduct extends Controller {
             }
 
             // Add file
-            $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
-
             if ($file_content = file_get_contents($directory . $this->request->post['product_file_id'] . '.' . STORAGE_FILE_EXTENSION)) {
 
                 $product_file_id = $this->model_catalog_product->createProductFile( $product_id,
@@ -220,6 +223,7 @@ class ControllerAccountProduct extends Controller {
             if (isset($this->request->post['image'])) {
                 foreach ($this->request->post['image'] as $row => $image) {
 
+                        // Create product image
                         $product_image_id = $this->model_catalog_product->createProductImage($product_id,
                                                                                              $image['sort_order'],
                                                                                              $this->request->post['main_image'] == $row ? 1 : 0,
@@ -232,8 +236,23 @@ class ControllerAccountProduct extends Controller {
                                                                                         (empty(trim($title)) ? $translate->string($image['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                         }
 
+                        // Extract image colors
+                        if ($color->setImage($directory . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION) && $colors = $color->getColors()) {
+                            foreach ($colors as $key => $value) {
+
+                                $this->model_catalog_product->createProductImageColor(  $product_image_id,
+                                                                                        $value['hex'],
+                                                                                        $value['hue'],
+                                                                                        $value['saturation'],
+                                                                                        $value['value'],
+                                                                                        $value['red'],
+                                                                                        $value['green'],
+                                                                                        $value['blue'],
+                                                                                        $value['frequency']);
+                            }
+                        }
+
                         // Rename temporary file
-                        $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
                         rename(
                             $directory . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION,
                             $directory . $product_image_id . '.' . STORAGE_IMAGE_EXTENSION
@@ -380,9 +399,13 @@ class ControllerAccountProduct extends Controller {
 
             // Load dependencies
             $translate = new Translate();
+            $color     = new Color();
 
             // Create languages registry
             $languages = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
+
+            // Set active directory
+            $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
 
             // Start transaction
             $this->db->beginTransaction();
@@ -465,7 +488,6 @@ class ControllerAccountProduct extends Controller {
             }
 
             // Add file
-            $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
             if ($file_content = file_get_contents($directory . $this->request->post['product_file_id'] . '.' . STORAGE_FILE_EXTENSION)) {
 
                 $this->model_catalog_product->deleteProductFiles($product_id);
@@ -498,10 +520,13 @@ class ControllerAccountProduct extends Controller {
 
             if (isset($this->request->post['image'])) {
                 foreach ($this->request->post['image'] as $row => $image) {
+
+                    // Add new images
                     $product_image_id = $this->model_catalog_product->createProductImage($product_id,
                                                                                          $image['sort_order'],
                                                                                          $this->request->post['main_image'] == $row ? 1 : 0,
                                                                                          isset($image['watermark']) ? 1 : 0);
+
 
                     // Generate image titles
                     foreach ($image['title'] as $language_id => $title) {
@@ -510,8 +535,23 @@ class ControllerAccountProduct extends Controller {
                                                                                     (empty(trim($title)) ? $translate->string($image['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
 
+                    // Extract image colors
+                    if ($color->setImage($directory . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION) && $colors = $color->getColors()) {
+                        foreach ($colors as $key => $value) {
+
+                            $this->model_catalog_product->createProductImageColor(  $product_image_id,
+                                                                                    $value['hex'],
+                                                                                    $value['hue'],
+                                                                                    $value['saturation'],
+                                                                                    $value['value'],
+                                                                                    $value['red'],
+                                                                                    $value['green'],
+                                                                                    $value['blue'],
+                                                                                    $value['frequency']);
+                        }
+                    }
+
                     // Rename temporary file
-                    $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
                     rename(
                         $directory . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION,
                         $directory . $product_image_id . '.' . STORAGE_IMAGE_EXTENSION

@@ -418,6 +418,30 @@ CREATE TABLE `product_image` (
 ) ENGINE=InnoDBDEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `product_image_color`
+--
+
+DROP TABLE IF EXISTS `product_image_color`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_image_color` (
+  `product_image_color_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_image_id` int(10) unsigned NOT NULL,
+  `frequency` int(10) NOT NULL,
+  `hex` char(6) NOT NULL,
+  `hue` double NOT NULL,
+  `saturation` double NOT NULL,
+  `value` double NOT NULL,
+  `red` smallint(1) NOT NULL,
+  `green` smallint(1) NOT NULL,
+  `blue` smallint(1) NOT NULL,
+  PRIMARY KEY (`product_image_color_id`),
+  KEY `fk_product_image_color_product_image_id` (`product_image_id`),
+  CONSTRAINT `fk_product_image_color_product_image_id` FOREIGN KEY (`product_image_id`) REFERENCES `product_image` (`product_image_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 --
 -- Table structure for table `product_image_description`

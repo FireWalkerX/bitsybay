@@ -1016,6 +1016,69 @@ class ModelCatalogProduct extends Model {
             return false;
         }
     }
+    
+    /**
+     * Create product image color
+     *
+     * @param int $product_image_id
+     * @param string $hex
+     * @param float $hue
+     * @param float $saturation
+     * @param float $value
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     * @param int $frequency
+     * @return int|bool product_image_color_id or FALSE/rollBack if throw exception
+     */
+    public function createProductImageColor($product_image_id,
+                                            $hex,
+                                            $hue,
+                                            $saturation,
+                                            $value,
+                                            $red,
+                                            $green,
+                                            $blue,
+                                            $frequency) {
+
+        try {
+            $statement = $this->db->prepare('INSERT INTO `product_image_color` SET  `product_image_id`  = :product_image_id,
+                                                                                    `hex`               = :hex,
+                                                                                    `hue`               = :hue,
+                                                                                    `saturation`        = :saturation,
+                                                                                    `value`             = :value,
+                                                                                    `red`               = :red,
+                                                                                    `green`             = :green,
+                                                                                    `blue`              = :blue,
+                                                                                    `frequency`         = :frequency');
+
+            $statement->execute(
+                array(
+                    ':product_image_id' => $product_image_id,
+                    ':hex'              => $hex,
+                    ':hue'              => $hue,
+                    ':saturation'       => $saturation,
+                    ':value'            => $value,
+                    ':red'              => $red,
+                    ':green'            => $green,
+                    ':blue'             => $blue,
+                    ':frequency'        => $frequency
+                )
+            );
+
+            return $this->db->lastInsertId();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
 
     /**
     * Update product image info
@@ -1502,10 +1565,16 @@ class ModelCatalogProduct extends Model {
     public function deleteProductImages($product_id) {
 
         try {
+
             $statement = $this->db->prepare('DELETE `pid` FROM `product_image_description` AS `pid` JOIN `product_image` AS `pi` ON (`pi`.`product_image_id` = `pid`.`product_image_id`) WHERE `pi`.`product_id` = ?');
             $statement->execute(array($product_id));
 
             $affected = $statement->rowCount();
+
+            $statement = $this->db->prepare('DELETE `pic` FROM `product_image_color` AS `pic` JOIN `product_image` AS `pi` ON (`pi`.`product_image_id` = `pic`.`product_image_id`) WHERE `pi`.`product_id` = ?');
+            $statement->execute(array($product_id));
+
+            $affected += $statement->rowCount();
 
             $statement = $this->db->prepare('DELETE FROM `product_image` WHERE `product_id` = ?');
             $statement->execute(array($product_id));
