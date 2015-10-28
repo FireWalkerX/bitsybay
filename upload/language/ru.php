@@ -428,6 +428,7 @@ $_translation = array(
 'Temporary package file is wrong' => 'Проблема с файлом. Пожалуйста, повторите загрузку.',
 'Invalid URL format' => 'Неправильный формат URL',
 'Image successfully uploaded!' => 'Изображение успешно загружено!',
+'Audio successfully uploaded!' => 'Звуковая дорожка успешно добавлена!',
 'Main demo is required' => 'Необходимо указать основную демонстрацию',
 'Pic' => 'Изображение',
 'Added' => 'Добавлено',
@@ -472,6 +473,8 @@ $_translation = array(
 'Default' => 'Стандартно',
 'All products' => 'Все товары',
 'Are you sure that you want to permanently delete %s?' => 'Вы уверенны, что хотите безвозвратно удалить товар %s?',
+'Time Limit' => 'Лимит времени',
+'Upload audio' => 'Загрузить',
 
 // Verification
 'Verification' => 'Верификация',

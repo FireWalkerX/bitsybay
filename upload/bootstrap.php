@@ -66,6 +66,10 @@ $registry->set('language', $language);
 $currency = new Currency($registry, DEFAULT_CURRENCY_ID);
 $registry->set('currency', $currency);
 
+// Currency
+$ffmpeg = new FFmpeg(FFMPEG_PATH);
+$registry->set('ffmpeg', $ffmpeg);
+
 // Cache
 $cache = new Cache($registry);
 $registry->set('cache', $cache);

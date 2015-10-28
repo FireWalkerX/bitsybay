@@ -24,7 +24,6 @@ class ControllerAccountProduct extends Controller {
         $this->load->model('common/language');
         $this->load->model('common/currency');
         $this->load->model('common/video_server');
-        $this->load->model('common/audio_server');
         $this->load->model('common/redirect');
         $this->load->model('common/license');
 
@@ -39,7 +38,6 @@ class ControllerAccountProduct extends Controller {
         $this->load->helper('validator/youtube');
         $this->load->helper('validator/vimeo');
         $this->load->helper('validator/bitcoin');
-        $this->load->helper('validator/soundcloud');
 
         $this->load->helper('filter/uri');
         $this->load->helper('highlight');
@@ -871,15 +869,14 @@ class ControllerAccountProduct extends Controller {
             $audio_filename = '_' . sha1(rand().microtime().$this->auth->getId());
 
             // Save audio to the temporary file
-            $audio = new FFmpeg(FFMPEG_PATH);
-            $audio->convertToOGG(
+            $this->ffmpeg->convertToOGG(
                 $this->request->files['audio']['tmp_name'][$this->request->get['row']],
                 $audio_path . $audio_filename  . '.' . STORAGE_AUDIO_EXTENSION
             );
 
             $json = array(
                 'success_message'   => tt('Audio successfully uploaded!'),
-                'url'               => $this->cache->audio($audio_filename, $this->auth->getId(), true),
+                'url'               => $this->cache->audio($audio_filename, $this->auth->getId()),
                 'product_audio_id'  => $audio_filename
             );
 
@@ -1250,35 +1247,46 @@ class ControllerAccountProduct extends Controller {
         if (isset($this->request->post['audio'])) {
             foreach ($this->request->post['audio'] as $row => $audio) {
 
-                $audio_rows[] = $row;
-
-                $audio_titles = array();
+                $audio_rows[]      = $row;
+                $audio_titles      = array();
+                $product_audio_url = false;
 
                 foreach ($audio['title'] as $language_id => $title) {
                     $audio_titles[$language_id] = $title;
                 }
 
+                // If audio already stored in exist product
+                if ( isset($audio['product_audio_id']) &&
+                    !empty($audio['product_audio_id']) &&
+                    file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_IMAGE_EXTENSION)) {
+
+                    $product_audio_url = $this->cache->audio($audio['product_audio_id'], $this->auth->getId());
+                }
+
                 $data['audios'][$row] = array(
-                    'source' => isset($audio['source']) ? $audio['source'] : false,
-                    'id'     => isset($audio['id']) ? $audio['id'] : false,
-                    'title'  => $audio_titles);
+                    'product_audio_id'     => $audio['product_audio_id'],
+                    'url'                  => $product_audio_url,
+                    'limit'                => isset($audio['limit']) ? 1 : 0,
+                    'title'                => $audio_titles);
             }
 
         } else if ($product_info) {
-            foreach ($this->model_catalog_product->getProductAudios($product_info->product_id, $this->language->getId()) as $product_audio) {
 
-                $audio_rows[] = $product_audio->product_audio_id;
+            foreach ($this->model_catalog_product->getProductAudios($product_info->product_id) as $row => $audio) {
 
+                $row++;
+                $audio_rows[] = $row;
                 $audio_titles = array();
 
-                foreach ($this->model_catalog_product->getProductAudioDescriptions($product_audio->product_audio_id, $this->language->getId()) as $audio_description) {
+                foreach ($this->model_catalog_product->getProductAudioDescriptions($audio->product_audio_id, $this->language->getId()) as $audio_description) {
                     $audio_titles[$audio_description->language_id] = $audio_description->title;
                 }
 
-                $data['audios'][$product_audio->product_audio_id] = array(
-                    'source' => $product_audio->audio_server_id,
-                    'id'     => $product_audio->id,
-                    'title'  => $audio_titles);
+                $data['audios'][$row] = array(
+                    'product_audio_id' => $audio->product_audio_id,
+                    'limit'            => $audio->limit,
+                    'url'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId()),
+                    'title'            => $audio_titles);
             }
         }
 
@@ -1349,11 +1357,6 @@ class ControllerAccountProduct extends Controller {
         // Video servers
         foreach ($this->model_common_video_server->getVideoServers() as $video_server) {
             $data['video_servers'][$video_server->video_server_id] = $video_server->name;
-        }
-
-        // Audio servers
-        foreach ($this->model_common_audio_server->getAudioServers() as $audio_server) {
-            $data['audio_servers'][$audio_server->audio_server_id] = $audio_server->name;
         }
 
         // Currencies list
@@ -1475,7 +1478,7 @@ class ControllerAccountProduct extends Controller {
             $this->security_log->write('Try to load package file without ajax interface');
             unset($this->request->files['package']);
 
-        } else if (!isset($this->request->get['product_id']) && empty($this->request->post['product_file_id'])) {
+        } else if (empty($this->request->post['product_file_id'])) {
 
             $this->_error['file']['common'] = tt('Package file is required');
 
@@ -1654,8 +1657,13 @@ class ControllerAccountProduct extends Controller {
                     break;
                 }
 
+                // Check if new temporary and stored image fields is not empty
+                if (empty($image['product_image_id'])) {
+                    $this->_error['image']['common'] = tt('Image file is required');
+                }
+
                 // Check temporary image file if exists
-                if (!file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION)) {
+                if (!empty($image['product_image_id']) && !file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION)) {
 
                     $this->_error['image']['common'] = tt('Temporary image ID is wrong');
                     $this->security_log->write('Try to access not own\'s temporary image file');
@@ -1663,16 +1671,11 @@ class ControllerAccountProduct extends Controller {
                     unset($this->request->post['image']);
                     break;
                 }
-
-                // Check if new temporary and stored image fields is not empty
-                if (isset($this->request->get['product_id']) && empty($image['product_image_id']) && empty($image['product_image_id'])) {
-                    $this->_error['image']['common'] = tt('Image file is required');
-                }
             }
 
             // Maximum images per one product
             if (QUOTA_IMAGES_PER_PRODUCT < $image_count) {
-                $this->_error['image']['common'] = sprintf(tt('Maximum %s images pages per one product'), QUOTA_DEMO_PER_PRODUCT);
+                $this->_error['image']['common'] = sprintf(tt('Maximum %s images pages per one product'), QUOTA_IMAGES_PER_PRODUCT);
 
                 // Filter critical request
                 $this->security_log->write('Exceeded limit of product images');
@@ -1789,7 +1792,7 @@ class ControllerAccountProduct extends Controller {
 
             // Maximum video pages per product
             if (QUOTA_VIDEO_PER_PRODUCT < $video_count) {
-                $this->_error['video']['common'] = sprintf(tt('Maximum %s video links per one product'), QUOTA_DEMO_PER_PRODUCT);
+                $this->_error['video']['common'] = sprintf(tt('Maximum %s video links per one product'), QUOTA_VIDEO_PER_PRODUCT);
 
                 // Filter critical request
                 $this->security_log->write('Exceeded limit of product videos');
@@ -1799,6 +1802,9 @@ class ControllerAccountProduct extends Controller {
 
         // Audios
         if (isset($this->request->post['audio'])) {
+
+            // Filter downloads (moved to AJAX)
+            unset($this->request->files['audio']);
 
             $audio_count = 0;
             foreach ($this->request->post['audio'] as $row => $audio) {
@@ -1815,11 +1821,11 @@ class ControllerAccountProduct extends Controller {
 
                             // Filter critical request
                             $this->security_log->write('Wrong product audio language_id field');
-                            unset($this->request->post['audio'][$row]);
+                            unset($this->request->post['audio']);
                             break;
                         }
 
-                        // Title string validation
+                        // Title validation
                         if (empty($title) && $language_id == $this->language->getId()) {
                             $this->_error['audio'][$row]['title'][$language_id] = tt('Title is required');
                         } else if (!ValidatorProduct::titleValid(html_entity_decode($title))) {
@@ -1827,77 +1833,63 @@ class ControllerAccountProduct extends Controller {
                         }
                     }
                 } else {
-                    $this->_error['audio']['common'] = tt('Wrong title URL input');
+                    $this->_error['audio']['common'] = tt('Wrong title input');
 
                     // Filter critical request
-                    $this->security_log->write('Wrong product audio URL field');
-                    unset($this->request->post['audio'][$row]);
+                    $this->security_log->write('Wrong product audio title field');
+                    unset($this->request->post['audio']);
                     break;
                 }
 
-                // Source
-                if (!isset($audio['source'])) {
-                    $this->_error['audio']['common'] = tt('Wrong audio source input');
-
-                    // Filter critical request
-                    $this->security_log->write('Wrong product audio source field');
-                    unset($this->request->post['audio'][$row]);
-                    break;
-
-                } else {
-
-                    // Audio server validate
-                    $audio_server_info = $this->model_common_audio_server->getAudioServer($audio['source']);
-
-                    if (!$audio_server_info) {
-                        $this->_error['audio'][$row]['source'] = tt('Wrong audio_server_id source');
-
-                        // Filter critical request
-                        $this->security_log->write('Wrong product audio audio_server_id field');
-                        unset($this->request->post['audio'][$row]);
-                        break;
-
-                    } else {
-
-                        // ID relations validate
-                        if (isset($audio['id'])) {
-
-                            switch (mb_strtolower($audio_server_info->name)) {
-                                case 'soundcloud':
-                                    if (empty($audio['id'])) {
-                                        $this->_error['audio'][$row]['id'] = tt('SoundCloud ID is required');
-                                    } else if (!ValidatorSoundcloud::idValid(html_entity_decode($audio['id']))) {
-                                        $this->_error['audio'][$row]['id'] = tt('Invalid SoundCloud ID format');
-                                    }
-                                    break;
-                                default:
-                                    $this->_error['audio'][$row]['source'] = tt('Undefined audio source');
-                            }
-                        } else {
-                            $this->_error['audio']['common'] = tt('Wrong audio ID input');
-
-                            // Filter critical request
-                            $this->security_log->write('Wrong product audio ID field');
-                            unset($this->request->post['audio'][$row]);
-                            break;
-                        }
-                    }
-                }
-
-                // Sort order
+                // Require sort order field
                 if (!isset($audio['sort_order']) || !$audio['sort_order']) {
                     $this->_error['audio']['common'] = tt('Wrong sort order input');
 
                     // Filter critical request
                     $this->security_log->write('Wrong product audio sort_order field');
-                    unset($this->request->post['audio'][$row]);
+                    unset($this->request->post['audio']);
+                    break;
+                }
+
+                // Require product product_audio_id
+                if (!isset($audio['product_audio_id'])) {
+                    $this->_error['audio']['common'] = tt('Wrong temporary ID audio input');
+
+                    // Filter critical request
+                    $this->security_log->write('Wrong product audio product_audio_id field');
+                    unset($this->request->post['audio']);
+                    break;
+                }
+
+                // Require product product_audio_id
+                if (!isset($audio['product_audio_id'])) {
+                    $this->_error['audio']['common'] = tt('Wrong audio ID input');
+
+                    // Filter critical request
+                    $this->security_log->write('Wrong product audio product_audio_id field');
+                    unset($this->request->post['audio']);
+                    break;
+                }
+
+                // Check if new temporary and stored audio fields is not empty
+                if (empty($audio['product_audio_id'])) {
+                    $this->_error['audio']['common'] = tt('Audio file is required');
+                }
+
+                // Check temporary audio file if exists
+                if (!empty($audio['product_audio_id']) && !file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION)) {
+
+                    $this->_error['audio']['common'] = tt('Temporary audio ID is wrong');
+                    $this->security_log->write('Try to access not own\'s temporary audio file');
+
+                    unset($this->request->post['audio']);
                     break;
                 }
             }
 
-            // Maximum audio pages per product
+            // Maximum audios per one product
             if (QUOTA_AUDIO_PER_PRODUCT < $audio_count) {
-                $this->_error['audio']['common'] = sprintf(tt('Maximum %s audio links per one product'), QUOTA_DEMO_PER_PRODUCT);
+                $this->_error['audio']['common'] = sprintf(tt('Maximum %s audios pages per one product'), QUOTA_AUDIO_PER_PRODUCT);
 
                 // Filter critical request
                 $this->security_log->write('Exceeded limit of product audios');
@@ -2171,11 +2163,14 @@ class ControllerAccountProduct extends Controller {
             $this->_error['image']['common'] = tt('Image file is wrong!');
             $this->security_log->write('Uploaded image file is wrong');
 
-        } else if (!ValidatorUpload::imageValid(array('name'     => $this->request->files['image']['name'][$this->request->get['row']],
-                                                      'tmp_name' => $this->request->files['image']['tmp_name'][$this->request->get['row']]),
-                                                      QUOTA_IMAGE_MAX_FILE_SIZE,
-                                                      PRODUCT_IMAGE_ORIGINAL_MIN_WIDTH,
-                                                      PRODUCT_IMAGE_ORIGINAL_MIN_HEIGHT)) {
+        } else if (!ValidatorUpload::imageValid(
+            array(
+                'name'     => $this->request->files['image']['name'][$this->request->get['row']],
+                'tmp_name' => $this->request->files['image']['tmp_name'][$this->request->get['row']]
+            ),
+            QUOTA_IMAGE_MAX_FILE_SIZE,
+            PRODUCT_IMAGE_ORIGINAL_MIN_WIDTH,
+            PRODUCT_IMAGE_ORIGINAL_MIN_HEIGHT)) {
 
             $this->_error['image']['common'] = tt('This is a not valid image file!');
             $this->security_log->write('Uploaded image file is not valid');
@@ -2202,15 +2197,18 @@ class ControllerAccountProduct extends Controller {
     }
 
     private function _validateAudio() {
-
         if (!isset($this->request->files['audio']['tmp_name']) || !isset($this->request->files['audio']['name'])) {
 
             $this->_error['audio']['common'] = tt('Uploaded audio file is wrong!');
             $this->security_log->write('Uploaded audio file is wrong');
 
-        } else if (!ValidatorUpload::audioValid($this->request->files['audio'], QUOTA_AUDIO_MAX_FILE_SIZE)) {
+        } else if (!ValidatorUpload::audioValid(
+            array(
+                'name'     => $this->request->files['audio']['name'][$this->request->get['row']],
+                'tmp_name' => $this->request->files['audio']['tmp_name'][$this->request->get['row']]
+            ), QUOTA_AUDIO_MAX_FILE_SIZE)) {
 
-            $this->_error['audio']['common'] = tt('Audio is a not valid!');
+            $this->_error['audio']['common'] = tt('Audio is not valid!');
             $this->security_log->write('Uploaded audio file is not valid');
         }
 

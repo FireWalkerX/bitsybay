@@ -425,15 +425,13 @@ class ModelCatalogProduct extends Model {
         try {
             $statement = $this->db->prepare('SELECT
             `pa`.`product_audio_id`,
-            `pa`.`audio_server_id`,
-            `pa`.`id`,
-            `as`.`iframe_url`,
+            `pa`.`limit`,
             `pad`.`title`
 
             FROM `product_audio` AS `pa`
-            JOIN `audio_server` AS `as` ON (`as`.`audio_server_id` = `pa`.`audio_server_id`)
             LEFT JOIN `product_audio_description` AS `pad` ON (`pa`.`product_audio_id` = `pad`.`product_audio_id`)
-            WHERE `pa`.`product_id` = ? AND `pad`.`language_id` = ?');
+            WHERE `pa`.`product_id` = ?
+            AND `pad`.`language_id` = ?');
 
             $statement->execute(array($product_id, $language_id));
 
@@ -1165,26 +1163,23 @@ class ModelCatalogProduct extends Model {
     * Create product audio
     *
     * @param int $product_id
-    * @param int $audio_server_id
     * @param int $sort_order
     * @param string $id
     * @return int|bool product_audio_id or FALSE/rollBack if throw exception
     */
-    public function createProductAudio($product_id, $audio_server_id, $sort_order, $id) {
+    public function createProductAudio($product_id, $limit, $sort_order) {
 
         try {
             $statement = $this->db->prepare(
                 'INSERT INTO `product_audio` SET
                 `product_id`      = :product_id,
-                `audio_server_id` = :audio_server_id,
-                `sort_order`      = :sort_order,
-                `id`              = :id');
+                `limit`           = :limit,
+                `sort_order`      = :sort_order');
 
             $statement->execute(array(
-                ':product_id'      => $product_id,
-                ':audio_server_id' => $audio_server_id,
-                ':sort_order'      => $sort_order,
-                ':id'              => $id
+                ':product_id' => $product_id,
+                ':limit'      => $limit,
+                ':sort_order' => $sort_order
             ));
 
             return $this->db->lastInsertId();

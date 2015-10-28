@@ -169,7 +169,8 @@ td input[type=checkbox] {
     margin: 10px 0
 }
 
-.progress.image-upload {
+.progress.image-upload,
+.progress.audio-upload {
     height: 34px;
     margin-bottom: 0;
 }

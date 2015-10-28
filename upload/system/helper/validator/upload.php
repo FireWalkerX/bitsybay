@@ -23,27 +23,31 @@ class ValidatorUpload {
     * @return bool TRUE if valid ot FALSE if else
     */
     static public function fileValid($file, $max_file_size, $allowed_file_extensions) {
-        
+
         // Dependencies test
-        if (!isset($file['tmp_name']) || !isset($file['name'])) {
+        if (!isset($file['tmp_name']) || !isset($file['name']))
+
             return false;
 
         // Check for array keys existing
-        } else if (empty($file['tmp_name']) || empty($file['name'])) {
+        if (empty($file['tmp_name']) || empty($file['name']))
+
             return false;
 
         // Test for allowed extension
-        } else if (mb_strtolower($allowed_file_extensions) != @pathinfo($file['name'], PATHINFO_EXTENSION)) {
+        if (mb_strtolower($allowed_file_extensions) != @pathinfo($file['name'], PATHINFO_EXTENSION))
+
             return false;
 
         // Test for maximum file size
-        } else if ($max_file_size < @filesize($file['tmp_name']) / 1000000) {
+        if ($max_file_size < @filesize($file['tmp_name']) / 1000000)
+
             return false;
             
         // ClamAV scanning for viruses
-        } else if (CL_VIRUS == cl_scanfile($file['tmp_name'])) {
+        if (CL_VIRUS == cl_scanfile($file['tmp_name']))
+
             return false;
-        }
 
         // Success
         return true;
@@ -96,17 +100,13 @@ class ValidatorUpload {
             if (self::fileValid($image, $max_file_size, $extension)) {
 
                 // Manipulation test
-                if (!$image_size = @getimagesize($image['tmp_name'])) {
-                    return false;
-                }
+                if (!$image_size = @getimagesize($image['tmp_name'])) return false;
+
 
                 // Image size test
                 if (!isset($image_size[0]) || !isset($image_size[1]) ||
-                    empty($image_size[0]) ||  empty($image_size[1]) ||
-                    $image_size[0] < $min_width || $image_size[1] < $min_height) {
-
-                    return false;
-                }
+                     empty($image_size[0]) ||  empty($image_size[1]) ||
+                    $image_size[0] < $min_width || $image_size[1] < $min_height) return false;
 
                 return true;
             }
@@ -126,10 +126,7 @@ class ValidatorUpload {
     static public function audioValid($audio, $max_file_size, array $allowed_file_extensions = array('mp3', 'ogg', 'waw', 'wawe', 'mka', 'wma', 'mp4', 'm4a')) {
         
         foreach ($allowed_file_extensions as $extension) {
-            if (self::fileValid($audio, $max_file_size, $extension)) {
-
-                return true;
-            }
+            if (self::fileValid($audio, $max_file_size, $extension)) return true;
         }
         
         return false;
@@ -146,10 +143,7 @@ class ValidatorUpload {
     static public function videoValid($video, $max_file_size, array $allowed_file_extensions = array('mov', 'mpeg4', 'avi', 'wmv', 'mpegps', 'flv', '3gpp', 'webm')) {
 
         foreach ($allowed_file_extensions as $extension) {
-            if (self::fileValid($video, $max_file_size, $extension)) {
-
-                return true;
-            }
+            if (self::fileValid($video, $max_file_size, $extension)) return true;
         }
 
         return false;

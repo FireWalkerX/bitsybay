@@ -14,10 +14,10 @@
 
 final class Cache {
 
-    private $_request;
+    private $_ffmpeg;
 
     public function __construct(Registry $registry) {
-        $this->_request = $registry->get('request');
+        $this->_ffmpeg = $registry->get('ffmpeg');
     }
 
     /**
@@ -92,8 +92,8 @@ final class Cache {
     public function audio($name, $user_id, $bit_rate = 320, $overwrite = true, $start = false, $end = false) {
 
         $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
-        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
-        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
+        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
+        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
 
         // Force reset
         if ($overwrite) {
@@ -118,11 +118,8 @@ final class Cache {
                 }
             }
 
-            // Cache new audio
-            $audio = new FFmpeg(FFMPEG_PATH);
-
             // Create new cached file
-            $audio->convertToOGG(
+            $this->_ffmpeg->convertToMP3( // Safari and MS Explorer are #Sucks (I'm waiting for 100% ogg support)
                 $storage,
                 $cache,
                 $overwrite,

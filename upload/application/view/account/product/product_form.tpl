@@ -86,7 +86,7 @@
           <li><a href="#demos" data-toggle="tab"><?php echo tt('Demo') ?><?php echo isset($error['demo']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#images" data-toggle="tab" id="aImages"><?php echo tt('Images') ?><?php echo isset($error['image']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#videos" data-toggle="tab"><?php echo tt('Video') ?><?php echo isset($error['video']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
-          <li><a href="#audios" data-toggle="tab"><?php echo tt('Audio') ?><?php echo isset($error['audio']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
+          <li><a href="#audios" data-toggle="tab" id="aAudios"><?php echo tt('Audio') ?><?php echo isset($error['audio']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#prices" data-toggle="tab"><?php echo tt('Price') ?><?php echo isset($error['price']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#license" data-toggle="tab"><?php echo tt('License') ?><?php echo isset($error['license']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
         </ul>
@@ -394,66 +394,71 @@
           </div>
           <div class="tab-pane fade" id="audios">
             <?php if (isset($error['audio']['common'])) { ?>
-              <div class="alert alert-dismissible alert-danger">
-                <?php echo $error['audio']['common'] ?>
-              </div>
+            <div class="alert alert-dismissible alert-danger">
+              <?php echo $error['audio']['common'] ?>
+            </div>
             <?php } ?>
             <table class="table table-striped table-hover" id="productAudio">
               <thead>
-                <tr>
-                  <th><?php echo tt('Source') ?></th>
-                  <th><?php echo tt('ID') ?></th>
-                  <th><?php echo tt('Title') ?></th>
-                  <th class="column-action"><?php echo tt('Action') ?></th>
-                </tr>
+              <tr>
+                <th class="column-audio"><?php echo tt('Audio') ?></th>
+                <th><?php echo tt('Time Limit') ?></th>
+                <th><?php echo tt('Title') ?></th>
+                <th><?php echo tt('Action') ?></th>
+              </tr>
               </thead>
               <tbody>
-                <?php foreach ($audios as $row => $audio) { ?>
-                  <tr id="productAudioTr<?php echo $row ?>">
-                    <td class="form-group">
-                      <select name="audio[<?php echo $row ?>][source]" class="form-control" id="audioSource<?php echo $row ?>">
-                        <?php foreach ($audio_servers as $audio_server_id => $audio_server_name) { ?>
-                          <option value="<?php echo $audio_server_id ?>" <?php echo $audio_server_id == $audio['source'] ? 'selected="selected"' : false ?>><?php echo $audio_server_name ?></option>
-                        <?php } ?>
-                      </select>
-                      <?php if (isset($error['audio'][$row]['source'])) { ?>
-                        <div class="text-danger"><?php echo $error['audio'][$row]['source'] ?></div>
+              <?php foreach ($audios as $row => $audio) { ?>
+              <tr id="productAudioTr<?php echo $row ?>">
+                <td class="form-group">
+                  <?php if ($audio['url']) { ?>
+                  <div class="btn-file" id="audioTrack<?php echo $row ?>">
+                    <img src="<?php echo $audio['url'] ?>" alt="" />
+                    <input type="file" name="audio[<?php echo $row ?>]" id="inputAudio<?php echo $row ?>" value="" onchange="audioUpload(<?php echo $row ?>)" class="product-audio" />
+                  </div>
+                  <?php } else { ?>
+                  <div class="btn-file btn btn-success" id="audioTrack<?php echo $row ?>">
+                    <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload audio") ?></span>
+                    <img src="<?php echo $audio['url'] ?>" alt="" class="hide" />
+                    <input type="file" name="audio[<?php echo $row ?>]" id="inputAudio<?php echo $row ?>" value="" onchange="audioUpload(<?php echo $row ?>)" class="product-audio" />
+                  </div>
+                  <?php } ?>
+                  <div class="hide" id="audioUpload<?php echo $row ?>">
+                    <div class="progress progress-striped active audio-upload" >
+                      <div class="progress-bar progress-bar-success" id="audioProgress<?php echo $row ?>" ></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][protect]" id="inputAudioProtect<?php echo $row ?>" value="1" <?php echo ($audio['watermark'] ? 'checked="checked"' : false) ?> <?php echo ($audio['identicon'] ? 'disabled="disabled"' : false) ?> /> <?php echo tt('Protect') ?></label></td>
+          
+                <td class="form-group <?php echo isset($error['audio'][$row]['title']) ? 'has-error' : false ?>">
+                  <?php foreach ($audio['title'] as $language_id => $title) { ?>
+                    <?php if ($language_id != $this_language_id) { ?>
+                      <div class="language-version" onclick="$('#audioDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                    <?php } ?>
+                    <div id="audioDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
+                      <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputAudioTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
+                      <?php if (isset($error['audio'][$row]['title'][$language_id])) { ?>
+                        <div class="text-danger"><?php echo $error['audio'][$row]['title'][$language_id] ?></div>
                       <?php } ?>
-                    </td>
-
-                    <td class="form-group <?php echo isset($error['audio'][$row]['id']) ? 'has-error' : false ?>">
-                      <input type="text" name="audio[<?php echo $row ?>][id]" class="form-control" id="inputAudioId<?php echo $row ?>" placeholder="<?php echo tt('ID') ?>" value="<?php echo $audio['id'] ?>" />
-                      <?php if (isset($error['audio'][$row]['id'])) { ?>
-                        <div class="text-danger"><?php echo $error['audio'][$row]['id'] ?></div>
-                      <?php } ?>
-                    </td>
-                    <td class="form-group <?php echo isset($error['audio'][$row]['title']) ? 'has-error' : false ?>">
-                      <?php foreach ($audio['title'] as $language_id => $title) { ?>
-                        <?php if ($language_id != $this_language_id) { ?>
-                          <div class="language-version" onclick="$('#audioDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
-                        <?php } ?>
-                        <div id="audioDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
-                          <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputAudioTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
-                          <?php if (isset($error['audio'][$row]['title'][$language_id])) { ?>
-                            <div class="text-danger"><?php echo $error['audio'][$row]['title'][$language_id] ?></div>
-                          <?php } ?>
-                        </div>
-                      <?php } ?>
-                    </td>
-                    <td class="form-group">
-                      <input type="hidden" name="audio[<?php echo $row ?>][sort_order]" value="<?php echo $row ?>"  id="inputAudioSortOrder<?php echo $row ?>" />
-                      <span onclick="removeAudio(<?php echo $row ?>)" class="btn btn-danger">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        <?php echo tt('Remove') ?>
-                      </span>
-                    </td>
-                  </tr>
-                <?php } ?>
+                    </div>
+                  <?php } ?>
+                </td>
+                <td class="form-group">
+                  <input type="hidden" name="audio[<?php echo $row ?>][sort_order]" value="<?php echo $row ?>"  id="inputAudioSortOrder<?php echo $row ?>" />
+                  <input type="hidden" name="audio[<?php echo $row ?>][product_audio_id]" value="<?php echo $audio['product_audio_id'] ?>" id="productAudioId<?php echo $row ?>" />
+                  <div onclick="removeAudio(<?php echo $row ?>)" class="btn btn-danger">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo tt('Remove') ?>
+                  </div>
+                </td>
+              </tr>
+              <?php } ?>
               </tbody>
               <tfoot>
                 <tr>
                   <td colspan="3"></td>
-                  <td>
+                  <td class="column-action">
                     <span onclick="addAudio()" class="btn btn-success">
                       <i class="glyphicon glyphicon-plus"></i>
                       <?php echo tt('Add audio') ?>
@@ -690,7 +695,7 @@
       return false;
     }
 
-    $('.product-package, .product-image').val('');
+    $('.product-package, .product-image, .product-audio').val('');
     $('#productForm').submit();
 
   });
@@ -698,7 +703,7 @@
   <!-- File upload -->
   $('#inputPackage').change(function(){
 
-    $('.product-image').val('');
+    $('.product-image, .product-audio').val('');
 
     var formData = new FormData($('#productForm').get(0));
 
@@ -837,6 +842,83 @@
             $('#imagePicture' + r + ' img').removeClass('hide').attr('src', e['url']);
             $('#imagePicture' + r).removeClass('btn btn-success');
             $('#inputImageWatermark' + r).attr('disabled', false);
+          } else {
+            alert('Internal server error! Please, try again later.');
+          }
+        },
+        error: function (e) {
+          alert('Internal server error! Please, try again later.');
+        },
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+  }
+
+  <!-- Audio upload -->
+  function audioUpload(r) {
+
+    $('.product-package, .product-image').val('');
+
+    var formData = new FormData($('#productForm').get(0));
+
+    $.ajax({
+        url: 'ajax/upload/audio?row=' + r,
+        type: 'POST',
+                      xhr: function() {
+                          var myXhr = $.ajaxSettings.xhr();
+                          if(myXhr.upload){
+                              myXhr.upload.addEventListener(
+                                  'progress',
+                                  function (e) {
+                                    if (e.lengthComputable) {
+                                      $('#audioProgress' + r).attr({style: 'width:' + Math.round((e.loaded / e.total) * 100) + '%'});
+                                    }
+                                  },
+                                  false);
+                          }
+                          return myXhr;
+                      },
+        beforeSend: function(e) {
+
+          if (!fs_disabled.length) {
+            $('#submitForm').addClass('disabled').prepend('<i class="glyphicon glyphicon-hourglass"></i> ');
+          }
+
+          fs_disabled.push('audio-' + r);
+
+          $('#audioTrack' + r).addClass('hide');
+          $('#audioUpload' + r).removeClass('hide');
+
+          $('#audios .alert-danger, #audios .alert-success, #aAudios .text-danger').remove();
+        },
+        success: function (e) {
+
+          fs_disabled.shift();
+
+          if (!fs_disabled.length) {
+            $('#submitForm i').remove();
+            $('#submitForm').removeClass('disabled');
+          }
+
+          $('#audioTrack' + r).removeClass('hide');
+          $('#audioUpload' + r).addClass('hide');
+
+          if (e['error_message']) {
+
+            $('#aAudios .text-danger, #audios .alert-danger').remove();
+
+            $('#aAudios').append(' <span class="text-danger">*</span>');
+            $('#audios').prepend('<div class="alert alert-dismissible alert-danger">' + e['error_message'] + '</div>');
+          } else if (e['success_message']) {
+            $('#aAudios .text-danger, #audios .alert-danger, #inputAudio' + r + ', #audioTrack' + r + ' span').remove();
+            $('#audios .alert.alert-dismissible.alert-success').remove();
+            $('#audios').prepend('<div class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">×</button> ' + e['success_message'] + '</div>');
+            $('#productAudioId' + r).val(e['product_audio_id']);
+            $('#audioTrack' + r + ' source').attr('src', e['url']);
+            $('#audioTrack' + r + ' audio').removeClass('hide').load();
+            $('#audioTrack' + r).removeClass('btn-file btn btn-success');
           } else {
             alert('Internal server error! Please, try again later.');
           }
@@ -1040,10 +1122,25 @@
     audio_l++;
 
     html  = '<tr id="productAudioTr' + audio_r + '">';
-    html += '<td class="form-group"><select name="audio[' + audio_r + '][source]" class="form-control" id="audioSource' + audio_r + '"><?php foreach ($audio_servers as $audio_server_id => $audio_server_name) { ?><option value="<?php echo $audio_server_id ?>"><?php echo $audio_server_name ?></option><?php } ?></select></td>';
-    html += '<td class="form-group"><input type="text" name="audio[' + audio_r + '][id]" class="form-control" id="inputAudioId' + audio_r + '" placeholder="<?php echo tt("ID") ?>" value="" /></td>';
+    html += '<td class="form-group">';
+    html += '<div class="btn-file btn btn-success" id="audioTrack' + audio_r + '">';
+    html += '  <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload audio") ?></span>';
+    html += '  <audio controls="controls" class="hide"><source src="" type="audio/mp3"></audio>';
+    html += '  <input type="file" name="audio[' + audio_r + ']" id="inputAudio' + audio_r + '" value="" onchange="audioUpload(' + audio_r + ')" class="product-audio" />';
+    html += '</div>';
+    html += '<div class="hide" id="audioUpload' + audio_r + '">';
+    html += '  <div class="progress progress-striped active audio-upload" >';
+    html += '    <div class="progress-bar progress-bar-success" id="audioProgress' + audio_r + '" ></div>';
+    html += '  </div>';
+    html += '</div>';
+    html += '</td>';
+
+    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][protect]" id="inputAudioProtect' + audio_r + '" value="1" /> <?php echo tt("Protect") ?></label></td>';
     html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#audioTitle<?php echo $language_id ?>-' + audio_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="audioTitle<?php echo $language_id ?>-' + audio_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[' + audio_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputAudioTitle' + audio_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
-    html += '<td class="form-group"><input type="hidden" name="audio[' + audio_r + '][sort_order]" value="' + audio_r + '" /><span onclick="removeAudio(' + audio_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span></td>';
+    html += '<td class="form-group">';
+    html += '  <input type="hidden" name="audio[' + audio_r + '][product_audio_id]" value="" id="productAudioId' + audio_r + '" />';
+    html += '  <input type="hidden" name="audio[' + audio_r + '][sort_order]" value="' + audio_r + '" /><span onclick="removeAudio(' + audio_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span>';
+    html += '</td>';
     html += '</tr>';
 
     $('#productAudio tbody').append(html, '\n');

@@ -80,3 +80,4 @@ require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/log.php');
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/image.php');
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/storage.php');
 require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/mail.php');
+require_once(DIR_BASE . 'system' . DIR_SEPARATOR . 'library/ffmpeg.php');
