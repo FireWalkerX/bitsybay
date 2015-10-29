@@ -90,9 +90,7 @@ final class Cache {
     * @return string Cached Audio URL
     */
     public function audio($name, $user_id, $bit_rate = 320, $overwrite = true, $start = false, $end = false) {
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
+
         $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
         $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
         $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
