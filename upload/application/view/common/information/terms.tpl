@@ -61,7 +61,6 @@
                 <li><?php echo tt('We save and use your personal information only for providing services of this website and for contacting you') ?>;</li>
                 <li><?php echo tt('We do not give your personal information to third parties') ?>;</li>
                 <li><?php echo tt('We add cookies in various places on our website. They serve only to ensure correct login, saving language settings and for providing affiliate program') ?>;</li>
-                <li><?php echo tt('Social iframes from Youtube, Vimeo and SoundCloud may be integrated into our product pages') ?>;</li>
                 <li><?php echo sprintf(tt('For further information or questions regarding data protection at %s, please'), PROJECT_NAME) ?> <a href="contact"><?php echo tt('contact us') ?></a>.</li>
               </ul>
             </div>
