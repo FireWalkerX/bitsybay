@@ -89,7 +89,7 @@ final class Cache {
     * @param bool|int $end
     * @return string Cached Audio URL
     */
-    public function audio($name, $user_id, $bit_rate = 320, $overwrite = true, $start = false, $end = false) {
+    public function audio($name, $user_id, $bit_rate = 320, $overwrite = false, $start = false, $end = false) {
 
         $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
         $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
