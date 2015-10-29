@@ -41,13 +41,13 @@ final class Cache {
         $watermark   = DIR_IMAGE . 'common' . DIR_SEPARATOR . 'watermark.png';
         $cached_url  = URL_BASE . 'image' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '-' . (int) $best_fit . '-' . $width . '-' . $height . '.' . STORAGE_IMAGE_EXTENSION;
 
-        // Force reset
-        if ($overwrite) {
-            unlink($cache);
-        }
-
         // If image is cached
         if (file_exists($cache)) {
+
+            // Force reset
+            if ($overwrite) {
+                unlink($cache);
+            }
 
             return $cached_url;
 
@@ -95,13 +95,13 @@ final class Cache {
         $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
         $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
 
-        // Force reset
-        if ($overwrite) {
-            unlink($cache);
-        }
-
         // If audio is cached
         if (file_exists($cache)) {
+
+            // Force reset
+            if ($overwrite) {
+                unlink($cache);
+            }
 
             return $cached_url;
 
