@@ -52,10 +52,4 @@ final class Log {
     public function write($message) {
         fwrite($this->_handle, date('Y-m-d G:i:s') . ' - ' . print_r($message, true) . $this->_message_postfix . "\n");
     }
-    /**
-    * Destruct process
-    */
-    public function __destruct() {
-        fclose($this->_handle);
-    }
 }
