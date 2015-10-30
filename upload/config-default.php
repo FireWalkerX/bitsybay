@@ -65,6 +65,12 @@ define('USER_IMAGE_ORIGINAL_HEIGHT', 400);
 define('USER_IMAGE_ORIGINAL_MIN_WIDTH', 200);
 define('USER_IMAGE_ORIGINAL_MIN_HEIGHT', 200);
 
+// AUDIOS
+define('PRODUCT_AUDIO_TIME_START', 0);       // Seconds
+define('PRODUCT_AUDIO_TIME_END', 15);        // Seconds
+define('PRODUCT_AUDIO_CUT_TIME', 30);        // Seconds
+define('PRODUCT_AUDIO_REDUCE_BIT_RATE', 96); // kbps
+
 // PRICES
 define('FEE_PER_ORDER', 11);                    // Percent
 define('FEE_USER_VERIFICATION_AFFILIATE', 50);  // Percent

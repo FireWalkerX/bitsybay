@@ -19,10 +19,10 @@ class ValidatorUpload {
     *
     * @param array $file
     * @param int $max_file_size MB
-    * @param string $allowed_file_extensions
+    * @param string $allowed_file_extension
     * @return bool TRUE if valid ot FALSE if else
     */
-    static public function fileValid($file, $max_file_size, $allowed_file_extensions) {
+    static public function fileValid($file, $max_file_size, $allowed_file_extension) {
 
         // Dependencies test
         if (!isset($file['tmp_name']) || !isset($file['name']))
@@ -35,7 +35,7 @@ class ValidatorUpload {
             return false;
 
         // Test for allowed extension
-        if (mb_strtolower($allowed_file_extensions) != @pathinfo($file['name'], PATHINFO_EXTENSION))
+        if (mb_strtolower($allowed_file_extension) != @pathinfo($file['name'], PATHINFO_EXTENSION))
 
             return false;
 
@@ -100,13 +100,19 @@ class ValidatorUpload {
             if (self::fileValid($image, $max_file_size, $extension)) {
 
                 // Manipulation test
-                if (!$image_size = @getimagesize($image['tmp_name'])) return false;
+                if (!$image_size = @getimagesize($image['tmp_name'])) {
+
+                    return false;
+                }
 
 
                 // Image size test
                 if (!isset($image_size[0]) || !isset($image_size[1]) ||
                      empty($image_size[0]) ||  empty($image_size[1]) ||
-                    $image_size[0] < $min_width || $image_size[1] < $min_height) return false;
+                    $image_size[0] < $min_width || $image_size[1] < $min_height) {
+
+                    return false;
+                }
 
                 return true;
             }

@@ -425,7 +425,9 @@ class ModelCatalogProduct extends Model {
         try {
             $statement = $this->db->prepare('SELECT
             `pa`.`product_audio_id`,
-            `pa`.`limit`,
+            `pa`.`product_id`,
+            `pa`.`cut`,
+            `pa`.`reduce`,
             `pad`.`title`
 
             FROM `product_audio` AS `pa`
@@ -1163,22 +1165,25 @@ class ModelCatalogProduct extends Model {
     * Create product audio
     *
     * @param int $product_id
+    * @param int $cut
+    * @param int $reduce
     * @param int $sort_order
-    * @param string $id
     * @return int|bool product_audio_id or FALSE/rollBack if throw exception
     */
-    public function createProductAudio($product_id, $limit, $sort_order) {
+    public function createProductAudio($product_id, $cut, $reduce, $sort_order) {
 
         try {
             $statement = $this->db->prepare(
                 'INSERT INTO `product_audio` SET
                 `product_id`      = :product_id,
-                `limit`           = :limit,
+                `cut`             = :cut,
+                `reduce`          = :reduce,
                 `sort_order`      = :sort_order');
 
             $statement->execute(array(
                 ':product_id' => $product_id,
-                ':limit'      => $limit,
+                ':cut'        => $cut,
+                ':reduce'     => $reduce,
                 ':sort_order' => $sort_order
             ));
 

@@ -44,20 +44,18 @@
             <li><?php echo sprintf(tt('Allowed demos per product: %s'), QUOTA_DEMO_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productImageHints">
-            <li><?php echo tt('Allowed format: JPEG, PNG') ?></li>
+            <li><?php echo tt('JPEG, PNG') ?></li>
             <li><?php echo sprintf(tt('Min image Width: %s px'), PRODUCT_IMAGE_ORIGINAL_MIN_WIDTH) ?></li>
             <li><?php echo sprintf(tt('Min image Height: %s px'), PRODUCT_IMAGE_ORIGINAL_MIN_HEIGHT) ?></li>
             <li><?php echo sprintf(tt('Allowed images per product: %s'), QUOTA_IMAGES_PER_PRODUCT) ?></li>
             <li><?php echo tt('If image will not be changed we will generate it for you') ?></li>
           </ul>
           <ul id="productVideoHints">
-            <li><?php echo tt('The video used for demonstration or tutorial of your product') ?></li>
-            <li><?php echo tt('Upload your videos to supported video hosting site') ?></li>
-            <li><?php echo tt('Then copy share ID to this form') ?></li>
+            <li><?php echo tt('MOV, MPEG4, AVI, WMV, MPEGPS, FLV, 3GPP, WEBM') ?></li>
             <li><?php echo sprintf(tt('Allowed videos per product: %s'), QUOTA_VIDEO_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productAudioHints">
-            <li><?php echo tt('The audio used for demonstration or tutorial of your product') ?></li>
+            <li><?php echo tt('MP3, OGG, WAW, WAWE, MKA, WMA, MP4, M4A') ?></li>
             <li><?php echo sprintf(tt('Allowed audios per product: %s'), QUOTA_AUDIO_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productPriceHints">
@@ -402,7 +400,8 @@
               <thead>
               <tr>
                 <th class="column-audio"><?php echo tt('Audio') ?></th>
-                <th><?php echo tt('Time Limit') ?></th>
+                <th><?php echo sprintf(tt('First %s seconds'), PRODUCT_AUDIO_CUT_TIME) ?><sup></sup></th>
+                <th><?php echo sprintf(tt('Reduce to %s kbps'), PRODUCT_AUDIO_REDUCE_BIT_RATE) ?></sup></th>
                 <th><?php echo tt('Title') ?></th>
                 <th><?php echo tt('Action') ?></th>
               </tr>
@@ -411,17 +410,24 @@
               <?php foreach ($audios as $row => $audio) { ?>
               <tr id="productAudioTr<?php echo $row ?>">
                 <td class="form-group">
-                  <?php if ($audio['url']) { ?>
-                  <div class="btn-file" id="audioTrack<?php echo $row ?>">
-                    <img src="<?php echo $audio['url'] ?>" alt="" />
-                    <input type="file" name="audio[<?php echo $row ?>]" id="inputAudio<?php echo $row ?>" value="" onchange="audioUpload(<?php echo $row ?>)" class="product-audio" />
-                  </div>
+                  <?php if ($audio['ogg'] && $audio['mp3']) { ?>
+                    <div class="btn-file" id="audioTrack<?php echo $row ?>">
+                      <audio controls="controls" preload="none">
+                        <source id="audioOGG<?php echo $row ?>" src="<?php echo $audio['ogg'] ?>" type="audio/ogg" />
+                        <source id="audioMP3<?php echo $row ?>" src="<?php echo $audio['mp3'] ?>" type="audio/mpeg" />
+                        <?php echo tt('Your browser does not support the audio element.') ?>
+                      </audio>
+                    </div>
                   <?php } else { ?>
-                  <div class="btn-file btn btn-success" id="audioTrack<?php echo $row ?>">
-                    <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload audio") ?></span>
-                    <img src="<?php echo $audio['url'] ?>" alt="" class="hide" />
-                    <input type="file" name="audio[<?php echo $row ?>]" id="inputAudio<?php echo $row ?>" value="" onchange="audioUpload(<?php echo $row ?>)" class="product-audio" />
-                  </div>
+                    <div class="btn-file btn btn-success" id="audioTrack<?php echo $row ?>">
+                      <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload audio") ?></span>
+                      <audio controls="controls" preload="none" class="hide">
+                        <source id="audioOGG<?php echo $row ?>" src="" type="audio/ogg" />
+                        <source id="audioMP3<?php echo $row ?>" src="" type="audio/mpeg" />
+                        <?php echo tt('Your browser does not support the audio element.') ?>
+                      </audio>
+                      <input type="file" name="audio[<?php echo $row ?>]" id="inputAudio<?php echo $row ?>" value="" onchange="audioUpload(<?php echo $row ?>)" class="product-audio" />
+                    </div>
                   <?php } ?>
                   <div class="hide" id="audioUpload<?php echo $row ?>">
                     <div class="progress progress-striped active audio-upload" >
@@ -429,8 +435,8 @@
                     </div>
                   </div>
                 </td>
-                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][protect]" id="inputAudioProtect<?php echo $row ?>" value="1" <?php echo ($audio['watermark'] ? 'checked="checked"' : false) ?> <?php echo ($audio['identicon'] ? 'disabled="disabled"' : false) ?> /> <?php echo tt('Protect') ?></label></td>
-          
+                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][cut]" value="1" <?php echo ($audio['cut'] ? 'checked="checked"' : false) ?> /> <?php echo tt('Cut') ?></label></td>
+                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][reduce]" value="1" <?php echo ($audio['reduce'] ? 'checked="checked"' : false) ?> /> <?php echo tt('Reduce') ?></label></td>
                 <td class="form-group <?php echo isset($error['audio'][$row]['title']) ? 'has-error' : false ?>">
                   <?php foreach ($audio['title'] as $language_id => $title) { ?>
                     <?php if ($language_id != $this_language_id) { ?>
@@ -457,7 +463,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="3"></td>
+                  <td colspan="4"></td>
                   <td class="column-action">
                     <span onclick="addAudio()" class="btn btn-success">
                       <i class="glyphicon glyphicon-plus"></i>
@@ -762,6 +768,7 @@
             $('#packageControlSum, #inputPackageButton').removeClass('hide');
             $('#inputPackageButton legend').html('<?php echo tt("Update your package") ?>');
             $('#inputPackageButton span').html('<?php echo tt("Update file") ?>');
+            $('#files .alert-danger').remove();
           } else {
             alert('Internal server error! Please, try again later.');
           }
@@ -916,7 +923,8 @@
             $('#audios .alert.alert-dismissible.alert-success').remove();
             $('#audios').prepend('<div class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">×</button> ' + e['success_message'] + '</div>');
             $('#productAudioId' + r).val(e['product_audio_id']);
-            $('#audioTrack' + r + ' source').attr('src', e['url']);
+            $('#audioOGG' + r).attr('src', e['ogg']);
+            $('#audioMP3' + r).attr('src', e['mp3']);
             $('#audioTrack' + r + ' audio').removeClass('hide').load();
             $('#audioTrack' + r).removeClass('btn-file btn btn-success');
           } else {
@@ -1125,7 +1133,11 @@
     html += '<td class="form-group">';
     html += '<div class="btn-file btn btn-success" id="audioTrack' + audio_r + '">';
     html += '  <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload audio") ?></span>';
-    html += '  <audio controls="controls" class="hide"><source src="" type="audio/mp3"></audio>';
+    html += '  <audio controls="controls" preload="none" class="hide">';
+    html += '    <source id="audioOGG' + audio_r + '" src="" type="audio/ogg" />';
+    html += '    <source id="audioMP3' + audio_r + '" src="" type="audio/mpeg" />';
+    html += '    <?php echo tt('Your browser does not support the audio element.') ?>';
+    html += '  </audio>';
     html += '  <input type="file" name="audio[' + audio_r + ']" id="inputAudio' + audio_r + '" value="" onchange="audioUpload(' + audio_r + ')" class="product-audio" />';
     html += '</div>';
     html += '<div class="hide" id="audioUpload' + audio_r + '">';
@@ -1135,7 +1147,8 @@
     html += '</div>';
     html += '</td>';
 
-    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][protect]" id="inputAudioProtect' + audio_r + '" value="1" /> <?php echo tt("Protect") ?></label></td>';
+    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][cut]" /> <?php echo tt("Cut") ?></label></td>';
+    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][reduce]" /> <?php echo tt("Reduce") ?></label></td>';
     html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#audioTitle<?php echo $language_id ?>-' + audio_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="audioTitle<?php echo $language_id ?>-' + audio_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[' + audio_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputAudioTitle' + audio_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group">';
     html += '  <input type="hidden" name="audio[' + audio_r + '][product_audio_id]" value="" id="productAudioId' + audio_r + '" />';

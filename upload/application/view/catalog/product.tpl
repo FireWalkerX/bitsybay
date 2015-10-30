@@ -45,17 +45,27 @@
           <?php } ?>
         </div>
       <?php } ?>
-      <?php if ($product_videos > 1) { ?>
+      <?php if ($product_videos) { ?>
         <div class="bs-component product-videos">
           <?php foreach ($product_videos as $key => $video) { ?>
             <div class="product-video <?php echo $color_labels[$key+3] ?>" onclick="zoomVideo('<?php echo $video['url'] ?>', '<?php echo $video['title'] ?>')" data-toggle="modal" data-target="#zoomVideo"><i class="glyphicon glyphicon-facetime-video"></i></div>
           <?php } ?>
         </div>
       <?php } ?>
-      <?php if ($product_audios > 1) { ?>
+      <?php if ($product_audios) { ?>
         <div class="bs-component product-audios">
+          <audio id="audio" preload="none">
+            <source id="audioOGG" src="" type="audio/ogg" />
+            <source id="audioMP3" src="" type="audio/mpeg" />
+            <?php echo tt('Your browser does not support the audio element.') ?>
+          </audio>
           <?php foreach ($product_audios as $key => $audio) { ?>
-            <div class="product-audio <?php echo $color_labels[$key+3] ?>" onclick="zoomAudio('<?php echo $audio['url'] ?>&amp;auto_play=true&amp;hide_related=false&amp;show_comments=false&amp;show_user=false&amp;show_reposts=false&amp;buying=false&amp;sharing=false&amp;download=false&amp;download=show_bpm&amp;show_artwork=true&amp;show_playcount=false', '<?php echo $audio['title'] ?>')" data-toggle="modal" data-target="#zoomAudio"><i class="glyphicon glyphicon-music"></i></div>
+            <h5 id="audio<?php echo $key ?>" class="audio" onclick="audio(<?php echo $key ?>, '<?php echo $audio['ogg'] ?>', '<?php echo $audio['mp3'] ?>')">
+              <span class="btn btn-default btn-xs">
+                <i class="glyphicon glyphicon-music"></i>
+              </span>
+              <?php echo sprintf(tt('Track %s: %s'), $key + 1, $audio['title']) ?>
+            </h5>
           <?php } ?>
         </div>
       <?php } ?>

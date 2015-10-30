@@ -90,6 +90,17 @@ final class Storage {
 
             $registry = array();
 
+            // Collect files
+            $statement = $this->_db->prepare('SELECT * FROM `product_file` AS `pf` JOIN `product` AS `p` ON (`pf`.`product_id` = `p`.`product_id`) WHERE `p`.`user_id` = ?');
+            $statement->execute(array($user_id));
+
+            if ($statement->rowCount()) {
+
+                foreach ($statement->fetchAll() as $file) {
+                    $registry[] = $file->product_file_id . '.' . STORAGE_FILE_EXTENSION;
+                }
+            }
+
             // Collect images
             $statement = $this->_db->prepare('SELECT * FROM `product_image` AS `pi` JOIN `product` AS `p` ON (`pi`.`product_id` = `p`.`product_id`) WHERE `p`.`user_id` = ?');
             $statement->execute(array($user_id));
@@ -101,14 +112,14 @@ final class Storage {
                 }
             }
 
-            // Collect files
-            $statement = $this->_db->prepare('SELECT * FROM `product_file` AS `pf` JOIN `product` AS `p` ON (`pf`.`product_id` = `p`.`product_id`) WHERE `p`.`user_id` = ?');
+            // Collect audios
+            $statement = $this->_db->prepare('SELECT * FROM `product_audio` AS `pa` JOIN `product` AS `p` ON (`pa`.`product_id` = `p`.`product_id`) WHERE `p`.`user_id` = ?');
             $statement->execute(array($user_id));
 
             if ($statement->rowCount()) {
 
-                foreach ($statement->fetchAll() as $file) {
-                    $registry[] = $file->product_file_id . '.' . STORAGE_FILE_EXTENSION;
+                foreach ($statement->fetchAll() as $audio) {
+                    $registry[] = $audio->product_audio_id . '.' . STORAGE_AUDIO_EXTENSION;
                 }
             }
 

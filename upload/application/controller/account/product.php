@@ -301,15 +301,20 @@ class ControllerAccountProduct extends Controller {
                 foreach ($this->request->post['audio'] as $audio) {
 
                     $product_audio_id = $this->model_catalog_product->createProductAudio($product_id,
-                                                                                         $audio['source'],
-                                                                                         $audio['sort_order'],
-                                                                                         $audio['id']);
+                                                                                        (isset($audio['cut']) ? 1 : 0),
+                                                                                        (isset($audio['reduce']) ? 1 : 0),
+                                                                                         $audio['sort_order']);
 
                     foreach ($audio['title'] as $language_id => $title) {
                          $this->model_catalog_product->createProductAudioDescription($product_audio_id,
                                                                                      $language_id,
                                                                                      (empty(trim($title)) ? $translate->string($audio['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
+
+                    rename(
+                        $directory . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION,
+                        $directory . $product_audio_id . '.' . STORAGE_AUDIO_EXTENSION
+                    );
                 }
             }
 
@@ -550,7 +555,6 @@ class ControllerAccountProduct extends Controller {
                         }
                     }
 
-                    // Rename temporary file
                     rename(
                         $directory . $image['product_image_id'] . '.' . STORAGE_IMAGE_EXTENSION,
                         $directory . $product_image_id . '.' . STORAGE_IMAGE_EXTENSION
@@ -588,8 +592,8 @@ class ControllerAccountProduct extends Controller {
 
                     foreach ($video['title'] as $language_id => $title) {
                          $this->model_catalog_product->createProductVideoDescription($product_video_id,
-                                                                                        $language_id,
-                                                                                        (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
+                                                                                     $language_id,
+                                                                                     (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
                 }
             }
@@ -597,16 +601,25 @@ class ControllerAccountProduct extends Controller {
             // Add audios
             $this->model_catalog_product->deleteProductAudios($product_id);
 
+            // Add audios
             if (isset($this->request->post['audio'])) {
                 foreach ($this->request->post['audio'] as $audio) {
 
-                    $product_audio_id = $this->model_catalog_product->createProductAudio($product_id, $audio['source'], $audio['sort_order'], $audio['id']);
+                    $product_audio_id = $this->model_catalog_product->createProductAudio($product_id,
+                                                                                        (isset($audio['cut']) ? 1 : 0),
+                                                                                        (isset($audio['reduce']) ? 1 : 0),
+                                                                                        $audio['sort_order']);
 
                     foreach ($audio['title'] as $language_id => $title) {
-                         $this->model_catalog_product->createProductAudioDescription($product_audio_id,
-                                                                                     $language_id,
-                                                                                     (empty(trim($title)) ? $translate->string($audio['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
+                        $this->model_catalog_product->createProductAudioDescription($product_audio_id,
+                                                                                    $language_id,
+                                                                                    (empty(trim($title)) ? $translate->string($audio['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
+
+                    rename(
+                        $directory . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION,
+                        $directory . $product_audio_id . '.' . STORAGE_AUDIO_EXTENSION
+                    );
                 }
             }
 
@@ -876,7 +889,8 @@ class ControllerAccountProduct extends Controller {
 
             $json = array(
                 'success_message'   => tt('Audio successfully uploaded!'),
-                'url'               => $this->cache->audio($audio_filename, $this->auth->getId()),
+                'ogg'               => $this->cache->audio($audio_filename, $this->auth->getId(), 'OGG'),
+                'mp3'               => $this->cache->audio($audio_filename, $this->auth->getId(), 'MP3'),
                 'product_audio_id'  => $audio_filename
             );
 
@@ -1249,7 +1263,8 @@ class ControllerAccountProduct extends Controller {
 
                 $audio_rows[]      = $row;
                 $audio_titles      = array();
-                $product_audio_url = false;
+                $mp3               = false;
+                $ogg               = false;
 
                 foreach ($audio['title'] as $language_id => $title) {
                     $audio_titles[$language_id] = $title;
@@ -1258,21 +1273,24 @@ class ControllerAccountProduct extends Controller {
                 // If audio already stored in exist product
                 if ( isset($audio['product_audio_id']) &&
                     !empty($audio['product_audio_id']) &&
-                    file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_IMAGE_EXTENSION)) {
+                    file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION)) {
 
-                    $product_audio_url = $this->cache->audio($audio['product_audio_id'], $this->auth->getId());
+                    $mp3 = $this->cache->audio($audio['product_audio_id'], $this->auth->getId(), 'MP3');
+                    $ogg = $this->cache->audio($audio['product_audio_id'], $this->auth->getId(), 'OGG');
                 }
 
                 $data['audios'][$row] = array(
-                    'product_audio_id'     => $audio['product_audio_id'],
-                    'url'                  => $product_audio_url,
-                    'limit'                => isset($audio['limit']) ? 1 : 0,
-                    'title'                => $audio_titles);
+                    'product_audio_id' => $audio['product_audio_id'],
+                    'ogg'              => $mp3,
+                    'mp3'              => $ogg,
+                    'cut'              => isset($audio['cut']) ? 1 : 0,
+                    'reduce'           => isset($audio['reduce']) ? 1 : 0,
+                    'title'            => $audio_titles);
             }
 
         } else if ($product_info) {
 
-            foreach ($this->model_catalog_product->getProductAudios($product_info->product_id) as $row => $audio) {
+            foreach ($this->model_catalog_product->getProductAudios($product_info->product_id, $this->language->getId()) as $row => $audio) {
 
                 $row++;
                 $audio_rows[] = $row;
@@ -1284,8 +1302,10 @@ class ControllerAccountProduct extends Controller {
 
                 $data['audios'][$row] = array(
                     'product_audio_id' => $audio->product_audio_id,
-                    'limit'            => $audio->limit,
-                    'url'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId()),
+                    'cut'              => $audio->cut,
+                    'reduce'           => $audio->reduce,
+                    'ogg'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId(), 'OGG'),
+                    'mp3'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId(), 'MP3'),
                     'title'            => $audio_titles);
             }
         }
@@ -1803,7 +1823,6 @@ class ControllerAccountProduct extends Controller {
         // Audios
         if (isset($this->request->post['audio'])) {
 
-            // Filter downloads (moved to AJAX)
             unset($this->request->files['audio']);
 
             $audio_count = 0;
@@ -1877,7 +1896,8 @@ class ControllerAccountProduct extends Controller {
                 }
 
                 // Check temporary audio file if exists
-                if (!empty($audio['product_audio_id']) && !file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION)) {
+                if (!empty($audio['product_audio_id']) &&
+                    !file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION)) {
 
                     $this->_error['audio']['common'] = tt('Temporary audio ID is wrong');
                     $this->security_log->write('Try to access not own\'s temporary audio file');
@@ -2186,8 +2206,10 @@ class ControllerAccountProduct extends Controller {
             $this->_error['file']['common'] = tt('Uploaded package file is wrong!');
             $this->security_log->write('Uploaded package file is wrong');
 
-        } else if (!ValidatorUpload::packageValid($this->request->files['package'],
-                                                  $this->auth->getFileQuota() - ($this->storage->getUsedSpace($this->auth->getId()) - filesize($this->request->files['package']['tmp_name']) / 1000000))) {
+        } else if (!ValidatorUpload::packageValid(
+            $this->request->files['package'],
+            $this->auth->getFileQuota() - ($this->storage->getUsedSpace($this->auth->getId()) - filesize($this->request->files['package']['tmp_name']) / 1000000))
+        ) {
 
             $this->_error['file']['common'] = tt('Package file is a not valid!');
             $this->security_log->write('Uploaded package file is not valid');

@@ -83,7 +83,6 @@ class ControllerCatalogProduct extends Controller {
             'label-default','label-primary','label-success','label-warning','label-danger','label-info',
             'label-default','label-primary','label-success','label-warning','label-danger','label-info');
 
-
         // Breadcrumbs
         $parent_category_id = $product_info->category_id;
 
@@ -175,9 +174,11 @@ class ControllerCatalogProduct extends Controller {
 
         $data['product_audios'] = array();
         foreach ($this->model_catalog_product->getProductAudios($product_info->product_id, $this->language->getId()) as $audio) {
-                $data['product_audios'][] = array(
-                    'title' => $audio->title,
-                    'url'   => $audio->iframe_url . $audio->id);
+            $data['product_audios'][] = array(
+                'title' => $audio->title,
+                'ogg'   => $this->cache->audio($audio->product_audio_id, $product_info->user_id, 'OGG', ($audio->reduce ? PRODUCT_AUDIO_REDUCE_BIT_RATE : 320), false, ($audio->cut ? PRODUCT_AUDIO_TIME_START : false), ($audio->cut ? PRODUCT_AUDIO_TIME_END : false)),
+                'mp3'   => $this->cache->audio($audio->product_audio_id, $product_info->user_id, 'MP3', ($audio->reduce ? PRODUCT_AUDIO_REDUCE_BIT_RATE : 320), false, ($audio->cut ? PRODUCT_AUDIO_TIME_START : false), ($audio->cut ? PRODUCT_AUDIO_TIME_END : false)),
+            );
         }
 
         $meta_tags            = array();

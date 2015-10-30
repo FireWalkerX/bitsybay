@@ -1,3 +1,16 @@
+/**
+ * LICENSE
+ *
+ * This source file is subject to the GNU General Public License, Version 3
+ * It is also available through the world-wide-web at this URL:
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @package    BitsyBay Engine
+ * @copyright  Copyright (c) 2015 The BitsyBay Project (http://bitsybay.com)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License, Version 3
+ */
+
+
 // Common
 $(document).ready(function() {
 
@@ -137,18 +150,9 @@ function zoomVideo(url, title) {
     });
 }
 
-// Zoom audio
-function zoomAudio(url, title) {
-    $('#zoomAudio .modal-header h4').html(title);
-    $('#zoomAudio .modal-body iframe').attr('src', url);
-
-    $('#zoomAudio').on('hidden.bs.modal', function () {
-        $('#zoomAudio .modal-body iframe').attr('src', false);
-    });
-}
-
 // Timer
 function timer(sec, block, direction) {
+
     var time    = sec;
     direction   = direction || false;
 
@@ -181,6 +185,19 @@ function timer(sec, block, direction) {
             location.reload();
         }
     }
+}
+
+// Time tools
+function seconds2time(secs) {
+
+    var hr  = Math.floor(secs / 3600);
+    var min = Math.floor((secs - (hr * 3600))/60);
+    var sec = Math.floor(secs - (hr * 3600) -  (min * 60));
+
+    if (min < 10) min = '0' + min;
+    if (sec < 10) sec = '0' + sec;
+
+    return min + ':' + sec;
 }
 
 // Locale

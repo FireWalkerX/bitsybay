@@ -83,17 +83,19 @@ final class Cache {
     *
     * @param mixed $name
     * @param int $user_id
+    * @param string $codec MP3 or OGG
     * @param int $bit_rate kbps
     * @param bool $overwrite
     * @param bool|int $start
     * @param bool|int $end
     * @return string Cached Audio URL
     */
-    public function audio($name, $user_id, $bit_rate = 320, $overwrite = false, $start = false, $end = false) {
+    public function audio($name, $user_id, $codec, $bit_rate = 320, $overwrite = false, $start = false, $end = false) {
 
+        $codec       = strtolower($codec);
         $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
-        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
-        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.mp3'; // todo
+        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $codec;
+        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $codec;
 
         // Force reset
         if ($overwrite && file_exists($overwrite)) {
@@ -119,14 +121,31 @@ final class Cache {
             }
 
             // Create new cached file
-            $this->_ffmpeg->convertToMP3( // Safari and MS Explorer are #Sucks (I'm waiting for 100% ogg support)
-                $storage,
-                $cache,
-                $overwrite,
-                $bit_rate,
-                $start,
-                $end
-            );
+            switch($codec) {
+                case 'mp3':
+                    $this->_ffmpeg->convertToMP3(
+                        $storage,
+                        $cache,
+                        $overwrite,
+                        $bit_rate,
+                        $start,
+                        $end
+                    );
+                    break;
+                case 'ogg':
+                    $this->_ffmpeg->convertToOGG(
+                        $storage,
+                        $cache,
+                        $overwrite,
+                        $bit_rate,
+                        $start,
+                        $end
+                    );
+                    break;
+                default:
+                    return false;
+            }
+
         }
 
         return $cached_url;
