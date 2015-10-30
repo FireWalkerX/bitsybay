@@ -55,8 +55,8 @@
       <?php if ($product_audios) { ?>
         <div class="bs-component product-audios">
           <audio id="audio" preload="none">
-            <source id="audioOGG" src="" type="audio/ogg" />
             <source id="audioMP3" src="" type="audio/mpeg" />
+            <source id="audioOGG" src="" type="audio/ogg" />
             <?php echo tt('Your browser does not support the audio element.') ?>
           </audio>
           <?php foreach ($product_audios as $key => $audio) { ?>
