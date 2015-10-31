@@ -31,7 +31,7 @@ class ModelCatalogCategory extends Model {
             `c`.`alias`,
             `c`.`sort_order`,
 
-            ' . ($count_product ? ' (SELECT COUNT(*) FROM `product` AS `p` WHERE `p`.`category_id` = `c`.`category_id`) AS `total_products`, ' : false) . '
+            ' . ($count_product ? ' (SELECT COUNT(*) FROM `product` AS `p` WHERE `p`.`category_id` = `c`.`category_id` AND `p`.`status` = 1) AS `total_products`, ' : false) . '
 
             `cd`.`title`,
             `cd`.`description`
