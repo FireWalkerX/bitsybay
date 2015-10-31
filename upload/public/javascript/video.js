@@ -23,4 +23,5 @@ function video(title, ogg, mp4) {
     $('#video #modal-title').html(title);
 
     video_element.load();
+    video_element[0].play();
 }
