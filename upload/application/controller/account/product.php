@@ -341,6 +341,7 @@ class ControllerAccountProduct extends Controller {
 
             // Reset cache
             $this->cache->clean($this->auth->getId());
+            $this->storage->clean($this->auth->getId());
 
             // Set success message
             $this->session->setUserMessage(array('success' => tt('Product successfully published!')));
@@ -777,6 +778,7 @@ class ControllerAccountProduct extends Controller {
 
         // Reset cache
         $this->cache->clean($this->auth->getId());
+        $this->storage->clean($this->auth->getId());
 
         $this->session->setUserMessage(array('success' => tt('Product successfully deleted!')));
         $this->response->redirect($this->url->link('account/product'));
