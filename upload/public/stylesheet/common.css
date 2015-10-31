@@ -274,14 +274,14 @@ table img {
     min-height: 365px;
     padding: 25px 10px ;
     margin: 20px 0;
-
-
 }
 .catalog-category-product.grid .product-item:hover {
     border-radius: 15px;
     background: url(../image/template/c-p-bg.png);
 }
-
+.catalog-category-product.grid .product-item.unpublished {
+    opacity: 0.5
+}
 .catalog-category-product.grid .product-item .product-title {
     height: 46px;
 }
