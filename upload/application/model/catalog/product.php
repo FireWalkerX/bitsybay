@@ -360,15 +360,14 @@ class ModelCatalogProduct extends Model {
         try {
             $statement = $this->db->prepare('SELECT
             `pv`.`product_video_id`,
-            `pv`.`video_server_id`,
-            `pv`.`id`,
-            `vs`.`iframe_url`,
+            `pv`.`product_id`,
+            `pv`.`reduce`,
             `pvd`.`title`
 
             FROM `product_video` AS `pv`
-            JOIN `video_server` AS `vs` ON (`vs`.`video_server_id` = `pv`.`video_server_id`)
-            LEFT JOIN `product_video_description` AS `pvd` ON (`pv`.`product_video_id` = `pvd`.`product_video_id`)
-            WHERE `pv`.`product_id` = ? AND `pvd`.`language_id` = ?');
+            JOIN `product_video_description` AS `pvd` ON (`pv`.`product_video_id` = `pvd`.`product_video_id`)
+            WHERE `pv`.`product_id` = ?
+            AND `pvd`.`language_id` = ?');
 
             $statement->execute(array($product_id, $language_id));
 
@@ -427,11 +426,10 @@ class ModelCatalogProduct extends Model {
             `pa`.`product_audio_id`,
             `pa`.`product_id`,
             `pa`.`cut`,
-            `pa`.`reduce`,
             `pad`.`title`
 
             FROM `product_audio` AS `pa`
-            LEFT JOIN `product_audio_description` AS `pad` ON (`pa`.`product_audio_id` = `pad`.`product_audio_id`)
+            JOIN `product_audio_description` AS `pad` ON (`pa`.`product_audio_id` = `pad`.`product_audio_id`)
             WHERE `pa`.`product_id` = ?
             AND `pad`.`language_id` = ?');
 
@@ -1124,27 +1122,24 @@ class ModelCatalogProduct extends Model {
     /**
     * Create product video
     *
-    * @param int $product_id
-    * @param int $video_server_id
-    * @param int $sort_order
-    * @param string $id
+     * @param int $product_id
+     * @param int $reduce
+     * @param int $sort_order
     * @return int|bool product_video_id or FALSE/rollBack if throw exception
     */
-    public function createProductVideo($product_id, $video_server_id, $sort_order, $id) {
+    public function createProductVideo($product_id, $reduce, $sort_order) {
 
         try {
             $statement = $this->db->prepare(
                 'INSERT INTO `product_video` SET
                 `product_id`      = :product_id,
-                `video_server_id` = :video_server_id,
-                `sort_order`      = :sort_order,
-                `id`              = :id');
+                `reduce`          = :reduce,
+                `sort_order`      = :sort_order');
 
             $statement->execute(array(
-                ':product_id'      => $product_id,
-                ':video_server_id' => $video_server_id,
-                ':sort_order'      => $sort_order,
-                ':id'              => $id
+                ':product_id' => $product_id,
+                ':reduce'     => $reduce,
+                ':sort_order' => $sort_order
             ));
 
             return $this->db->lastInsertId();
@@ -1166,24 +1161,21 @@ class ModelCatalogProduct extends Model {
     *
     * @param int $product_id
     * @param int $cut
-    * @param int $reduce
     * @param int $sort_order
     * @return int|bool product_audio_id or FALSE/rollBack if throw exception
     */
-    public function createProductAudio($product_id, $cut, $reduce, $sort_order) {
+    public function createProductAudio($product_id, $cut, $sort_order) {
 
         try {
             $statement = $this->db->prepare(
                 'INSERT INTO `product_audio` SET
                 `product_id`      = :product_id,
                 `cut`             = :cut,
-                `reduce`          = :reduce,
                 `sort_order`      = :sort_order');
 
             $statement->execute(array(
                 ':product_id' => $product_id,
                 ':cut'        => $cut,
-                ':reduce'     => $reduce,
                 ':sort_order' => $sort_order
             ));
 

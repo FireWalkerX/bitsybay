@@ -37,31 +37,27 @@
             <li><?php echo tt('Use only plain text without any special chars and links') ?></li>
           </ul>
           <ul id="productPackageHints">
+            <li><?php echo tt('Package is main product file. Buyer can able to download it after purchase.') ?></li>
             <li><?php echo sprintf(tt('Allowed package format: %s'), strtoupper(STORAGE_FILE_EXTENSION)) ?></li>
           </ul>
           <ul id="productDemoHints">
             <li><?php echo tt('The demo pages used for online product preview in the iframe wrapper') ?></li>
-            <li><?php echo sprintf(tt('Allowed demos per product: %s'), QUOTA_DEMO_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productImageHints">
-            <li><?php echo tt('JPEG, PNG') ?></li>
+            <li><?php echo tt('We support') ?> <?php echo tt('JPEG, PNG') ?></li>
             <li><?php echo sprintf(tt('Min image Width: %s px'), PRODUCT_IMAGE_ORIGINAL_MIN_WIDTH) ?></li>
             <li><?php echo sprintf(tt('Min image Height: %s px'), PRODUCT_IMAGE_ORIGINAL_MIN_HEIGHT) ?></li>
-            <li><?php echo sprintf(tt('Allowed images per product: %s'), QUOTA_IMAGES_PER_PRODUCT) ?></li>
             <li><?php echo tt('If image will not be changed we will generate it for you') ?></li>
           </ul>
           <ul id="productVideoHints">
-            <li><?php echo tt('MOV, MPEG4, AVI, WMV, MPEGPS, FLV, 3GPP, WEBM') ?></li>
-            <li><?php echo sprintf(tt('Allowed videos per product: %s'), QUOTA_VIDEO_PER_PRODUCT) ?></li>
+            <li><?php echo tt('We support') ?> <?php echo tt('MOV, MPEG4, MP4, AVI, WMV, MPEGPS, FLV, 3GPP, WEBM, OGG') ?></li>
           </ul>
           <ul id="productAudioHints">
-            <li><?php echo tt('MP3, OGG, WAW, WAWE, MKA, WMA, MP4, M4A') ?></li>
-            <li><?php echo sprintf(tt('Allowed audios per product: %s'), QUOTA_AUDIO_PER_PRODUCT) ?></li>
+            <li><?php echo tt('We support') ?> <?php echo tt('MP3, OGG, WAW, WAWE, MKA, WMA, MP4, M4A') ?></li>
           </ul>
           <ul id="productPriceHints">
             <li><?php echo tt('The regular price should not be greater than exclusive price') ?></li>
             <li><?php echo sprintf(tt('Minimum price: %s'), ALLOWED_PRODUCT_MIN_PRICE) ?></li>
-            <li><?php echo sprintf(tt('Allowed specials per product: %s'), QUOTA_SPECIALS_PER_PRODUCT) ?></li>
           </ul>
           <ul id="productLicenseHints">
             <li><?php echo tt('Change your license conditions') ?></li>
@@ -83,7 +79,7 @@
           <li><a href="#files" data-toggle="tab" id="aFiles"><?php echo tt('Package') ?><?php echo isset($error['file']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#demos" data-toggle="tab"><?php echo tt('Demo') ?><?php echo isset($error['demo']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#images" data-toggle="tab" id="aImages"><?php echo tt('Images') ?><?php echo isset($error['image']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
-          <li><a href="#videos" data-toggle="tab"><?php echo tt('Video') ?><?php echo isset($error['video']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
+          <li><a href="#videos" data-toggle="tab" id="aVedeos"><?php echo tt('Video') ?><?php echo isset($error['video']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#audios" data-toggle="tab" id="aAudios"><?php echo tt('Audio') ?><?php echo isset($error['audio']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#prices" data-toggle="tab"><?php echo tt('Price') ?><?php echo isset($error['price']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
           <li><a href="#license" data-toggle="tab"><?php echo tt('License') ?><?php echo isset($error['license']) ? ' <span class="text-danger">*</span>' : false ?></a></li>
@@ -173,10 +169,6 @@
             <div class="form-group hide" id="packageUploadProgress">
               <div class="text-success"><?php echo tt('Uploading...') ?></div>
               <div class="progress progress-striped active"><div id="packageProgress" class="progress-bar progress-bar-success"></div></div>
-            </div>
-
-            <div class="form-group" id="packageQuotaAvailable">
-              <?php echo $module_quota_bar ?>
             </div>
 
           </div>
@@ -321,66 +313,77 @@
           </div>
           <div class="tab-pane fade" id="videos">
             <?php if (isset($error['video']['common'])) { ?>
-              <div class="alert alert-dismissible alert-danger">
-                <?php echo $error['video']['common'] ?>
-              </div>
+            <div class="alert alert-dismissible alert-danger">
+              <?php echo $error['video']['common'] ?>
+            </div>
             <?php } ?>
             <table class="table table-striped table-hover" id="productVideo">
               <thead>
-                <tr>
-                  <th><?php echo tt('Source') ?></th>
-                  <th><?php echo tt('ID') ?></th>
-                  <th><?php echo tt('Title') ?></th>
-                  <th class="column-action"><?php echo tt('Action') ?></th>
-                </tr>
+              <tr>
+                <th class="column-video"><?php echo tt('Video') ?></th>
+                <th><?php echo tt('Reduce quality') ?><sup></sup></th>
+                <th><?php echo tt('Title') ?></th>
+                <th><?php echo tt('Action') ?></th>
+              </tr>
               </thead>
               <tbody>
-                <?php foreach ($videos as $row => $video) { ?>
-                  <tr id="productVideoTr<?php echo $row ?>">
-                    <td class="form-group">
-                      <select name="video[<?php echo $row ?>][source]" class="form-control" id="videoSource<?php echo $row ?>">
-                        <?php foreach ($video_servers as $video_server_id => $video_server_name) { ?>
-                          <option value="<?php echo $video_server_id ?>" <?php echo $video_server_id == $video['source'] ? 'selected="selected"' : false ?>><?php echo $video_server_name ?></option>
-                        <?php } ?>
-                      </select>
-                      <?php if (isset($error['video'][$row]['source'])) { ?>
-                        <div class="text-danger"><?php echo $error['video'][$row]['source'] ?></div>
+              <?php foreach ($videos as $row => $video) { ?>
+              <tr id="productVideoTr<?php echo $row ?>">
+                <td class="form-group">
+                  <?php if ($video['ogg'] && $video['mp4']) { ?>
+                    <div class="btn-file" id="videoTrack<?php echo $row ?>">
+                      <video controls="controls" preload="auto" width="280">
+                        <source id="videoOGG<?php echo $row ?>" src="<?php echo $video['ogg'] ?>" type="video/ogg" />
+                        <source id="videoMP4<?php echo $row ?>" src="<?php echo $video['mp4'] ?>" type="video/mp4" />
+                        <?php echo tt('Your browser does not support the video element.') ?>
+                      </video>
+                    </div>
+                  <?php } else { ?>
+                    <div class="btn-file btn btn-success" id="videoTrack<?php echo $row ?>">
+                      <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload video") ?></span>
+                      <video controls="controls" preload="auto" class="hide" width="280">
+                        <source id="videoOGG<?php echo $row ?>" src="" type="video/ogg" />
+                        <source id="videoMP4<?php echo $row ?>" src="" type="video/mp4" />
+                        <?php echo tt('Your browser does not support the video element.') ?>
+                      </video>
+                      <input type="file" name="video[<?php echo $row ?>]" id="inputVideo<?php echo $row ?>" value="" onchange="videoUpload(<?php echo $row ?>)" class="product-video" />
+                    </div>
+                  <?php } ?>
+                  <div class="hide" id="videoUpload<?php echo $row ?>">
+                    <div class="progress progress-striped active video-upload" >
+                      <div class="progress-bar progress-bar-success" id="videoProgress<?php echo $row ?>" ></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="form-group"><label class="control-label"><input type="checkbox" name="video[<?php echo $row ?>][reduce]" value="1" <?php echo ($video['reduce'] ? 'checked="checked"' : false) ?> /> <?php echo tt('Protect') ?></label></td>
+                <td class="form-group <?php echo isset($error['video'][$row]['title']) ? 'has-error' : false ?>">
+                  <?php foreach ($video['title'] as $language_id => $title) { ?>
+                    <?php if ($language_id != $this_language_id) { ?>
+                      <div class="language-version" onclick="$('#videoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
+                    <?php } ?>
+                    <div id="videoDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
+                      <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputVideoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
+                      <?php if (isset($error['video'][$row]['title'][$language_id])) { ?>
+                        <div class="text-danger"><?php echo $error['video'][$row]['title'][$language_id] ?></div>
                       <?php } ?>
-                    </td>
-
-                    <td class="form-group <?php echo isset($error['video'][$row]['id']) ? 'has-error' : false ?>">
-                      <input type="text" name="video[<?php echo $row ?>][id]" class="form-control" id="inputVideoId<?php echo $row ?>" placeholder="<?php echo tt('ID') ?>" value="<?php echo $video['id'] ?>" />
-                      <?php if (isset($error['video'][$row]['id'])) { ?>
-                        <div class="text-danger"><?php echo $error['video'][$row]['id'] ?></div>
-                      <?php } ?>
-                    </td>
-                    <td class="form-group <?php echo isset($error['video'][$row]['title']) ? 'has-error' : false ?>">
-                      <?php foreach ($video['title'] as $language_id => $title) { ?>
-                        <?php if ($language_id != $this_language_id) { ?>
-                          <div class="language-version" onclick="$('#videoDescription<?php echo $language_id ?>-<?php echo $row ?>').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div>
-                        <?php } ?>
-                          <div id="videoDescription<?php echo $language_id ?>-<?php echo $row ?>" <?php echo ($language_id != $this_language_id && empty($title) ? 'style="display:none"' : false) ?>>
-                          <input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[<?php echo $row ?>][title][<?php echo $language_id ?>]" class="form-control" id="inputVideoTitle<?php echo $row ?>l<?php echo $language_id ?>" placeholder="<?php echo tt('Title') ?>" value="<?php echo $title ?>" />
-                          <?php if (isset($error['video'][$row]['title'][$language_id])) { ?>
-                            <div class="text-danger"><?php echo $error['video'][$row]['title'][$language_id] ?></div>
-                          <?php } ?>
-                        </div>
-                      <?php } ?>
-                    </td>
-                    <td class="form-group">
-                      <input type="hidden" name="video[<?php echo $row ?>][sort_order]" value="<?php echo $row ?>"  id="inputVideoSortOrder<?php echo $row ?>" />
-                      <span onclick="removeVideo(<?php echo $row ?>)" class="btn btn-danger">
-                        <i class="glyphicon glyphicon-trash"></i>
-                        <?php echo tt('Remove') ?>
-                      </span>
-                    </td>
-                  </tr>
-                <?php } ?>
+                    </div>
+                  <?php } ?>
+                </td>
+                <td class="form-group">
+                  <input type="hidden" name="video[<?php echo $row ?>][sort_order]" value="<?php echo $row ?>"  id="inputVideoSortOrder<?php echo $row ?>" />
+                  <input type="hidden" name="video[<?php echo $row ?>][product_video_id]" value="<?php echo $video['product_video_id'] ?>" id="productVideoId<?php echo $row ?>" />
+                  <div onclick="removeVideo(<?php echo $row ?>)" class="btn btn-danger">
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <?php echo tt('Remove') ?>
+                  </div>
+                </td>
+              </tr>
+              <?php } ?>
               </tbody>
               <tfoot>
                 <tr>
                   <td colspan="3"></td>
-                  <td>
+                  <td class="column-action">
                     <span onclick="addVideo()" class="btn btn-success">
                       <i class="glyphicon glyphicon-plus"></i>
                       <?php echo tt('Add video') ?>
@@ -400,8 +403,7 @@
               <thead>
               <tr>
                 <th class="column-audio"><?php echo tt('Audio') ?></th>
-                <th><?php echo sprintf(tt('First %s seconds'), PRODUCT_AUDIO_CUT_TIME) ?><sup></sup></th>
-                <th><?php echo sprintf(tt('Reduce to %s kbps'), PRODUCT_AUDIO_REDUCE_BIT_RATE) ?></sup></th>
+                <th><?php echo sprintf(tt('Cut to first %s seconds'), PRODUCT_AUDIO_CUT_TIME) ?><sup></sup></th>
                 <th><?php echo tt('Title') ?></th>
                 <th><?php echo tt('Action') ?></th>
               </tr>
@@ -412,7 +414,7 @@
                 <td class="form-group">
                   <?php if ($audio['ogg'] && $audio['mp3']) { ?>
                     <div class="btn-file" id="audioTrack<?php echo $row ?>">
-                      <audio controls="controls" preload="none">
+                      <audio controls="controls" preload="auto">
                         <source id="audioOGG<?php echo $row ?>" src="<?php echo $audio['ogg'] ?>" type="audio/ogg" />
                         <source id="audioMP3<?php echo $row ?>" src="<?php echo $audio['mp3'] ?>" type="audio/mpeg" />
                         <?php echo tt('Your browser does not support the audio element.') ?>
@@ -421,7 +423,7 @@
                   <?php } else { ?>
                     <div class="btn-file btn btn-success" id="audioTrack<?php echo $row ?>">
                       <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload audio") ?></span>
-                      <audio controls="controls" preload="none" class="hide">
+                      <audio controls="controls" preload="auto" class="hide">
                         <source id="audioOGG<?php echo $row ?>" src="" type="audio/ogg" />
                         <source id="audioMP3<?php echo $row ?>" src="" type="audio/mpeg" />
                         <?php echo tt('Your browser does not support the audio element.') ?>
@@ -435,8 +437,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][cut]" value="1" <?php echo ($audio['cut'] ? 'checked="checked"' : false) ?> /> <?php echo tt('Cut') ?></label></td>
-                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][reduce]" value="1" <?php echo ($audio['reduce'] ? 'checked="checked"' : false) ?> /> <?php echo tt('Reduce') ?></label></td>
+                <td class="form-group"><label class="control-label"><input type="checkbox" name="audio[<?php echo $row ?>][cut]" value="1" <?php echo ($audio['cut'] ? 'checked="checked"' : false) ?> /> <?php echo tt('Protect') ?></label></td>
                 <td class="form-group <?php echo isset($error['audio'][$row]['title']) ? 'has-error' : false ?>">
                   <?php foreach ($audio['title'] as $language_id => $title) { ?>
                     <?php if ($language_id != $this_language_id) { ?>
@@ -463,7 +464,7 @@
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="4"></td>
+                  <td colspan="3"></td>
                   <td class="column-action">
                     <span onclick="addAudio()" class="btn btn-success">
                       <i class="glyphicon glyphicon-plus"></i>
@@ -701,7 +702,7 @@
       return false;
     }
 
-    $('.product-package, .product-image, .product-audio').val('');
+    $('.product-package, .product-image, .product-audio, .product-video').val('');
     $('#productForm').submit();
 
   });
@@ -709,7 +710,7 @@
   <!-- File upload -->
   $('#inputPackage').change(function(){
 
-    $('.product-image, .product-audio').val('');
+    $('.product-image, .product-audio, .product-video').val('');
 
     var formData = new FormData($('#productForm').get(0));
 
@@ -741,7 +742,6 @@
           $('#packageControlSum, #inputPackageButton').addClass('hide');
           $('#packageUploadProgress').removeClass('hide');
           $('#productFileError, #aFiles .text-danger, #productFileSuccess').remove();
-          $('#packageQuotaAvailable').html('');
         },
         success: function (e) {
 
@@ -757,10 +757,8 @@
 
           if (e['error_message']) {
             $('#aFiles').append(' <span class="text-danger">*</span>');
-            $('#packageQuotaAvailable').load('ajax/quota');
             $('#files').prepend('<div id="productFileError" class="alert alert-dismissible alert-danger">' + e['error_message'] + '</div>');
           } else if (e['success_message']) {
-            $('#packageQuotaAvailable').load('ajax/quota?product_file_id=' + e['product_file_id'] + '<?php echo $product_id ? "&product_id=" . $product_id : false ?>');
             $('#files').prepend('<div id="productFileSuccess" class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">×</button> ' + e['success_message'] + '</div>');
             $('#productFileTmpId').val(e['product_file_id']);
             $('#productFileMd5').html(e['hash_md5']);
@@ -941,6 +939,86 @@
     });
   }
 
+  <!-- Video upload -->
+  function videoUpload(r) {
+
+    $('.product-package, .product-image').val('');
+
+    var formData = new FormData($('#productForm').get(0));
+
+    $.ajax({
+        url: 'ajax/upload/video?row=' + r,
+        type: 'POST',
+                      xhr: function() {
+                          var myXhr = $.ajaxSettings.xhr();
+                          if(myXhr.upload){
+                              myXhr.upload.addEventListener(
+                                  'progress',
+                                  function (e) {
+                                    if (e.lengthComputable) {
+                                      $('#videoProgress' + r).attr({style: 'width:' + Math.round((e.loaded / e.total) * 100) + '%'});
+                                    }
+                                  },
+                                  false);
+                          }
+                          return myXhr;
+                      },
+        beforeSend: function(e) {
+
+          if (!fs_disabled.length) {
+            $('#submitForm').addClass('disabled').prepend('<i class="glyphicon glyphicon-hourglass"></i> ');
+          }
+
+          fs_disabled.push('video-' + r);
+
+          $('#videoTrack' + r).addClass('hide');
+          $('#videoUpload' + r).removeClass('hide');
+
+          $('#videos .alert-danger, #videos .alert-success, #videos .alert-warning, #videos .alert-info, #aVideos .text-danger').remove();
+
+          $('#videos').prepend('<div class="alert alert-dismissible alert-info"><?php echo tt('This may take some time. Please wait.') ?></div>');
+        },
+        success: function (e) {
+
+          fs_disabled.shift();
+
+          if (!fs_disabled.length) {
+            $('#submitForm i').remove();
+            $('#submitForm').removeClass('disabled');
+          }
+
+          $('#videoTrack' + r).removeClass('hide');
+          $('#videoUpload' + r).addClass('hide');
+
+          if (e['error_message']) {
+
+            $('#aVideos .text-danger, #videos .alert-danger, #videos .alert-info, #videos .alert-warning').remove();
+
+            $('#aVideos').append(' <span class="text-danger">*</span>');
+            $('#videos').prepend('<div class="alert alert-dismissible alert-danger">' + e['error_message'] + '</div>');
+          } else if (e['success_message']) {
+            $('#aVideos .text-danger, #videos .alert-warning,  #videos .alert-info, #videos .alert-danger, #inputVideo' + r + ', #videoTrack' + r + ' span').remove();
+            $('#videos .alert.alert-dismissible.alert-success').remove();
+            $('#videos').prepend('<div class="alert alert-dismissible alert-success"><button type="button" class="close" data-dismiss="alert">×</button> ' + e['success_message'] + '</div>');
+            $('#productVideoId' + r).val(e['product_video_id']);
+            $('#videoOGG' + r).attr('src', e['ogg']);
+            $('#videoMP4' + r).attr('src', e['mp4']);
+            $('#videoTrack' + r + ' video').removeClass('hide').load();
+            $('#videoTrack' + r).removeClass('btn-file btn btn-success');
+          } else {
+            alert('Internal server error! Please, try again later.');
+          }
+        },
+        error: function (e) {
+          alert('Internal server error! Please, try again later.');
+        },
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false
+    });
+  }
+
   <!-- Demo -->
   var demo_r = <?php echo $demo_max_row ?>;
   var demo_l = <?php echo $demo_total_rows ?>;
@@ -1065,46 +1143,6 @@
     }
   }
 
-
-  <!-- Video -->
-  var video_r = <?php echo $video_max_row ?>;
-  var video_l = <?php echo $video_total_rows ?>;
-
-  <?php if ($video_total_rows >= QUOTA_VIDEO_PER_PRODUCT) { ?>
-    $('#productVideo tfoot').hide();
-  <?php } ?>
-
-  function removeVideo(video_r_id) {
-    $('#productVideoTr' + video_r_id).remove();
-    $('#productVideo tfoot').show();
-
-    video_l--;
-  }
-
-  function addVideo() {
-
-    if (video_l >= <?php echo QUOTA_VIDEO_PER_PRODUCT ?>) {
-      return false;
-    }
-
-    video_r++;
-    video_l++;
-
-    html  = '<tr id="productVideoTr' + video_r + '">';
-    html += '<td class="form-group"><select name="video[' + video_r + '][source]" class="form-control" id="videoSource' + video_r + '"><?php foreach ($video_servers as $video_server_id => $video_server_name) { ?><option value="<?php echo $video_server_id ?>"><?php echo $video_server_name ?></option><?php } ?></select></td>';
-    html += '<td class="form-group"><input type="text" name="video[' + video_r + '][id]" class="form-control" id="inputVideoId' + video_r + '" placeholder="<?php echo tt("ID") ?>" value="" /></td>';
-    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#videoTitle<?php echo $language_id ?>-' + video_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="videoTitle<?php echo $language_id ?>-' + video_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[' + video_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputVideoTitle' + video_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
-    html += '<td class="form-group"><input type="hidden" name="video[' + video_r + '][sort_order]" value="' + video_r + '" /><span onclick="removeVideo(' + video_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span></td>';
-    html += '</tr>';
-
-    $('#productVideo tbody').append(html, '\n');
-
-    if (video_l >= <?php echo QUOTA_VIDEO_PER_PRODUCT ?>) {
-      $('#productVideo tfoot').hide();
-    }
-  }
-
-
   <!-- Audio -->
   var audio_r = <?php echo $audio_max_row ?>;
   var audio_l = <?php echo $audio_total_rows ?>;
@@ -1147,8 +1185,7 @@
     html += '</div>';
     html += '</td>';
 
-    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][cut]" /> <?php echo tt("Cut") ?></label></td>';
-    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][reduce]" /> <?php echo tt("Reduce") ?></label></td>';
+    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="audio[' + audio_r + '][cut]" /> <?php echo tt("Protect") ?></label></td>';
     html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#audioTitle<?php echo $language_id ?>-' + audio_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="audioTitle<?php echo $language_id ?>-' + audio_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="audio[' + audio_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputAudioTitle' + audio_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
     html += '<td class="form-group">';
     html += '  <input type="hidden" name="audio[' + audio_r + '][product_audio_id]" value="" id="productAudioId' + audio_r + '" />';
@@ -1160,6 +1197,64 @@
 
     if (audio_l >= <?php echo QUOTA_AUDIO_PER_PRODUCT ?>) {
       $('#productAudio tfoot').hide();
+    }
+  }
+
+
+  <!-- Video -->
+  var video_r = <?php echo $video_max_row ?>;
+  var video_l = <?php echo $video_total_rows ?>;
+
+  <?php if ($video_total_rows >= QUOTA_VIDEO_PER_PRODUCT) { ?>
+    $('#productVideo tfoot').hide();
+  <?php } ?>
+
+  function removeVideo(video_r_id) {
+    $('#productVideoTr' + video_r_id).remove();
+    $('#productVideo tfoot').show();
+
+    video_l--;
+  }
+
+  function addVideo() {
+
+    if (video_l >= <?php echo QUOTA_VIDEO_PER_PRODUCT ?>) {
+      return false;
+    }
+
+    video_r++;
+    video_l++;
+
+    html  = '<tr id="productVideoTr' + video_r + '">';
+    html += '<td class="form-group">';
+    html += '<div class="btn-file btn btn-success" id="videoTrack' + video_r + '">';
+    html += '  <span><i class="glyphicon glyphicon-upload"></i> <?php echo tt("Upload video") ?></span>';
+    html += '  <video controls="controls" preload="none" width="280" class="hide">';
+    html += '    <source id="videoOGG' + video_r + '" src="" type="video/ogg" />';
+    html += '    <source id="videoMP4' + video_r + '" src="" type="video/mp4" />';
+    html += '    <?php echo tt('Your browser does not support the video element.') ?>';
+    html += '  </video>';
+    html += '  <input type="file" name="video[' + video_r + ']" id="inputVideo' + video_r + '" value="" onchange="videoUpload(' + video_r + ')" class="product-video" />';
+    html += '</div>';
+    html += '<div class="hide" id="videoUpload' + video_r + '">';
+    html += '  <div class="progress progress-striped active video-upload" >';
+    html += '    <div class="progress-bar progress-bar-success" id="videoProgress' + video_r + '" ></div>';
+    html += '  </div>';
+    html += '</div>';
+    html += '</td>';
+
+    html += '<td class="form-group"><label class="control-label"><input type="checkbox" name="video[' + video_r + '][reduce]" /> <?php echo tt("Protect") ?></label></td>';
+    html += '<td class="form-group"><?php foreach ($languages as $language_id => $language) { ?><?php if ($language_id != $this_language_id) { ?><div class="language-version" onclick="$(\'#videoTitle<?php echo $language_id ?>-' + video_r + '\').toggle();"><?php echo sprintf(tt('%s version'), $languages[$language_id]['name']) ?></div> <?php } ?><div id="videoTitle<?php echo $language_id ?>-' + video_r + '" <?php echo ($language_id != $this_language_id ? 'style="display:none"' : false) ?>><input onkeyup="lengthFilter(this, <?php echo VALIDATOR_PRODUCT_TITLE_MAX_LENGTH ?>)" type="text" name="video[' + video_r + '][title][<?php echo $language["language_id"] ?>]" class="form-control" id="inputVideoTitle' + video_r + 'l<?php echo $language["language_id"] ?>" placeholder="<?php echo tt("Title") ?>" value="" /></div><?php } ?></td>';
+    html += '<td class="form-group">';
+    html += '  <input type="hidden" name="video[' + video_r + '][product_video_id]" value="" id="productVideoId' + video_r + '" />';
+    html += '  <input type="hidden" name="video[' + video_r + '][sort_order]" value="' + video_r + '" /><span onclick="removeVideo(' + video_r + ')" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> <?php echo tt("Remove") ?></span>';
+    html += '</td>';
+    html += '</tr>';
+
+    $('#productVideo tbody').append(html, '\n');
+
+    if (video_l >= <?php echo QUOTA_VIDEO_PER_PRODUCT ?>) {
+      $('#productVideo tfoot').hide();
     }
   }
 

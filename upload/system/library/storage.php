@@ -57,11 +57,7 @@ final class Storage {
             $dir_array = scandir($directory);
               foreach ($dir_array as $key => $filename) {
 
-                // Images and temporary files will be ignored
-                if ($filename != '..' && $filename != '.' &&
-                    false === strpos($filename, '_') &&
-                    false === strpos($filename, '.' . STORAGE_IMAGE_EXTENSION) &&
-                    false === strpos($filename, '.' . STORAGE_AUDIO_EXTENSION)) {
+                if ($filename != '..' && $filename != '.') {
 
                    if (is_dir($directory . DIR_SEPARATOR . $filename)){
                       $new_foldersize = foldersize($directory . DIR_SEPARATOR . $filename);
@@ -120,6 +116,17 @@ final class Storage {
 
                 foreach ($statement->fetchAll() as $audio) {
                     $registry[] = $audio->product_audio_id . '.' . STORAGE_AUDIO_EXTENSION;
+                }
+            }
+
+            // Collect videos
+            $statement = $this->_db->prepare('SELECT * FROM `product_video` AS `pv` JOIN `product` AS `p` ON (`pv`.`product_id` = `p`.`product_id`) WHERE `p`.`user_id` = ?');
+            $statement->execute(array($user_id));
+
+            if ($statement->rowCount()) {
+
+                foreach ($statement->fetchAll() as $video) {
+                    $registry[] = $video->product_video_id . '.' . STORAGE_VIDEO_EXTENSION;
                 }
             }
 

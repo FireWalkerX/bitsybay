@@ -45,13 +45,19 @@
           <?php } ?>
         </div>
       <?php } ?>
-      <?php if ($product_videos) { ?>
-        <div class="bs-component product-videos">
-          <?php foreach ($product_videos as $key => $video) { ?>
-            <div class="product-video <?php echo $color_labels[$key+3] ?>" onclick="zoomVideo('<?php echo $video['url'] ?>', '<?php echo $video['title'] ?>')" data-toggle="modal" data-target="#zoomVideo"><i class="glyphicon glyphicon-facetime-video"></i></div>
-          <?php } ?>
+      <div id="zoomImage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="zoomImage" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title"><?php echo $product_title ?></h4>
+            </div>
+            <div class="modal-body">
+              <img src="<?php echo $product_image_url ?>" alt="<?php echo $product_title ?>" title="<?php echo $product_title ?>" />
+            </div>
+          </div>
         </div>
-      <?php } ?>
+      </div>
       <?php if ($product_audios) { ?>
         <div class="bs-component product-audios">
           <audio id="audio" preload="none">
@@ -69,45 +75,35 @@
           <?php } ?>
         </div>
       <?php } ?>
-      <div id="zoomImage" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="zoomImage" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+      <?php if ($product_videos) { ?>
+        <div class="bs-component product-videos">
+          <?php foreach ($product_videos as $key => $video) { ?>
+            <h5 id="video<?php echo $key ?>" class="video" onclick="video('<?php echo $video['title'] ?>', '<?php echo $video['ogg'] ?>', '<?php echo $video['mp4'] ?>')" data-toggle="modal" data-target="#zoomVideo">
+              <span class="btn btn-default btn-xs">
+                <i class="glyphicon glyphicon-facetime-video"></i>
+              </span>
+              <?php echo sprintf(tt('Track %s: %s'), $key + 1, $video['title']) ?>
+            </h5>
+          <?php } ?>
+        </div>
+        <div id="zoomVideo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="zoomVideo" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
               <div class="modal-header">
-                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                 <h4 class="modal-title"><?php echo $product_title ?></h4>
-               </div>
-              <div class="modal-body">
-                <img src="<?php echo $product_image_url ?>" alt="<?php echo $product_title ?>" title="<?php echo $product_title ?>" />
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><?php echo $product_title ?></h4>
               </div>
+              <div class="modal-body">
+                <video id="video" preload="none" width="570" controls="controls">
+                  <source id="videoMP4" src="" type="video/mp4" />
+                  <source id="videoOGG" src="" type="video/ogg" />
+                  <?php echo tt('Your browser does not support the video element.') ?>
+                </video>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div id="zoomVideo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="zoomVideo" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                 <h4 class="modal-title"><?php echo $product_title ?></h4>
-               </div>
-              <div class="modal-body">
-                <iframe width="570" height="400"></iframe>
-              </div>
-          </div>
-        </div>
-      </div>
-      <div id="zoomAudio" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="zoomAudio" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                 <h4 class="modal-title"><?php echo $product_title ?></h4>
-               </div>
-              <div class="modal-body">
-                <iframe width="570" height="166"></iframe>
-              </div>
-          </div>
-        </div>
-      </div>
+      <?php } ?>
     </div>
     <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
       <div class="bs-component catalog-product-info">

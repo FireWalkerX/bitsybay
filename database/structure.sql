@@ -576,14 +576,11 @@ DROP TABLE IF EXISTS `product_video`;
 CREATE TABLE `product_video` (
   `product_video_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(10) unsigned NOT NULL,
-  `video_server_id` int(10) unsigned NOT NULL,
   `sort_order` int(10) unsigned NOT NULL,
-  `id` varchar(255) NOT NULL,
+  `reduce` enum('1','0') NOT NULL,
   PRIMARY KEY (`product_video_id`),
   KEY `fk_product_video_product_id` (`product_id`),
-  KEY `fk_product_video_video_server_id` (`video_server_id`),
   CONSTRAINT `fk_product_video_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_video_video_server_id` FOREIGN KEY (`video_server_id`) REFERENCES `video_server` (`video_server_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDBDEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -621,7 +618,6 @@ CREATE TABLE `product_audio` (
   `product_id` int(10) unsigned NOT NULL,
   `sort_order` int(10) unsigned NOT NULL,
   `cut` enum('1','0') NOT NULL,
-  `reduce` enum('1','0') NOT NULL,
   PRIMARY KEY (`product_audio_id`),
   KEY `fk_product_audio_product_id` (`product_id`),
   CONSTRAINT `fk_product_audio_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -877,22 +873,6 @@ CREATE TABLE IF NOT EXISTS `user_verification_request` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
---
--- Table structure for table `video_server`
---
-
-DROP TABLE IF EXISTS `video_server`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `video_server` (
-  `video_server_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `website_url` varchar(255) NOT NULL,
-  `iframe_url` varchar(255) NOT NULL,
-  PRIMARY KEY (`video_server_id`)
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 -- -----------------------------------------------------

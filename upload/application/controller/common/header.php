@@ -27,6 +27,7 @@ class ControllerCommonHeader extends Controller {
         $this->document->addScript('/javascript/bootstrap-datepicker.js');
         $this->document->addScript('/javascript/common.js');
         $this->document->addScript('/javascript/audio.js');
+        $this->document->addScript('/javascript/video.js');
 
         $data['title']       = $this->document->getTitle();
         $data['description'] = $this->document->getDescription();

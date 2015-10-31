@@ -83,19 +83,17 @@ final class Cache {
     *
     * @param mixed $name
     * @param int $user_id
-    * @param string $codec MP3 or OGG
-    * @param int $bit_rate kbps
+    * @param string $extension MP3 or OGA
     * @param bool $overwrite
-    * @param bool|int $start
-    * @param bool|int $end
+    * @param int $limit_seconds
     * @return string Cached Audio URL
     */
-    public function audio($name, $user_id, $codec, $bit_rate = 320, $overwrite = false, $start = false, $end = false) {
+    public function audio($name, $user_id, $extension, $overwrite = false, $limit_seconds = 0) {
 
-        $codec       = strtolower($codec);
+        $extension   = strtolower($extension);
         $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_AUDIO_EXTENSION;
-        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $codec;
-        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $codec;
+        $cache       = DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $extension;
+        $cached_url  = URL_BASE . 'audio' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $extension;
 
         // Force reset
         if ($overwrite && file_exists($overwrite)) {
@@ -121,30 +119,54 @@ final class Cache {
             }
 
             // Create new cached file
-            switch($codec) {
-                case 'mp3':
-                    $this->_ffmpeg->convertToMP3(
-                        $storage,
-                        $cache,
-                        $overwrite,
-                        $bit_rate,
-                        $start,
-                        $end
-                    );
-                    break;
-                case 'ogg':
-                    $this->_ffmpeg->convertToOGG(
-                        $storage,
-                        $cache,
-                        $overwrite,
-                        $bit_rate,
-                        $start,
-                        $end
-                    );
-                    break;
-                default:
-                    return false;
+            $this->_ffmpeg->convert($storage, $cache, $limit_seconds);
+        }
+
+        return $cached_url;
+    }
+
+    /**
+    * Video caching
+    *
+    * @param mixed $name
+    * @param int $user_id
+    * @param string $extension MP4 or OGV
+    * @param bool $overwrite
+    * @param int $quality
+    * @return string Cached Video URL
+    */
+    public function video($name, $user_id, $extension, $overwrite = false, $quality = 0) {
+
+        $extension   = strtolower($extension);
+        $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_VIDEO_EXTENSION;
+        $cache       = DIR_VIDEO . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $extension;
+        $cached_url  = URL_BASE . 'video' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '.' . $extension;
+
+        // Force reset
+        if ($overwrite && file_exists($overwrite)) {
+            unlink($cache);
+        }
+
+        // If video is cached
+        if (file_exists($cache)) {
+
+            return $cached_url;
+
+        // If video not cached
+        } else {
+
+            // Create directories by path if not exists
+            $directories = explode(DIR_SEPARATOR, $cache);
+            $path = '';
+            foreach ($directories as $directory) {
+                $path .= DIR_SEPARATOR . $directory;
+                if (!is_dir($path) && false === strpos($directory, '.')) {
+                    mkdir($path, 0755);
+                }
             }
+
+            // Create new cached file
+            $this->_ffmpeg->convert($storage, $cache, 0, $quality > 0 ? $quality : PRODUCT_VIDEO_QUALITY);
 
         }
 
@@ -159,6 +181,7 @@ final class Cache {
     public function clean($user_id = false) {
         $this->_removeDirectory(DIR_IMAGE . 'cache' . DIR_SEPARATOR . $user_id);
         $this->_removeDirectory(DIR_AUDIO . 'cache' . DIR_SEPARATOR . $user_id);
+        $this->_removeDirectory(DIR_VIDEO . 'cache' . DIR_SEPARATOR . $user_id);
     }
 
     /**

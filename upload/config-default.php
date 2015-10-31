@@ -29,6 +29,7 @@ define('DIR_BASE', '/var/www/html/');
 define('DIR_STORAGE', '/var/www/html/storage/');
 define('DIR_IMAGE', '/var/www/html/public/image/');
 define('DIR_AUDIO', '/var/www/html/public/audio/');
+define('DIR_VIDEO', '/var/www/html/public/video/');
 define('DIR_SEPARATOR', '/');
 
 // DB
@@ -51,7 +52,8 @@ define('DEFAULT_CURRENCY_ID', 1);
 // EXTENSIONS
 define('STORAGE_FILE_EXTENSION', 'zip');
 define('STORAGE_IMAGE_EXTENSION', 'jpg');
-define('STORAGE_AUDIO_EXTENSION', 'ogg');
+define('STORAGE_AUDIO_EXTENSION', 'oga');
+define('STORAGE_VIDEO_EXTENSION', 'ogv');
 
 // IMAGES
 define('PRODUCT_IMAGE_ORIGINAL_WIDTH', 800);
@@ -66,10 +68,11 @@ define('USER_IMAGE_ORIGINAL_MIN_WIDTH', 200);
 define('USER_IMAGE_ORIGINAL_MIN_HEIGHT', 200);
 
 // AUDIOS
-define('PRODUCT_AUDIO_TIME_START', 0);       // Seconds
-define('PRODUCT_AUDIO_TIME_END', 15);        // Seconds
-define('PRODUCT_AUDIO_CUT_TIME', 30);        // Seconds
-define('PRODUCT_AUDIO_REDUCE_BIT_RATE', 96); // kbps
+define('PRODUCT_AUDIO_CUT_TIME', 30); // Seconds
+
+// VIDEOS
+define('PRODUCT_VIDEO_REDUCED_QUALITY', 1); // The libtheora coefficient 1-10
+define('PRODUCT_VIDEO_QUALITY', 1); // The libtheora coefficient 1-10
 
 // PRICES
 define('FEE_PER_ORDER', 11);                    // Percent

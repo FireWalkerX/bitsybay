@@ -158,7 +158,8 @@ iframe.demo.fs {
 }
 
 .column-image,
-.column-audio {
+.column-audio,
+.column-video {
     width: 150px
 }
 
@@ -171,7 +172,8 @@ td input[type=checkbox] {
 }
 
 .progress.image-upload,
-.progress.audio-upload {
+.progress.audio-upload,
+.progress.video-upload {
     height: 34px;
     margin-bottom: 0;
 }
@@ -344,40 +346,32 @@ table img {
     margin:3px;
 }
 
-.catalog-product .audio {
+.catalog-product .audio,
+.catalog-product .video {
     cursor: pointer;
     margin: 10px 0
 }
-.catalog-product  .audio .btn {
+
+.catalog-product  .audio .btn,
+.catalog-product  .video .btn {
+    margin-left: 15px;
     margin-right: 5px;
     border-radius:1000px;
     width: 24px;
     height: 24px;
-    line-height: 20px;
+    line-height: 22px;
 }
 
 .catalog-product .product-images {
     margin: 25px 0;
 }
 
-.catalog-product .product-videos .product-video {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    line-height:54px;
-    text-align: center;
-    font-size: 1.2em;
-    color: #FFF
-}
-
-.catalog-product .product-images img,
-.catalog-product .product-videos .product-video {
+.catalog-product .product-images img {
     border-radius: 1000px;
     opacity: 0.8
 }
 
-.catalog-product .product-images img:hover,
-.catalog-product .product-videos .product-video:hover {
+.catalog-product .product-images img:hover {
     opacity: 1
 }
 

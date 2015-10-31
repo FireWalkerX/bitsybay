@@ -140,16 +140,6 @@ function zoomImage(url, title) {
     $('#zoomImage .modal-body img').attr('src', url);
 }
 
-// Zoom video
-function zoomVideo(url, title) {
-    $('#zoomVideo .modal-header h4').html(title);
-    $('#zoomVideo .modal-body iframe').attr('src', url);
-
-    $('#zoomVideo').on('hidden.bs.modal', function () {
-        $('#zoomVideo .modal-body iframe').attr('src', false);
-    });
-}
-
 // Timer
 function timer(sec, block, direction) {
 

@@ -23,7 +23,6 @@ class ControllerAccountProduct extends Controller {
         // Load dependencies
         $this->load->model('common/language');
         $this->load->model('common/currency');
-        $this->load->model('common/video_server');
         $this->load->model('common/redirect');
         $this->load->model('common/license');
 
@@ -35,8 +34,6 @@ class ControllerAccountProduct extends Controller {
 
         $this->load->helper('validator/product');
         $this->load->helper('validator/upload');
-        $this->load->helper('validator/youtube');
-        $this->load->helper('validator/vimeo');
         $this->load->helper('validator/bitcoin');
 
         $this->load->helper('filter/uri');
@@ -284,15 +281,19 @@ class ControllerAccountProduct extends Controller {
                 foreach ($this->request->post['video'] as $video) {
 
                     $product_video_id = $this->model_catalog_product->createProductVideo($product_id,
-                                                                                         $video['source'],
-                                                                                         $video['sort_order'],
-                                                                                         $video['id']);
+                                                                                        (isset($video['reduce']) ? 1 : 0),
+                                                                                        $video['sort_order']);
 
                     foreach ($video['title'] as $language_id => $title) {
-                         $this->model_catalog_product->createProductVideoDescription($product_video_id,
-                                                                                     $language_id,
-                                                                                     (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
+                        $this->model_catalog_product->createProductVideoDescription($product_video_id,
+                                                                                    $language_id,
+                                                                                    (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
+
+                    rename(
+                        $directory . $video['product_video_id'] . '.' . STORAGE_VIDEO_EXTENSION,
+                        $directory . $product_video_id . '.' . STORAGE_VIDEO_EXTENSION
+                    );
                 }
             }
 
@@ -302,7 +303,6 @@ class ControllerAccountProduct extends Controller {
 
                     $product_audio_id = $this->model_catalog_product->createProductAudio($product_id,
                                                                                         (isset($audio['cut']) ? 1 : 0),
-                                                                                        (isset($audio['reduce']) ? 1 : 0),
                                                                                          $audio['sort_order']);
 
                     foreach ($audio['title'] as $language_id => $title) {
@@ -588,13 +588,20 @@ class ControllerAccountProduct extends Controller {
             if (isset($this->request->post['video'])) {
                 foreach ($this->request->post['video'] as $video) {
 
-                    $product_video_id = $this->model_catalog_product->createProductVideo($product_id, $video['source'], $video['sort_order'], $video['id']);
+                    $product_video_id = $this->model_catalog_product->createProductVideo($product_id,
+                                                                                        (isset($video['reduce']) ? 1 : 0),
+                                                                                         $video['sort_order']);
 
                     foreach ($video['title'] as $language_id => $title) {
-                         $this->model_catalog_product->createProductVideoDescription($product_video_id,
-                                                                                     $language_id,
-                                                                                     (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
+                        $this->model_catalog_product->createProductVideoDescription($product_video_id,
+                                                                                    $language_id,
+                                                                                    (empty(trim($title)) ? $translate->string($video['title'][$this->language->getId()], $this->language->getCode(), $languages[$language_id]) : $title));
                     }
+
+                    rename(
+                        $directory . $video['product_video_id'] . '.' . STORAGE_VIDEO_EXTENSION,
+                        $directory . $product_video_id . '.' . STORAGE_VIDEO_EXTENSION
+                    );
                 }
             }
 
@@ -607,7 +614,6 @@ class ControllerAccountProduct extends Controller {
 
                     $product_audio_id = $this->model_catalog_product->createProductAudio($product_id,
                                                                                         (isset($audio['cut']) ? 1 : 0),
-                                                                                        (isset($audio['reduce']) ? 1 : 0),
                                                                                         $audio['sort_order']);
 
                     foreach ($audio['title'] as $language_id => $title) {
@@ -777,40 +783,6 @@ class ControllerAccountProduct extends Controller {
 
     }
 
-    public function quota() {
-
-        if (!$this->auth->isLogged()) {
-            $this->security_log->write('Try to access to quota method from guest request');
-            exit;
-        }
-
-        if (!$this->request->isAjax()) {
-            $this->security_log->write('Try to access to quota method without ajax request');
-            exit;
-        }
-
-        $data = array();
-
-        if (isset($this->request->get['product_file_id'])) {
-
-            $directory = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
-            $filename  = $this->request->get['product_file_id'] . '.' . STORAGE_FILE_EXTENSION;
-            $file_size = (file_exists($directory . DIR_SEPARATOR . $filename)) ? filesize($directory . $filename) / 1000000 : false;
-
-            if ($file_size > 0) {
-                if (isset($this->request->get['product_id'])) {
-                    $data = array('custom_file_space' => $file_size, 'except_size' => $file_size);
-                } else {
-                    $data = array('custom_file_space' => $file_size);
-                }
-            } else {
-                $this->security_log->write('Try to access to not own\'s temporary file');
-            }
-        }
-
-        $this->response->setOutput($this->load->controller('module/quota_bar', $data));
-    }
-
     // AJAX actions begin
     public function uploadImage() {
 
@@ -882,20 +854,62 @@ class ControllerAccountProduct extends Controller {
             $audio_filename = '_' . sha1(rand().microtime().$this->auth->getId());
 
             // Save audio to the temporary file
-            $this->ffmpeg->convertToOGG(
+            if ($this->ffmpeg->convert(
                 $this->request->files['audio']['tmp_name'][$this->request->get['row']],
                 $audio_path . $audio_filename  . '.' . STORAGE_AUDIO_EXTENSION
-            );
-
-            $json = array(
-                'success_message'   => tt('Audio successfully uploaded!'),
-                'ogg'               => $this->cache->audio($audio_filename, $this->auth->getId(), 'OGG'),
-                'mp3'               => $this->cache->audio($audio_filename, $this->auth->getId(), 'MP3'),
-                'product_audio_id'  => $audio_filename
-            );
-
+            )) {
+                $json = array(
+                    'success_message'   => tt('Audio successfully uploaded!'),
+                    'ogg'               => $this->cache->audio($audio_filename, $this->auth->getId(), 'oga'),
+                    'mp3'               => $this->cache->audio($audio_filename, $this->auth->getId(), 'mp3'),
+                    'product_audio_id'  => $audio_filename
+                );
+            }
         } else if (isset($this->_error['audio']['common'])) {
             $json = array('error_message' => $this->_error['audio']['common']);
+        }
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
+    public function uploadVideo() {
+
+        if (!$this->auth->isLogged()) {
+            $this->security_log->write('Try to upload video from guest request');
+            exit;
+        }
+
+        if (!$this->request->isAjax()) {
+            $this->security_log->write('Try to upload video without ajax request');
+            exit;
+        }
+
+        $json = array('error_message' => tt('Undefined upload error'));
+
+        if ('POST' == $this->request->getRequestMethod() && $this->_validateVideo()) {
+
+            // Create user's folder if not exists
+            if (!is_dir(DIR_STORAGE . $this->auth->getId())) mkdir(DIR_STORAGE . $this->auth->getId(), 0755);
+
+            // Init variables
+            $video_path     = DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR;
+            $video_filename = '_' . sha1(rand().microtime().$this->auth->getId());
+
+            // Save video to the temporary file
+            if ($this->ffmpeg->convert(
+                $this->request->files['video']['tmp_name'][$this->request->get['row']],
+                $video_path . $video_filename  . '.' . STORAGE_VIDEO_EXTENSION
+            )) {
+                $json = array(
+                    'success_message'   => tt('Video successfully uploaded!'),
+                    'ogg'               => $this->cache->video($video_filename, $this->auth->getId(), 'ogv'),
+                    'mp4'               => $this->cache->video($video_filename, $this->auth->getId(), 'mp4'),
+                    'product_video_id'  => $video_filename
+                );
+            }
+        } else if (isset($this->_error['video']['common'])) {
+            $json = array('error_message' => $this->_error['video']['common']);
         }
 
         $this->response->addHeader('Content-Type: application/json');
@@ -981,10 +995,6 @@ class ControllerAccountProduct extends Controller {
             $data['package_hash_md5']    = 'MD5:  ' . md5($file_content);
             $data['package_hash_sha1']   = 'SHA1: ' . sha1($file_content);
             $data['product_file_id']     = $this->request->post['product_file_id'];
-            $data['module_quota_bar']    = $this->load->controller('module/quota_bar',
-                                                                    array('custom_file_space' => $this->storage->getFileSize($this->request->post['product_file_id'],
-                                                                                                                             $this->auth->getId(),
-                                                                                                                             STORAGE_FILE_EXTENSION)));
 
         } else if ($product_info && $product_file_info = $this->model_catalog_product->getProductFileInfo($product_info->product_id)) {
 
@@ -996,16 +1006,11 @@ class ControllerAccountProduct extends Controller {
                                                      $this->auth->getId(),
                                                      STORAGE_FILE_EXTENSION);
 
-            $data['module_quota_bar'] = $this->load->controller('module/quota_bar',
-                                                                array('except_size' => $file_size,
-                                                                'custom_file_space' => $file_size));
-
         } else {
 
             $data['package_hash_md5']    = false;
             $data['package_hash_sha1']   = false;
             $data['product_file_id'] = false;
-            $data['module_quota_bar']    = $this->load->controller('module/quota_bar');
         }
 
         // Languages
@@ -1219,35 +1224,50 @@ class ControllerAccountProduct extends Controller {
         if (isset($this->request->post['video'])) {
             foreach ($this->request->post['video'] as $row => $video) {
 
-                $video_rows[] = $row;
-
-                $video_titles = array();
+                $video_rows[]      = $row;
+                $video_titles      = array();
+                $mp4               = false;
+                $ogg               = false;
 
                 foreach ($video['title'] as $language_id => $title) {
                     $video_titles[$language_id] = $title;
                 }
 
+                // If video already stored in exist product
+                if ( isset($video['product_video_id']) &&
+                    !empty($video['product_video_id']) &&
+                    file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $video['product_video_id'] . '.' . STORAGE_VIDEO_EXTENSION)) {
+
+                    $mp4 = $this->cache->video($video['product_video_id'], $this->auth->getId(), 'mp4');
+                    $ogg = $this->cache->video($video['product_video_id'], $this->auth->getId(), 'ogv');
+                }
+
                 $data['videos'][$row] = array(
-                    'source' => isset($video['source']) ? $video['source'] : false,
-                    'id'     => isset($video['id']) ? $video['id'] : false,
-                    'title'  => $video_titles);
+                    'product_video_id' => $video['product_video_id'],
+                    'ogg'              => $ogg,
+                    'mp4'              => $mp4,
+                    'reduce'           => isset($video['reduce']) ? 1 : 0,
+                    'title'            => $video_titles);
             }
 
         } else if ($product_info) {
-            foreach ($this->model_catalog_product->getProductVideos($product_info->product_id, $this->language->getId()) as $product_video) {
 
-                $video_rows[] = $product_video->product_video_id;
+            foreach ($this->model_catalog_product->getProductVideos($product_info->product_id, $this->language->getId()) as $row => $video) {
 
+                $row++;
+                $video_rows[] = $row;
                 $video_titles = array();
 
-                foreach ($this->model_catalog_product->getProductVideoDescriptions($product_video->product_video_id, $this->language->getId()) as $video_description) {
+                foreach ($this->model_catalog_product->getProductVideoDescriptions($video->product_video_id, $this->language->getId()) as $video_description) {
                     $video_titles[$video_description->language_id] = $video_description->title;
                 }
 
-                $data['videos'][$product_video->product_video_id] = array(
-                    'source' => $product_video->video_server_id,
-                    'id'     => $product_video->id,
-                    'title'  => $video_titles);
+                $data['videos'][$row] = array(
+                    'product_video_id' => $video->product_video_id,
+                    'reduce'           => $video->reduce,
+                    'ogg'              => $this->cache->video($video->product_video_id, $this->auth->getId(), 'ogv'),
+                    'mp4'              => $this->cache->video($video->product_video_id, $this->auth->getId(), 'mp4'),
+                    'title'            => $video_titles);
             }
         }
 
@@ -1275,16 +1295,15 @@ class ControllerAccountProduct extends Controller {
                     !empty($audio['product_audio_id']) &&
                     file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $audio['product_audio_id'] . '.' . STORAGE_AUDIO_EXTENSION)) {
 
-                    $mp3 = $this->cache->audio($audio['product_audio_id'], $this->auth->getId(), 'MP3');
-                    $ogg = $this->cache->audio($audio['product_audio_id'], $this->auth->getId(), 'OGG');
+                    $mp3 = $this->cache->audio($audio['product_audio_id'], $this->auth->getId(), 'mp3');
+                    $ogg = $this->cache->audio($audio['product_audio_id'], $this->auth->getId(), 'oga');
                 }
 
                 $data['audios'][$row] = array(
                     'product_audio_id' => $audio['product_audio_id'],
-                    'ogg'              => $mp3,
-                    'mp3'              => $ogg,
+                    'ogg'              => $ogg,
+                    'mp3'              => $mp3,
                     'cut'              => isset($audio['cut']) ? 1 : 0,
-                    'reduce'           => isset($audio['reduce']) ? 1 : 0,
                     'title'            => $audio_titles);
             }
 
@@ -1303,9 +1322,8 @@ class ControllerAccountProduct extends Controller {
                 $data['audios'][$row] = array(
                     'product_audio_id' => $audio->product_audio_id,
                     'cut'              => $audio->cut,
-                    'reduce'           => $audio->reduce,
-                    'ogg'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId(), 'OGG'),
-                    'mp3'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId(), 'MP3'),
+                    'ogg'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId(), 'oga'),
+                    'mp3'              => $this->cache->audio($audio->product_audio_id, $this->auth->getId(), 'mp3'),
                     'title'            => $audio_titles);
             }
         }
@@ -1372,11 +1390,6 @@ class ControllerAccountProduct extends Controller {
             $data['regular_price'] = $product_info->regular_price > 0 ? $product_info->regular_price : false;
         } else {
             $data['regular_price'] = false;
-        }
-
-        // Video servers
-        foreach ($this->model_common_video_server->getVideoServers() as $video_server) {
-            $data['video_servers'][$video_server->video_server_id] = $video_server->name;
         }
 
         // Currencies list
@@ -1706,6 +1719,8 @@ class ControllerAccountProduct extends Controller {
         // Videos
         if (isset($this->request->post['video'])) {
 
+            unset($this->request->files['video']);
+
             $video_count = 0;
             foreach ($this->request->post['video'] as $row => $video) {
 
@@ -1721,11 +1736,11 @@ class ControllerAccountProduct extends Controller {
 
                             // Filter critical request
                             $this->security_log->write('Wrong product video language_id field');
-                            unset($this->request->post['video'][$row]);
+                            unset($this->request->post['video']);
                             break;
                         }
 
-                        // Title string validation
+                        // Title validation
                         if (empty($title) && $language_id == $this->language->getId()) {
                             $this->_error['video'][$row]['title'][$language_id] = tt('Title is required');
                         } else if (!ValidatorProduct::titleValid(html_entity_decode($title))) {
@@ -1733,86 +1748,64 @@ class ControllerAccountProduct extends Controller {
                         }
                     }
                 } else {
-                    $this->_error['video']['common'] = tt('Wrong title URL input');
+                    $this->_error['video']['common'] = tt('Wrong title input');
 
                     // Filter critical request
-                    $this->security_log->write('Wrong product video URL field');
-                    unset($this->request->post['video'][$row]);
+                    $this->security_log->write('Wrong product video title field');
+                    unset($this->request->post['video']);
                     break;
                 }
 
-                // Source
-                if (!isset($video['source'])) {
-                    $this->_error['video']['common'] = tt('Wrong video source input');
-
-                    // Filter critical request
-                    $this->security_log->write('Wrong product video source field');
-                    unset($this->request->post['video'][$row]);
-                    break;
-
-                } else {
-
-                    // Video server validate
-                    $video_server_info = $this->model_common_video_server->getVideoServer($video['source']);
-
-                    if (!$video_server_info) {
-                        $this->_error['video'][$row]['source'] = tt('Wrong video_server_id source');
-
-                        // Filter critical request
-                        $this->security_log->write('Wrong product video video_server_id field');
-                        unset($this->request->post['video'][$row]);
-                        break;
-
-                    } else {
-
-                        // ID relations validate
-                        if (isset($video['id'])) {
-
-                            switch (mb_strtolower($video_server_info->name)) {
-                                case 'youtube':
-
-                                    if (empty($video['id'])) {
-                                        $this->_error['video'][$row]['id'] = tt('YouTube ID is required');
-                                    } else if (!ValidatorYoutube::idValid(html_entity_decode($video['id']))) {
-                                        $this->_error['video'][$row]['id'] = tt('Invalid YouTube ID format');
-                                    }
-
-                                    break;
-                                case 'vimeo':
-                                    if (empty($video['id'])) {
-                                        $this->_error['video'][$row]['id'] = tt('Vimeo ID is required');
-                                    } else if (!ValidatorVimeo::idValid(html_entity_decode($video['id']))) {
-                                        $this->_error['video'][$row]['id'] = tt('Invalid Vimeo ID format');
-                                    }
-                                    break;
-                                default:
-                                    $this->_error['video'][$row]['source'] = tt('Undefined video source');
-                            }
-                        } else {
-                            $this->_error['video']['common'] = tt('Wrong video ID input');
-
-                            // Filter critical request
-                            $this->security_log->write('Wrong product video ID field');
-                            unset($this->request->post['video'][$row]);
-                            break;
-                        }
-                    }
-                }
-
-                // Sort order
+                // Require sort order field
                 if (!isset($video['sort_order']) || !$video['sort_order']) {
                     $this->_error['video']['common'] = tt('Wrong sort order input');
 
                     // Filter critical request
                     $this->security_log->write('Wrong product video sort_order field');
-                    unset($this->request->post['video'][$row]);
+                    unset($this->request->post['video']);
+                    break;
+                }
+
+                // Require product product_video_id
+                if (!isset($video['product_video_id'])) {
+                    $this->_error['video']['common'] = tt('Wrong temporary ID video input');
+
+                    // Filter critical request
+                    $this->security_log->write('Wrong product video product_video_id field');
+                    unset($this->request->post['video']);
+                    break;
+                }
+
+                // Require product product_video_id
+                if (!isset($video['product_video_id'])) {
+                    $this->_error['video']['common'] = tt('Wrong video ID input');
+
+                    // Filter critical request
+                    $this->security_log->write('Wrong product video product_video_id field');
+                    unset($this->request->post['video']);
+                    break;
+                }
+
+                // Check if new temporary and stored video fields is not empty
+                if (empty($video['product_video_id'])) {
+                    $this->_error['video']['common'] = tt('Video file is required');
+                }
+
+                // Check temporary video file if exists
+                if (!empty($video['product_video_id']) &&
+                    !file_exists(DIR_STORAGE . $this->auth->getId() . DIR_SEPARATOR . $video['product_video_id'] . '.' . STORAGE_VIDEO_EXTENSION)) {
+
+                    $this->_error['video']['common'] = tt('Temporary video ID is wrong');
+                    $this->security_log->write('Try to access not own\'s temporary video file');
+
+                    unset($this->request->post['video']);
                     break;
                 }
             }
 
-            // Maximum video pages per product
+            // Maximum videos per one product
             if (QUOTA_VIDEO_PER_PRODUCT < $video_count) {
-                $this->_error['video']['common'] = sprintf(tt('Maximum %s video links per one product'), QUOTA_VIDEO_PER_PRODUCT);
+                $this->_error['video']['common'] = sprintf(tt('Maximum %s videos pages per one product'), QUOTA_VIDEO_PER_PRODUCT);
 
                 // Filter critical request
                 $this->security_log->write('Exceeded limit of product videos');
@@ -2232,6 +2225,25 @@ class ControllerAccountProduct extends Controller {
 
             $this->_error['audio']['common'] = tt('Audio is not valid!');
             $this->security_log->write('Uploaded audio file is not valid');
+        }
+
+        return !$this->_error;
+    }
+
+    private function _validateVideo() {
+        if (!isset($this->request->files['video']['tmp_name']) || !isset($this->request->files['video']['name'])) {
+
+            $this->_error['video']['common'] = tt('Uploaded video file is wrong!');
+            $this->security_log->write('Uploaded video file is wrong');
+
+        } else if (!ValidatorUpload::videoValid(
+            array(
+                'name'     => $this->request->files['video']['name'][$this->request->get['row']],
+                'tmp_name' => $this->request->files['video']['tmp_name'][$this->request->get['row']]
+            ), QUOTA_AUDIO_MAX_FILE_SIZE)) {
+
+            $this->_error['video']['common'] = tt('Video is not valid!');
+            $this->security_log->write('Uploaded video file is not valid');
         }
 
         return !$this->_error;

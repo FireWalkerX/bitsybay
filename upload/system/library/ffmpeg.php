@@ -35,18 +35,16 @@ final class FFmpeg {
     }
 
     /**
-     * Convert file to OGG
+     * Convert file
      *
      * @param string $source Path to file
      * @param string $target Path to file
-     * @param bool $overwrite TRUE|FALSE
-     * @param int $bit_rate kbps
-     * @param bool|int $start seconds
-     * @param bool|int $end seconds
+     * @param int $t Limit seconds
+     * @param int $quality Quality
      *
      * @return bool TRUE|FALSE response
      */
-    public function convertToOGG($source, $target, $overwrite = false, $bit_rate = 320, $start = false, $end = false) {
+    public function convert($source, $target, $t = 0, $quality = 10) {
 
         // If source file is not exists or not readable
         if (!file_exists($source)) {
@@ -68,94 +66,28 @@ final class FFmpeg {
         if (file_exists($target)) {
 
             // Overwrite
-            if ($overwrite) unlink($target);
-
-            // Error
-            else {
-                $this->_error = 'Target file already exist!';
-
-                return false;
-            }
+            unlink($target);
         }
+
+        // Validate data types
+        $t = $t  > 0 ? sprintf('-t %s', (int) $t) : '';
 
         // Execute
         exec(
             sprintf(
-                '%s %s %s -i %s -ab %sk -f ogg %s',
+                '%s -i %s %s -q %s %s',
                 $this->_ffmpeg,
-               ($start ? sprintf('-ss %s', $start) : ''),
-               ($end ? sprintf('-t %s', $end) : ''),
                 $source,
-                $bit_rate,
+                $t,
+                $quality,
                 $target
             ),
             $output,
             $return
         );
 
-        return true;
-    }
-
-    /**
-     * Convert file to MP3
-     *
-     * @param string $source Path to file
-     * @param string $target Path to file
-     * @param bool $overwrite TRUE|FALSE
-     * @param int $bit_rate kbps
-     * @param bool|int $start seconds
-     * @param bool|int $end seconds
-     *
-     * @return bool TRUE|FALSE response
-     */
-    public function convertToMP3($source, $target, $overwrite = false, $bit_rate = 320, $start = false, $end = false) {
-
-        // If source file is not exists or not readable
-        if (!file_exists($source)) {
-
-            $this->_error = 'Source file is not exists!';
-
-            return false;
-        }
-
-        // If source file is not exists or not readable
-        if (!is_readable($source)) {
-
-            $this->_error = 'Source file is not readable!';
-
-            return false;
-        }
-
-        // If target file is exists
-        if (file_exists($target)) {
-
-            // Overwrite
-            if ($overwrite) unlink($target);
-
-            // Error
-            else {
-                $this->_error = 'Target file already exist!';
-
-                return false;
-            }
-        }
-
-        // Execute
-        exec(
-            sprintf(
-                '%s %s %s -i %s -ab %sk -f mp3 %s',
-                $this->_ffmpeg,
-               ($start ? sprintf('-ss %s', $start) : ''),
-               ($end ? sprintf('-t %s', $end) : ''),
-                $source,
-                $bit_rate,
-                $target
-            ),
-            $output,
-            $return
-        );
-
-        return true;
+        // If file is exist
+        return (file_exists($target)) ? true : false;
     }
 
     /**

@@ -129,7 +129,7 @@ class ValidatorUpload {
     * @param array $allowed_file_extensions
     * @return bool TRUE if valid ot FALSE if else
     */
-    static public function audioValid($audio, $max_file_size, array $allowed_file_extensions = array('mp3', 'ogg', 'waw', 'wawe', 'mka', 'wma', 'mp4', 'm4a')) {
+    static public function audioValid($audio, $max_file_size, array $allowed_file_extensions = array('mp3', 'ogg', 'oga', 'waw', 'wawe', 'mka', 'wma', 'mp4', 'm4a')) {
         
         foreach ($allowed_file_extensions as $extension) {
             if (self::fileValid($audio, $max_file_size, $extension)) return true;
@@ -146,7 +146,7 @@ class ValidatorUpload {
     * @param array $allowed_file_extensions
     * @return bool TRUE if valid ot FALSE if else
     */
-    static public function videoValid($video, $max_file_size, array $allowed_file_extensions = array('mov', 'mpeg4', 'avi', 'wmv', 'mpegps', 'flv', '3gpp', 'webm')) {
+    static public function videoValid($video, $max_file_size, array $allowed_file_extensions = array('mov', 'mpeg4', 'mp4', 'avi', 'wmv', 'mpegps', 'flv', '3gpp', 'webm', 'ogg', 'ogv')) {
 
         foreach ($allowed_file_extensions as $extension) {
             if (self::fileValid($video, $max_file_size, $extension)) return true;

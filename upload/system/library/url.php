@@ -109,6 +109,7 @@ final class Url {
         $this->_addRewrite('account/product/uploadPackage', 'ajax/upload/package');
         $this->_addRewrite('account/product/uploadImage', 'ajax/upload/image');
         $this->_addRewrite('account/product/uploadAudio', 'ajax/upload/audio');
+        $this->_addRewrite('account/product/uploadVideo', 'ajax/upload/video');
         $this->_addRewrite('account/product/quota', 'ajax/quota');
 
         // Product

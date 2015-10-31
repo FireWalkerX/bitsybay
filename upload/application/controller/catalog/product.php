@@ -169,15 +169,17 @@ class ControllerCatalogProduct extends Controller {
         foreach ($this->model_catalog_product->getProductVideos($product_info->product_id, $this->language->getId()) as $video) {
                 $data['product_videos'][] = array(
                     'title' => $video->title,
-                    'url'   => $video->iframe_url . $video->id);
+                    'ogg'   => $this->cache->video($video->product_video_id, $product_info->user_id, 'ogv', false, ($video->reduce ? PRODUCT_VIDEO_REDUCED_QUALITY : PRODUCT_VIDEO_QUALITY)),
+                    'mp4'   => $this->cache->video($video->product_video_id, $product_info->user_id, 'mp4', false, ($video->reduce ? PRODUCT_VIDEO_REDUCED_QUALITY : PRODUCT_VIDEO_QUALITY)),
+                );
         }
 
         $data['product_audios'] = array();
         foreach ($this->model_catalog_product->getProductAudios($product_info->product_id, $this->language->getId()) as $audio) {
             $data['product_audios'][] = array(
                 'title' => $audio->title,
-                'ogg'   => $this->cache->audio($audio->product_audio_id, $product_info->user_id, 'OGG', ($audio->reduce ? PRODUCT_AUDIO_REDUCE_BIT_RATE : 320), false, ($audio->cut ? PRODUCT_AUDIO_TIME_START : false), ($audio->cut ? PRODUCT_AUDIO_TIME_END : false)),
-                'mp3'   => $this->cache->audio($audio->product_audio_id, $product_info->user_id, 'MP3', ($audio->reduce ? PRODUCT_AUDIO_REDUCE_BIT_RATE : 320), false, ($audio->cut ? PRODUCT_AUDIO_TIME_START : false), ($audio->cut ? PRODUCT_AUDIO_TIME_END : false)),
+                'ogg'   => $this->cache->audio($audio->product_audio_id, $product_info->user_id, 'oga', false, ($audio->cut ? PRODUCT_AUDIO_CUT_TIME : 0)),
+                'mp3'   => $this->cache->audio($audio->product_audio_id, $product_info->user_id, 'mp3', false, ($audio->cut ? PRODUCT_AUDIO_CUT_TIME : 0)),
             );
         }
 
