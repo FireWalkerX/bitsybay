@@ -279,7 +279,7 @@ table img {
     border-radius: 15px;
     background: url(../image/template/c-p-bg.png);
 }
-.catalog-category-product.grid .product-item.unpublished {
+.catalog-category-product.grid .product-item.transparent {
     opacity: 0.5
 }
 .catalog-category-product.grid .product-item .product-title {

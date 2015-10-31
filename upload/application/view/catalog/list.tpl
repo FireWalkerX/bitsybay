@@ -38,7 +38,7 @@
       <div class="catalog-category-product grid">
         <?php foreach ($products as $product) { ?>
           <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
-            <div class="product-item<?php echo (!$product['status'] ? ' unpublished ' : false) ?>">
+            <div class="product-item <?php echo (!$product['status'] ? 'transparent' : false) ?>">
               <div class="product-image"><a href="<?php echo $product['href_view'] ?>"><img src="<?php echo $product['src'] ?>" alt="<?php echo $product['title'] ?>" /></a></div>
               <div class="product-title"><h4><a href="<?php echo $product['href_view'] ?>"><?php echo $product['title'] ?></a></h4></div>
               <div class="product-price">
