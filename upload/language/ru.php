@@ -19,7 +19,7 @@ $_translation = array(
 
 // Headers
 'BitsyBay - Sell and Buy Digital Creative with BitCoin' => 'BitsyBay - Магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin',
-'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Free seller fee up to 2016!' => 'Bitcoin супермаркет фотографий, графики, шаблонов, кода, приложений, книг и другого креатива за BitCoin. Качественные авторские товары. Нулевые комиссии до конца 2016!',
+'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Buy with Bitcoin. Sell online. Open your own virtual store.' => 'Bitcoin супермаркет фотографий, графики, шаблонов, кода, приложений, книг и другого креатива за BitCoin. Качественные авторские товары. Покупайте с Bitcoin. Продавайте онлайн. Откройте свой собственный интернет-магазин!',
 'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, photos, arts, illustrations, 3d, templates, codes, extensions, books, content, digital, creative, quality, legal' => 'bitsybay, bitcoin, биткойн, btc, инди, супермаркет, магазин, купить, продать, royalty-free, фото, изображения, иллюстрации, 3d, шаблоны, открытый код, приложения, книги, цифровой контент, креатив, качество, легально',
 
 'Buy %s Thematic with Bitcoin | %s Thematic Store' => 'Купить %s за Bitcoin | %s',
