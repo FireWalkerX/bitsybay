@@ -112,9 +112,11 @@ INSTALL
 
     /storage 
     /public/image/cache 
+    /public/audio/cache 
+    /public/video/cache 
     /system/log 
 
-* Setup crontab: **/tool/\***
+* Setup crontab: **/tool/**
 * Do not forget:
 
 
