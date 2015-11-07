@@ -110,11 +110,11 @@ INSTALL
 * Set write-access to the following directories:
 
 
-    /storage 
-    /public/image/cache 
-    /public/audio/cache 
-    /public/video/cache 
-    /system/log 
+    /storage  
+    /public/image/cache  
+    /public/audio/cache  
+    /public/video/cache  
+    /system/log  
 
 * Setup crontab: **/tool/**
 * Do not forget:
