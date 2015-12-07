@@ -45,6 +45,7 @@ CREATE TABLE `category_description` (
   `category_id` int(10) unsigned NOT NULL,
   `language_id` int(10) unsigned NOT NULL,
   `title` varchar(255) NOT NULL,
+  `description` text NOT NULL,
   PRIMARY KEY (`category_description_id`),
   UNIQUE KEY `UNIQUE` (`category_id`,`language_id`),
   KEY `fk_category_description_category_id` (`category_id`),
