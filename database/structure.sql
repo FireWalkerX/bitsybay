@@ -760,15 +760,9 @@ CREATE TABLE IF NOT EXISTS `user_notification` (
   `date_read` DATETIME NOT NULL,
   PRIMARY KEY (`user_notification_id`),
   INDEX `fk_user_notification_user_id` (`user_id` ASC),
-  INDEX `fk_user_notification_language_id` (`language_id` ASC),
   CONSTRAINT `fk_user_notification_user_id`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`user_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_notification_language_id`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `language` (`language_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
