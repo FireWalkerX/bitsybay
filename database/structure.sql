@@ -87,7 +87,7 @@ CREATE TABLE `language` (
   `locale` varchar(45) NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`language_id`)
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -107,7 +107,7 @@ CREATE TABLE `log_404` (
   PRIMARY KEY (`log_404_id`),
   KEY `fk_log_404_user_id` (`user_id`),
   CONSTRAINT `fk_log_404_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +126,7 @@ CREATE TABLE `log_search` (
   PRIMARY KEY (`log_search_id`),
   KEY `fk_log_search_user_id` (`user_id`),
   CONSTRAINT `fk_log_search_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -182,7 +182,7 @@ CREATE TABLE `order` (
   CONSTRAINT `fk_order_order_status_id` FOREIGN KEY (`order_status_id`) REFERENCES `order_status` (`order_status_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`currency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -196,7 +196,7 @@ DROP TABLE IF EXISTS `order_status`;
 CREATE TABLE `order_status` (
   `order_status_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`order_status_id`)
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -218,7 +218,7 @@ CREATE TABLE `order_status_description` (
   KEY `fk_order_status_description_language_id` (`language_id`),
   CONSTRAINT `fk_order_status_description_order_status_id` FOREIGN KEY (`order_status_id`) REFERENCES `order_status` (`order_status_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_order_status_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -250,7 +250,7 @@ CREATE TABLE `product` (
   CONSTRAINT `fk_product_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`currency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -331,7 +331,7 @@ CREATE TABLE `product_description` (
   KEY `fk_product_description_language_id` (`language_id`),
   CONSTRAINT `fk_product_description_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -353,7 +353,7 @@ CREATE TABLE `product_favorite` (
   KEY `fk_product_favorite_user_id` (`user_id`),
   CONSTRAINT `fk_product_favorite_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_favorite_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -373,7 +373,7 @@ CREATE TABLE `product_file` (
   PRIMARY KEY (`product_file_id`),
   KEY `fk_product_file_product_id` (`product_id`),
   CONSTRAINT `fk_product_file_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -394,7 +394,7 @@ CREATE TABLE `product_file_download` (
   KEY `fk_product_file_download_user_id` (`user_id`),
   CONSTRAINT `fk_product_file_download_product_file_id` FOREIGN KEY (`product_file_id`) REFERENCES `product_file` (`product_file_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_file_download_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -415,7 +415,7 @@ CREATE TABLE `product_image` (
   PRIMARY KEY (`product_image_id`),
   KEY `fk_product_image_product_id` (`product_id`),
   CONSTRAINT `fk_product_image_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -461,7 +461,7 @@ CREATE TABLE `product_image_description` (
   KEY `fk_product_image_description_language_id` (`language_id`),
   CONSTRAINT `fk_product_image_description_product_image_id` FOREIGN KEY (`product_image_id`) REFERENCES `product_image` (`product_image_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_image_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -484,7 +484,7 @@ CREATE TABLE `product_report` (
   KEY `fk_product_report_user_id` (`user_id`),
   CONSTRAINT `fk_product_report_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_report_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -541,7 +541,7 @@ CREATE TABLE `product_special` (
   PRIMARY KEY (`product_special_id`),
   KEY `fk_product_special_product_id` (`product_id`),
   CONSTRAINT `fk_product_special_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -562,7 +562,7 @@ CREATE TABLE `product_to_tag` (
   KEY `fk_product_to_tag_tag_id` (`tag_id`),
   CONSTRAINT `fk_product_to_tag_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_to_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`tag_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -580,8 +580,8 @@ CREATE TABLE `product_video` (
   `reduce` enum('1','0') NOT NULL,
   PRIMARY KEY (`product_video_id`),
   KEY `fk_product_video_product_id` (`product_id`),
-  CONSTRAINT `fk_product_video_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_product_video_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -603,7 +603,7 @@ CREATE TABLE `product_video_description` (
   KEY `fk_product_video_description_product_video_id` (`product_video_id`),
   CONSTRAINT `fk_product_video_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_video_description_product_video_id` FOREIGN KEY (`product_video_id`) REFERENCES `product_video` (`product_video_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -621,7 +621,7 @@ CREATE TABLE `product_audio` (
   PRIMARY KEY (`product_audio_id`),
   KEY `fk_product_audio_product_id` (`product_id`),
   CONSTRAINT `fk_product_audio_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -643,7 +643,7 @@ CREATE TABLE `product_audio_description` (
   KEY `fk_product_audio_description_product_audio_id` (`product_audio_id`),
   CONSTRAINT `fk_product_audio_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_product_audio_description_product_audio_id` FOREIGN KEY (`product_audio_id`) REFERENCES `product_audio` (`product_audio_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -663,7 +663,7 @@ CREATE TABLE `redirect` (
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`redirect_id`),
   KEY `code` (`code`)
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -678,7 +678,7 @@ CREATE TABLE `tag` (
   `tag_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `date_added` datetime NOT NULL,
   PRIMARY KEY (`tag_id`)
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -700,7 +700,7 @@ CREATE TABLE `tag_description` (
   KEY `fk_tag_tag_id` (`tag_id`),
   CONSTRAINT `fk_tag_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_tag_tag_id` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`tag_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -743,7 +743,7 @@ CREATE TABLE `user` (
     REFERENCES `currency` (`currency_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
@@ -839,7 +839,7 @@ CREATE TABLE `user_ip` (
   PRIMARY KEY (`user_ip_id`),
   KEY `fk_user_ip_user_id` (`user_id`),
   CONSTRAINT `fk_user_ip_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDBDEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
