@@ -1,6 +1,5 @@
 -- MySQL dump 10.13  Distrib 5.6.22, for osx10.8 (x86_64)
 --
--- Host: localhost    Database: bitsybay
 -- ------------------------------------------------------
 -- Server version	5.5.43-0+deb8u1
 
@@ -620,7 +619,7 @@ CREATE TABLE `product_audio` (
   `cut` enum('1','0') NOT NULL,
   PRIMARY KEY (`product_audio_id`),
   KEY `fk_product_audio_product_id` (`product_id`),
-  CONSTRAINT `fk_product_audio_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_audio_product_id` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
