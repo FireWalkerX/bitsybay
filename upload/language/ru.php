@@ -38,7 +38,7 @@ $_translation = array(
 'Then here you are:' => 'Тогда вы там, где нужно:',
 #'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
 '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Бесплатно %s Мб дискового пространства +%s Мб за каждую сделку',
-'0% seller fee up to 2016, 11% later and 0% for project contributors forever' => 'Комиссия 0% до 2016 года, 11% после и 0% для контрибуторов',
+'%s%% seller fee and 0%% for project contributors' => 'Низкая комиссия %s%% и 0%% для контрибуторов',
 'Freedom for peoples: 100% open engine for contributions and healthy competition' => 'Мы ♥ свободу: 100% открытая платформа для участия и здоровой конкуренции',
 'Respect for your privacy without third party injections and additional agreements' => 'Уважение к приватности без использования сторонних скриптов и лицензий',
 
