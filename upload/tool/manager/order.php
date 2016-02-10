@@ -103,6 +103,7 @@ $statement = $db->prepare('SELECT `o`.`order_id`,
                                   `p`.`product_id`,
                                   `p`.`currency_id`,
                                   `p`.`withdraw_address`,
+                                  `us`.`contributor` AS `contributor`,
                                   `us`.`email` AS `seller_email`,
                                   `ub`.`email` AS `buyer_email`,
                                   `ub`.`username` AS `buyer_username`,
@@ -162,8 +163,15 @@ if ($statement->rowCount()) {
                     // Generating a billing report
                     if ($statement->rowCount()) {
 
-                        $fund_profit   = (float) $order->amount * FEE_PER_ORDER / 100;
-                        $seller_profit = (float) $order->amount - $fund_profit;
+                        // Zero fees for all contributors
+                        if ($order->contributor == 1) {
+                            $fund_profit   = (float) 0;
+                            $seller_profit = (float) $order->amount;
+                        } else {
+                            $fund_profit   = (float) $order->amount * FEE_PER_ORDER / 100;
+                            $seller_profit = (float) $order->amount - $fund_profit;
+                        }
+
 
                         // Withdraw seller profit
                         if ($transaction_id = $bitcoin->sendtoaddress(
