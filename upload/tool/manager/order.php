@@ -160,131 +160,131 @@ if ($statement->rowCount()) {
                     $statement = $db->prepare('UPDATE `user` SET `file_quota` = `file_quota` + ? WHERE `user_id` = ? LIMIT 1');
                     $statement->execute(array(QUOTA_BONUS_SIZE_PER_ORDER, $order->seller_user_id));
 
-                    // Generating a billing report
-                    if ($statement->rowCount()) {
+                    // Zero fees for all contributors
+                    if ($order->contributor == 1) {
+                        $fund_profit   = (float) 0;
+                        $seller_profit = (float) $order->amount;
+                    } else {
+                        $fund_profit   = (float) $order->amount * FEE_PER_ORDER / 100;
+                        $seller_profit = (float) $order->amount - $fund_profit;
+                    }
 
-                        // Zero fees for all contributors
-                        if ($order->contributor == 1) {
-                            $fund_profit   = (float) 0;
-                            $seller_profit = (float) $order->amount;
-                        } else {
-                            $fund_profit   = (float) $order->amount * FEE_PER_ORDER / 100;
-                            $seller_profit = (float) $order->amount - $fund_profit;
-                        }
+                    // Withdraw seller profit
+                    if ($transaction_id = $bitcoin->sendtoaddress(
+                        $order->withdraw_address,
+                        $seller_profit,
+                        sprintf("%s Payout - Order ID %s", PROJECT_NAME, $order->order_id)
+                    )) {
+                        $transaction_count++;
+                    } else {
+                        $error[] = sprintf("Seller Withdraw %s", $bitcoin->error);
+                    }
 
+                    // Withdraw fund profit
+                    if (!$error && $fund_profit > 0) {
 
-                        // Withdraw seller profit
                         if ($transaction_id = $bitcoin->sendtoaddress(
-                            $order->withdraw_address,
-                            $seller_profit,
-                            sprintf("%s Payout - Order ID %s", PROJECT_NAME, $order->order_id)
+                            BITCOIN_FUND_ADDRESS,
+                            $fund_profit,
+                            sprintf("%s Profit - Order ID %s", PROJECT_NAME, $order->order_id)
                         )) {
                             $transaction_count++;
                         } else {
-                            $error[] = sprintf("Seller Withdraw %s", $bitcoin->error);
+                            $error[] = sprintf("[Fund Withdraw] %s", $bitcoin->error);
                         }
+                    }
 
-                        // Withdraw profit
-                        if (!$error && $fund_profit > 0) {
+                    // Add seller notification
+                    /*
+                    $notification = $db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
+                                                                                      `language_id` = :language_id,
+                                                                                      `label`       = :label,
+                                                                                      `title`       = :title,
+                                                                                      `description` = :description,
+                                                                                      `read`        = 0,
+                                                                                      `date_added`  = NOW()');
+                    $notification->execute(
+                        array(
+                            ':user_id'     => $order->seller_user_id,
+                            ':language_id' => DEFAULT_LANGUAGE_ID,
+                            ':label'       => 'activity',
+                            ':title'       => 'Your product has been purchased',
+                            ':description' => sprintf("@%s has purchased your product %s. Awesome!", $order->buyer_username, $order->product_title)
+                        )
+                    );
+                    */
 
-                            if ($transaction_id = $bitcoin->sendtoaddress(
-                                BITCOIN_FUND_ADDRESS,
-                                $fund_profit,
-                                sprintf("%s Profit - Order ID %s", PROJECT_NAME, $order->order_id)
-                            )) {
-                                $transaction_count++;
-                            } else {
-                                $error[] = sprintf("[Fund Withdraw] %s", $bitcoin->error);
-                            }
-                        }
+                    // Check seller subscription
+                    $statement = $db->prepare('SELECT NULL FROM `user_subscription` WHERE `user_id` = ? AND `subscription_id` = ? LIMIT 1');
+                    $statement->execute(array($order->seller_user_id, PURCHASE_SUBSCRIPTION_ID));
 
-                        // Add seller notification
-                        $notification = $db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
-                                                                                          `language_id` = :language_id,
-                                                                                          `label`       = :label,
-                                                                                          `title`       = :title,
-                                                                                          `description` = :description,
-                                                                                          `read`        = 0,
-                                                                                          `date_added`  = NOW()');
-                        $notification->execute(
-                            array(
-                                ':user_id'     => $order->seller_user_id,
-                                ':language_id' => DEFAULT_LANGUAGE_ID,
-                                ':label'       => 'activity',
-                                ':title'       => 'Your product has been purchased',
-                                ':description' => sprintf("@%s has purchased your product %s. Awesome!", $order->buyer_username, $order->product_title)
-                            )
-                        );
+                    if ($statement->rowCount()) {
 
-                        // Check seller subscription
-                        $statement = $db->prepare('SELECT NULL FROM `user_subscription` WHERE `user_id` = ? AND `subscription_id` = ? LIMIT 1');
-                        $statement->execute(array($order->seller_user_id, PURCHASE_SUBSCRIPTION_ID));
-
-                        if ($statement->rowCount()) {
-
-                            // Send cheers to email
-                            $mail_data['project_name'] = PROJECT_NAME;
-
-                            $mail_data['subject'] = sprintf('Your product has been purchased - %s', PROJECT_NAME);
-                            $mail_data['message'] = sprintf("@%s has purchased your product %s. Awesome!", $order->buyer_username, $order->product_title);
-
-                            $mail_data['href_home']         = URL_BASE;
-                            $mail_data['href_contact']      = URL_BASE . 'contact';
-                            $mail_data['href_subscription'] = URL_BASE . 'subscriptions';
-
-                            $mail_data['href_facebook'] = URL_FACEBOOK;
-                            $mail_data['href_twitter']  = URL_TWITTER;
-                            $mail_data['href_tumblr']   = URL_TUMBLR;
-                            $mail_data['href_github']   = URL_GITHUB;
-
-                            $mail->setTo($order->seller_email);
-                            $mail->setSubject($mail_data['subject']);
-                            $mail->setHtml(helper_load_view('email/common.tpl', $mail_data));
-                            $mail->send();
-                        }
-
-
-                        // Add buyer notification
-                        $notification = $db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
-                                                                                          `language_id` = :language_id,
-                                                                                          `label`       = :label,
-                                                                                          `title`       = :title,
-                                                                                          `description` = :description,
-                                                                                          `read`        = 0,
-                                                                                          `date_added`  = NOW()');
-                        $notification->execute(
-                            array(
-                                ':user_id'     => $order->buyer_user_id,
-                                ':language_id' => DEFAULT_LANGUAGE_ID,
-                                ':label'       => 'activity',
-                                ':title'       => 'Your purchase has been confirmed',
-                                ':description' => sprintf("%s purchase is ready to download. Cheers!", $order->product_title)
-                            )
-                        );
-
-                        // Send congratulations to email
+                        // Send cheers to email
                         $mail_data['project_name'] = PROJECT_NAME;
 
-                        $mail_data['subject'] = sprintf('Your purchase has been confirmed - %s', PROJECT_NAME);
-                        $mail_data['message'] = sprintf("%s purchase is ready to download. Cheers!", $order->product_title);
+                        $mail_data['subject'] = sprintf('Your product has been purchased - %s', PROJECT_NAME);
+                        $mail_data['message'] = sprintf("@%s has purchased your product %s. Awesome!", $order->buyer_username, $order->product_title);
 
                         $mail_data['href_home']         = URL_BASE;
                         $mail_data['href_contact']      = URL_BASE . 'contact';
                         $mail_data['href_subscription'] = URL_BASE . 'subscriptions';
-                        $mail_data['href_download']     = URL_BASE . 'search?purchased=1';
 
                         $mail_data['href_facebook'] = URL_FACEBOOK;
                         $mail_data['href_twitter']  = URL_TWITTER;
                         $mail_data['href_tumblr']   = URL_TUMBLR;
                         $mail_data['href_github']   = URL_GITHUB;
 
-                        $mail_data['module'] = helper_load_view('email/module/download.tpl', $mail_data);
-
-                        $mail->setTo($order->buyer_email);
+                        $mail->setTo($order->seller_email);
                         $mail->setSubject($mail_data['subject']);
                         $mail->setHtml(helper_load_view('email/common.tpl', $mail_data));
                         $mail->send();
                     }
+
+
+                    // Add buyer notification
+                    /*
+                    $notification = $db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
+                                                                                      `language_id` = :language_id,
+                                                                                      `label`       = :label,
+                                                                                      `title`       = :title,
+                                                                                      `description` = :description,
+                                                                                      `read`        = 0,
+                                                                                      `date_added`  = NOW()');
+                    $notification->execute(
+                        array(
+                            ':user_id'     => $order->buyer_user_id,
+                            ':language_id' => DEFAULT_LANGUAGE_ID,
+                            ':label'       => 'activity',
+                            ':title'       => 'Your purchase has been confirmed',
+                            ':description' => sprintf("%s purchase is ready to download. Cheers!", $order->product_title)
+                        )
+                    );
+                    */
+
+                    // Send congratulations to email
+                    $mail_data['project_name'] = PROJECT_NAME;
+
+                    $mail_data['subject'] = sprintf('Your purchase has been confirmed - %s', PROJECT_NAME);
+                    $mail_data['message'] = sprintf("%s purchase is ready to download. Cheers!", $order->product_title);
+
+                    $mail_data['href_home']         = URL_BASE;
+                    $mail_data['href_contact']      = URL_BASE . 'contact';
+                    $mail_data['href_subscription'] = URL_BASE . 'subscriptions';
+                    $mail_data['href_download']     = URL_BASE . 'search?purchased=1';
+
+                    $mail_data['href_facebook'] = URL_FACEBOOK;
+                    $mail_data['href_twitter']  = URL_TWITTER;
+                    $mail_data['href_tumblr']   = URL_TUMBLR;
+                    $mail_data['href_github']   = URL_GITHUB;
+
+                    $mail_data['module'] = helper_load_view('email/module/download.tpl', $mail_data);
+
+                    $mail->setTo($order->buyer_email);
+                    $mail->setSubject($mail_data['subject']);
+                    $mail->setHtml(helper_load_view('email/common.tpl', $mail_data));
+                    $mail->send();
+
                 }
             }
 
