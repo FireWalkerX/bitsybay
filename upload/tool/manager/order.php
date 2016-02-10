@@ -126,10 +126,10 @@ if ($statement->rowCount()) {
         $address_id = BITCOIN_ORDER_PREFIX . $order->order_id;
 
         // When order has been purchased
-        if ($bitcoin->getreceivedbyaccount($address_id) > 0) {
+        if ($bitcoin->getreceivedbyaccount($address_id, 0) > 0) {
 
             // Check amount
-            if ((float) $bitcoin->getreceivedbyaccount($address_id) >= (float) $order->amount) {
+            if ((float) $bitcoin->getreceivedbyaccount($address_id, 0) >= (float) $order->amount) {
 
                 // Set order as PROCESSED
                 $statement = $db->prepare('UPDATE `order` SET `order_status_id` = ? WHERE `order_status_id` <> ? AND `order_id` = ? LIMIT 1');
@@ -280,8 +280,8 @@ if ($statement->rowCount()) {
                 }
             }
 
-            if ((float) $bitcoin->getreceivedbyaccount($address_id) != (float) $order->amount) {
-                $error[] = sprintf("Amount is not match! Order amount: %s Received amount: %s", (float) $order->amount, (float) $bitcoin->getreceivedbyaccount($address_id));
+            if ((float) $bitcoin->getreceivedbyaccount($address_id, 0) != (float) $order->amount) {
+                $error[] = sprintf("Amount is not match! Order amount: %s Received amount: %s", (float) $order->amount, (float) $bitcoin->getreceivedbyaccount($address_id, 0));
             }
         }
     }
