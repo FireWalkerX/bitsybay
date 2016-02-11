@@ -53,7 +53,7 @@ class ModelCommonLanguage extends Model {
             if ($statement->rowCount()) {
                 return $statement->fetch();
             } else {
-                return array();
+                return false;
             }
         } catch (PDOException $e) {
 
