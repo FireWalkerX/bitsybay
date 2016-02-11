@@ -316,7 +316,9 @@ final class Url {
                     if ($key == 'route') {
                         $route = $value;
                     } else {
-                        $arguments[] = $key . '=' . $value;
+                        if ($key != 'language_id') {
+                            $arguments[] = $key . '=' . $value;
+                        }
                     }
                 }
             }
