@@ -87,9 +87,6 @@ final class Auth {
                 // Set last visit date
                 $this->_setVisitDate($user->user_id);
 
-                // Update IP Log
-                $this->_saveIP();
-
                 // Set active language
                 $this->_saveLanguage($user->user_id);
 
@@ -153,118 +150,6 @@ final class Auth {
     }
 
     /**
-    * Save user IP to database
-    *
-    * @return int|bool Return user_ip_id if add new row, true if row already exists or false if throw exception
-    */
-    private function _saveIP() {
-
-        try {
-
-            $statement = $this->_db->prepare('SELECT * FROM `user_ip` WHERE `user_id` = ? AND `ip` = ? LIMIT 1');
-            $statement->execute(array($this->_user_id, $this->_request->getRemoteAddress()));
-
-            // If IP not registered
-            if (!$statement->rowCount()) {
-
-                // Ignore notifications for first login
-                $statement = $this->_db->prepare('SELECT NULL FROM `user_ip` WHERE `user_id` = ? LIMIT 1');
-                $statement->execute(array($this->_user_id));
-
-                if ($statement->rowCount()) {
-
-                    // Add notification
-                    $statement = $this->_db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
-                                                                                          `language_id` = :language_id,
-                                                                                          `label`       = :label,
-                                                                                          `title`       = :title,
-                                                                                          `description` = :description,
-                                                                                          `read`        = 0,
-                                                                                          `date_added`  = NOW()');
-                    $statement->execute(
-                        array(
-                            ':user_id'     => $this->_user_id,
-                            ':language_id' => DEFAULT_LANGUAGE_ID,
-                            ':label'       => 'security',
-                            ':title'       => tt('Login with new IP'),
-                            ':description' => sprintf(tt("Login with new IP (%s) has been registered.\n"), $this->_request->getRemoteAddress()) .
-                                              tt('If you believe your account has been compromised, please contact us.')
-                        )
-                    );
-
-                    // If subscription enabled
-                    $statement = $this->_db->prepare('SELECT NULL FROM `user_subscription` WHERE `user_id` = ? AND `subscription_id` = ? LIMIT 1');
-                    $statement->execute(array($this->_user_id, SECURITY_IP_SUBSCRIPTION_ID));
-
-                    if ($statement->rowCount()) {
-
-                        // Send mail
-                        $mail_data['project_name'] = PROJECT_NAME;
-
-                        $mail_data['subject'] = sprintf(tt('Login with new IP - %s'), PROJECT_NAME);
-                        $mail_data['message'] = sprintf(tt("Login with new IP (%s) has been registered. If you believe your account has been compromised, please contact us."),
-                                                        $this->_request->getRemoteAddress());
-
-                        $mail_data['href_home']         = $this->_url->link('common/home');
-                        $mail_data['href_contact']      = $this->_url->link('common/contact');
-                        $mail_data['href_subscription'] = $this->_url->link('account/account/subscription');
-
-                        $mail_data['href_facebook'] = URL_FACEBOOK;
-                        $mail_data['href_twitter']  = URL_TWITTER;
-                        $mail_data['href_tumblr']   = URL_TUMBLR;
-                        $mail_data['href_github']   = URL_GITHUB;
-
-                        $this->_mail->setTo($this->_email);
-                        $this->_mail->setSubject($mail_data['subject']);
-                        $this->_mail->setHtml($this->_load->view('email/common.tpl', $mail_data));
-                        $this->_mail->send();
-                    }
-                }
-
-                // Save new IP
-                $statement = $this->_db->prepare('INSERT INTO `user_ip` SET `user_id` = ?, `ip` = ?, `date_added` = NOW()');
-                $statement->execute(array($this->_user_id, $this->_request->getRemoteAddress()));
-
-                return $this->_db->lastInsertId();
-            }
-
-            return true;
-
-        } catch (PDOException $e) {
-
-            if ($this->_db->inTransaction()) {
-                $this->_db->rollBack();
-            }
-
-            trigger_error($e->getMessage());
-
-            return false;
-        }
-    }
-
-    /**
-    * Get last IP
-    *
-    * @return string|bool
-    */
-    public function getLastIP() {
-
-        try {
-            $statement = $this->_db->prepare('SELECT `ip` FROM `user_ip` WHERE `user_id` = ? ORDER BY `user_ip_id` DESC LIMIT 1');
-            $statement->execute(array($this->_user_id));
-
-            $result = $statement->fetch();
-
-            return $result->ip;
-
-        } catch (PDOException $e) {
-
-            trigger_error($e->getMessage());
-            return false;
-        }
-    }
-
-    /**
     * Login user
     *
     * @param string $login Username or Email
@@ -277,7 +162,7 @@ final class Auth {
         try {
             // Login by email
             if ($login_is_email) {
-                $statement = $this->_db->prepare('SELECT *  FROM `user`
+                $statement = $this->_db->prepare('SELECT *  FROM  `user`
                                                             WHERE `email`    = LOWER(:email) AND
                                                                   `password` = SHA1(CONCAT(`salt`, SHA1(CONCAT(`salt`, SHA1(:password))))) AND
                                                                   `status`   = 1
@@ -289,7 +174,7 @@ final class Auth {
 
             // Login by username
             } else {
-                $statement = $this->_db->prepare('SELECT *  FROM `user`
+                $statement = $this->_db->prepare('SELECT *  FROM  `user`
                                                             WHERE `username` = :username AND
                                                                   `password` = SHA1(CONCAT(`salt`, SHA1(CONCAT(`salt`, SHA1(:password))))) AND
                                                                   `status`   = 1
@@ -328,9 +213,6 @@ final class Auth {
             $this->_status      = $user->status;
             $this->_verified    = $user->verified;
             $this->_date_added  = $user->date_added;
-
-            // Update IP Log
-            $this->_saveIP();
 
             return true;
 

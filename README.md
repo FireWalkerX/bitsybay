@@ -38,7 +38,6 @@ FEATURES
 * User verification
 * File quota for each seller
 * Basic brute force protection
-* IP / access logging
 * Profile page and account settings
 * Global notification system
 * Affiliate program

@@ -55,8 +55,6 @@ class ControllerAccountAccount extends Controller {
 
         $data = array();
 
-        $data['current_ip']    = $this->request->getRemoteAddress();
-        $data['last_ip']       = $this->auth->getLastIP();
         $data['approved']      = $this->auth->isApproved();
         $data['verified']      = $this->auth->isVerified();
         $data['active']        = $this->auth->isActive();

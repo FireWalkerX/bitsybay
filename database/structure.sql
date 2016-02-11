@@ -824,24 +824,6 @@ CREATE TABLE IF NOT EXISTS `user_password_reset` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
---
--- Table structure for table `user_ip`
---
-
-DROP TABLE IF EXISTS `user_ip`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user_ip` (
-  `user_ip_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `date_added` datetime NOT NULL,
-  `ip` varchar(255) NOT NULL,
-  PRIMARY KEY (`user_ip_id`),
-  KEY `fk_user_ip_user_id` (`user_id`),
-  CONSTRAINT `fk_user_ip_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `user_verification_request`
