@@ -194,4 +194,57 @@ class ModelCommonOrder extends Model {
         }
     }
 
+
+    /**
+    * Get pending orders
+    *
+    * @param int $language_id
+    * @param int $approved_status_id
+    * @return object|array Order PDOStatement::fetchAll object or array if throw exception
+    */
+    public function getPendingOrders($language_id, $approved_status_id) {
+
+        try {
+
+            // Get pending orders
+            $statement = $this->db->prepare('SELECT `o`.`order_id`,
+                                              `o`.`amount`,
+                                              `o`.`user_id` AS `buyer_user_id`,
+                                              `p`.`user_id` AS `seller_user_id`,
+                                              `p`.`product_id`,
+                                              `p`.`currency_id`,
+                                              `p`.`withdraw_address`,
+                                              `us`.`contributor` AS `contributor`,
+                                              `us`.`email` AS `seller_email`,
+                                              `ub`.`email` AS `buyer_email`,
+                                              `ub`.`username` AS `buyer_username`,
+                                              (SELECT `title` FROM `product_description` AS `pd` WHERE `pd`.`product_id` = `p`.`product_id` AND `pd`.`language_id` = ? LIMIT 1) AS `product_title`
+                                              FROM `product` AS `p`
+                                              JOIN `order` AS `o` ON (`o`.`product_id` = `p`.`product_id`)
+                                              JOIN `user` AS `us` ON (`us`.`user_id` = `p`.`user_id`)
+                                              JOIN `user` AS `ub` ON (`ub`.`user_id` = `o`.`user_id`)
+                                              WHERE `order_status_id` <> ?
+                                              AND `o`.`product_id` IS NOT NULL
+                                              GROUP BY `order_id`');
+
+            $statement->execute(
+                array(
+                    $language_id,
+                    $approved_status_id
+                )
+            );
+
+            if ($statement->rowCount()) {
+                return $statement->fetchAll();
+            } else {
+                return array();
+            }
+
+        } catch (PDOException $e) {
+
+            trigger_error($e->getMessage());
+            return false;
+        }
+    }
+
 }
