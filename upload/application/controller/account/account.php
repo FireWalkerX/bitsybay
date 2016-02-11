@@ -481,7 +481,7 @@ class ControllerAccountAccount extends Controller {
 
         // Redirect if user is already logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->getCurrentLink())));
         }
 
         // Init
@@ -660,7 +660,7 @@ class ControllerAccountAccount extends Controller {
         if ('POST' == $this->request->getRequestMethod() && $this->_validateLogin()) {
 
             if (isset($this->request->get['redirect'])) {
-                $this->response->redirect(base64_decode($this->request->get['redirect']));
+                $this->response->redirect(urldecode($this->request->get['redirect']));
             } else {
                 $this->response->redirect($this->url->link('account/account'));
             }
@@ -701,7 +701,7 @@ class ControllerAccountAccount extends Controller {
         // Validate login status
         if ($this->auth->isLogged()) {
             if ($this->auth->logout()) {
-                $this->response->redirect(isset($this->request->get['redirect']) ? base64_decode($this->request->get['redirect']) : $this->url->link('common/home'));
+                $this->response->redirect(isset($this->request->get['redirect']) ? urldecode($this->request->get['redirect']) : $this->url->link('common/home'));
             } else {
                 $this->security_log->write('Can not logout');
             }
@@ -896,7 +896,7 @@ class ControllerAccountAccount extends Controller {
 
         // Redirect if user is not logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->getCurrentLink())));
         }
 
         // Redirect if user is already verified
@@ -994,7 +994,7 @@ class ControllerAccountAccount extends Controller {
 
         // Redirect if user is already logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->getCurrentLink())));
         }
 
         // Redirect if required parameters is missing

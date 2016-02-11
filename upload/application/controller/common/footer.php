@@ -18,7 +18,7 @@ class ControllerCommonFooter extends Controller {
 
         $data['user_is_logged'] = $this->auth->isLogged();
 
-        $redirect = base64_encode($this->url->getCurrentLink());
+        $redirect = urlencode($this->url->getCurrentLink());
 
         $data['href_catalog_search'] = $this->url->link('catalog/search', 'q=');
         $data['href_common_contact'] = $this->url->link('common/contact');

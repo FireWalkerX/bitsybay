@@ -87,7 +87,7 @@ class ControllerCommonHome extends Controller {
         $total_buyers  = $this->model_account_user->getTotalUsers();
         $data['total_buyers'] = sprintf(tt('%s %s'), $total_buyers, plural($total_buyers, array(tt('buyers'), tt('buyers'), tt('buyers '))));
 
-        $redirect = base64_encode($this->url->getCurrentLink());
+        $redirect = urlencode($this->url->getCurrentLink());
 
         $data['login_action'] = $this->url->link('account/account/login', 'redirect=' . $redirect);
         $data['href_account_create'] = $this->url->link('account/account/create', 'redirect=' . $redirect);

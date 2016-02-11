@@ -71,7 +71,7 @@ class ControllerCommonHeader extends Controller {
         $data['href_account_product_list']  = $this->url->link('account/product');
         $data['href_account_product_sales']  = $this->url->link('account/sales');
 
-        $redirect = base64_encode($this->url->getCurrentLink());
+        $redirect = urlencode($this->url->getCurrentLink());
 
         $data['href_account_create']  = $this->url->link('account/account/create', 'redirect=' . $redirect);
         $data['href_account_login']   = $this->url->link('account/account/login',  'redirect=' . $redirect);

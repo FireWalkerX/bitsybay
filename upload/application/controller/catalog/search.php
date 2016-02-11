@@ -80,7 +80,7 @@ class ControllerCatalogSearch extends Controller {
 
             // Redirect to login page if user is not logged
             if (!$this->auth->isLogged()) {
-                $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+                $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->getCurrentLink())));
             }
 
             $title .= ' ' . tt('favorites');
@@ -93,7 +93,7 @@ class ControllerCatalogSearch extends Controller {
 
             // Redirect to login page if user is not logged
             if (!$this->auth->isLogged()) {
-                $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+                $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->getCurrentLink())));
             }
 
             $title .= ' ' . tt('purchased');

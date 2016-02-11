@@ -51,7 +51,7 @@ class ControllerAccountProduct extends Controller {
 
         // Redirect to login page if user is not logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->link('account/product'))));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->link('account/product'))));
         }
 
         $data = array();
@@ -115,7 +115,7 @@ class ControllerAccountProduct extends Controller {
         // Redirect to login page if user is not logged
         if (!$this->auth->isLogged()) {
             $this->response->redirect($this->url->link('account/account/login',
-                                                       'redirect=' . base64_encode($this->url->link('account/product/create'))));
+                                                       'redirect=' . urlencode($this->url->link('account/product/create'))));
         }
 
         if ('POST' == $this->request->getRequestMethod() && $this->_validateProductForm()) {
@@ -387,7 +387,7 @@ class ControllerAccountProduct extends Controller {
 
         // Redirect to login page if user is not logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->link('account/product/update', 'product_id=' . $product_id))));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->link('account/product/update', 'product_id=' . $product_id))));
         }
 
         // Check if user has product
@@ -702,7 +702,7 @@ class ControllerAccountProduct extends Controller {
         // Redirect to login page if user is not logged
         if (!$this->auth->isLogged()) {
             $this->response->redirect($this->url->link('account/account/login',
-                                                       'redirect=' . base64_encode($this->url->link('account/product/delete', 'product_id=' . $product_id)),
+                                                       'redirect=' . urlencode($this->url->link('account/product/delete', 'product_id=' . $product_id)),
                                                        'SSL'));
         }
 

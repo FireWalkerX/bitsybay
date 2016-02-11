@@ -29,7 +29,7 @@ class ControllerAccountNotification extends Controller
 
         // Redirect to login page if user is not logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->link('account/notification'))));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->link('account/notification'))));
         }
 
         $this->document->setTitle(tt('Notifications'));
@@ -78,7 +78,7 @@ class ControllerAccountNotification extends Controller
 
         // Redirect to login page if user is not logged
         if (!$this->auth->isLogged()) {
-            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->link('account/notification/read', 'notification_id=' . $notification_id))));
+            $this->response->redirect($this->url->link('account/account/login', 'redirect=' . urlencode($this->url->link('account/notification/read', 'notification_id=' . $notification_id))));
         }
 
         // Check the access
