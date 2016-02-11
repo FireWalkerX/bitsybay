@@ -144,58 +144,6 @@ class ModelCommonOrder extends Model {
 
 
     /**
-    * Get orders
-    *
-    * @param array $filter_data
-    * @return object|bool Order PDOStatement::fetch object or false if throw exception
-    */
-    public function getOrders($filter_data) {
-        try {
-
-            $sql = 'SELECT * FROM `order` AS `o`';
-
-            // Filter by user ID
-            if (isset($filter_data['user_id'])) {
-                $where[] = '`o`.`user_id` = :user_id';
-                $place_holders[':user_id'] = $filter_data['user_id'];
-            }
-
-            // Filter by product ID
-            if (isset($filter_data['product_id'])) {
-                $where[] = '`o`.`product_id` = :product_id';
-                $place_holders[':product_id'] = $filter_data['product_id'];
-            }
-
-            // Filter by order_status_id ID
-            if (isset($filter_data['order_status_id'])) {
-                $where[] = '`o`.`order_status_id` = :order_status_id';
-                $place_holders[':order_status_id'] = $filter_data['order_status_id'];
-            }
-
-            // Filter limit
-            if (isset($filter_data['limit'])) {
-                $sql .= ' LIMIT ' . (int) $filter_data['limit'];
-            }
-
-            $sql .= ' WHERE ' . implode(' AND ', $where);
-
-            $statement = $this->db->prepare($sql);
-            $statement->execute($place_holders);
-
-            if ($statement->rowCount()) {
-                return $statement->fetch();
-            } else {
-                return false;
-            }
-        } catch (PDOException $e) {
-
-            trigger_error($e->getMessage());
-            return false;
-        }
-    }
-
-
-    /**
     * Get pending orders
     *
     * @param int $language_id
