@@ -92,6 +92,7 @@ REQUIREMENTS
     php-gd 
     php-imagick 
     php-curl
+    curl
     bitcoind
     sphinxsearch
     ffmpeg
@@ -116,13 +117,30 @@ INSTALL
     /public/video/cache  
     /system/log  
 
-* Setup crontab: **/tool/**
-* Do not forget:
+* Setup crontab for automatic order processing:
+
+
+    curl --silent --request GET 'https://yourdomain/index.php?route=cron/manager/order' > /dev/null 2>&1
+    
+* Setup crontab for search indexation (Debian-based example):
+
+
+    /usr/bin/indexer --rotate --config /etc/sphinxsearch/sphinx.conf --all > /dev/null 2>&1
+   
+   
+* You may use additional manual/crontab tools
+
+
+    /tool/cache/sitemap.php      - Static sitemap generator
+    /tool/email/*                - Utils for mass mailing
+    /tool/inspector/ditcoind.php - Email alert when bitcoin daemon isn't running
+    /tool/inspector/error.php    - Email alert when security log isn't empty
+    /tool/manager/language/*     - Batch translation utils, for example when you provide new localization
+
+* Also do not forget about limits:
 
 
     upload_max_filesize  
     post_max_size  
     memory_limit  
     allow_url_fopen  
-
-**Enjoy!**
