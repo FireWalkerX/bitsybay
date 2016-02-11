@@ -78,6 +78,11 @@ class ControllerCatalogSearch extends Controller {
         // Filter by favorites
         if (isset($this->request->get['favorites'])) {
 
+            // Redirect to login page if user is not logged
+            if (!$this->auth->isLogged()) {
+                $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+            }
+
             $title .= ' ' . tt('favorites');
             $meta_title .= $title;
             $filter_data['favorites'] = true;
@@ -85,6 +90,11 @@ class ControllerCatalogSearch extends Controller {
 
         // Filter by purchased
         if (isset($this->request->get['purchased'])) {
+
+            // Redirect to login page if user is not logged
+            if (!$this->auth->isLogged()) {
+                $this->response->redirect($this->url->link('account/account/login', 'redirect=' . base64_encode($this->url->getCurrentLink())));
+            }
 
             $title .= ' ' . tt('purchased');
             $meta_title .= $title;
