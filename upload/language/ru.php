@@ -613,6 +613,12 @@ $_translation = array(
 'Your product has been marked as favorite - %s' => 'Ваш товар был добавлен в фавориты - %s',
 '@%s has marked %s as favorite. Cheers!' => '@%s добавил товар %s в фавориты. Ура!',
 
+'Your product has been purchased' => 'Ваш товар был приобретен',
+'@%s has purchased your product %s. Awesome!' => '@%s приобрел товар %s. Так держать!',
+
+'Your purchase has been confirmed' => 'Ваша покупка подтверждена',
+'%s purchase is ready to download. Cheers!' => 'Товар %s готов к загрузке. Спасибо за покупку!',
+
 'Your product has been commented' => 'Ваш товар был прокомментирован',
 'Your product has been commented - %s' => 'Ваш товар был прокомментирован - %s',
 '@%s has posted a comment about your product %s.' => '@%s прокомментировал ваш товар %s.',
