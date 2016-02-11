@@ -714,6 +714,7 @@ CREATE TABLE `user` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `referrer_user_id` int(10) unsigned NULL,
   `file_quota` int(10) unsigned NOT NULL,
+  `language_id` INT(10) unsigned NOT NULL,
   `status` enum('1','0') NOT NULL,
   `buyer` enum('1','0') NOT NULL,
   `seller` enum('1','0') NOT NULL,
@@ -741,6 +742,11 @@ CREATE TABLE `user` (
   CONSTRAINT `fk_user_affiliate_currency_id`
     FOREIGN KEY (`affiliate_currency_id`)
     REFERENCES `currency` (`currency_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_language_id`
+    FOREIGN KEY (`language_id`)
+    REFERENCES `language` (`language_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
