@@ -90,11 +90,13 @@ final class Auth {
                 // Update IP Log
                 $this->_saveIP();
 
+                // Set active language
+                $this->_saveLanguage($user->user_id);
+
             } else {
                 $this->logout();
             }
         }
-
     }
 
     /**
@@ -121,6 +123,32 @@ final class Auth {
             trigger_error($e->getMessage());
 
             return false;
+        }
+    }
+
+    /**
+    * Register active language
+    *
+    * @param int $user_id
+    * @return int|bool Return affected int row, or bool true if row already exists or false if throw exception
+    */
+    private function _saveLanguage($user_id) {
+
+        // Get current language
+        if (isset($this->_request->get['language_id'])) {
+            $language_id = (int) $this->_request->get['language_id'];
+        } else if (isset($this->_request->cookie['language_id'])) {
+            $language_id = (int) $this->_request->cookie['language_id'];
+        } else {
+            $language_id = (int) DEFAULT_LANGUAGE_ID;
+        }
+
+        $statement = $this->_db->prepare('SELECT * FROM `language` WHERE `language_id` = ? LIMIT 1');
+        $statement->execute(array($language_id));
+
+        if ($statement->rowCount()) {
+            $statement = $this->_db->prepare('UPDATE `user` SET `language_id` = ? WHERE `user_id` = ? LIMIT 1');
+            $statement->execute(array($language_id, $user_id));
         }
     }
 

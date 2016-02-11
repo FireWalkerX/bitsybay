@@ -361,6 +361,7 @@ class ModelAccountUser extends Model {
     * @param string $username
     * @param string $email
     * @param string $password
+    * @param int $language_id
     * @param int $buyer
     * @param int $seller
     * @param int $status
@@ -371,7 +372,7 @@ class ModelAccountUser extends Model {
     * @param bool|int $referrer_user_id
     * @return int|bool Returns user_id or false if throw exception
     */
-    public function createUser($username, $email, $password, $buyer, $seller, $status, $verified, $file_quota, $approval_code, $approved, $referrer_user_id = false) {
+    public function createUser($username, $email, $password, $language_id, $buyer, $seller, $status, $verified, $file_quota, $approval_code, $approved, $referrer_user_id = false) {
 
         try {
             $email       = mb_strtolower($email);
@@ -382,6 +383,7 @@ class ModelAccountUser extends Model {
             $statement = $this->db->prepare('INSERT INTO `user` SET
 
                                             `file_quota`    = :file_quota,
+                                            `language_id`   = :language_id,
                                             `status`        = :status,
                                             `buyer`         = :buyer,
                                             `seller`        = :seller,
@@ -404,6 +406,7 @@ class ModelAccountUser extends Model {
                                             ');
 
             $statement->execute(array(  ':file_quota'    => $file_quota,
+                                        ':language_id'   => $language_id,
                                         ':status'        => $status,
                                         ':buyer'         => $buyer,
                                         ':seller'        => $seller,
