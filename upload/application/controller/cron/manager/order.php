@@ -93,7 +93,7 @@ class ControllerCronManagerOrder extends Controller {
 
 
                 // Set order status to approved
-                if ($this->model_common_order->updateOrderStatus(ORDER_APPROVED_STATUS_ID, $order->order_id)) $this->_count_approved++;
+                if ($this->model_common_order->updateOrderStatus($order->order_id, ORDER_APPROVED_STATUS_ID)) $this->_count_approved++;
 
 
                 // Add file quota bonus
@@ -268,7 +268,7 @@ class ControllerCronManagerOrder extends Controller {
             if ((float) $this->_bitcoin->getreceivedbyaccount($address_id, 0) >= (float) $order->amount) {
 
                 // Set order status to processed
-                if ($this->model_common_order->updateOrderStatus(ORDER_PROCESSED_STATUS_ID, $order->order_id)) $this->_count_processed++;
+                if ($this->model_common_order->updateOrderStatus($order->order_id, ORDER_PROCESSED_STATUS_ID)) $this->_count_processed++;
 
 
                 /***********************************
