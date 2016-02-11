@@ -582,4 +582,31 @@ class ModelAccountUser extends Model {
             return false;
         }
     }
+
+    /**
+    * Get subscription status
+    *
+    * @param int $user_id
+    * @param int $subscription_id
+    * @return bool subscription status and false if throw exception
+    */
+    public function getSubscriptionStatus($user_id, $subscription_id) {
+
+        try {
+
+            $statement = $this->db->prepare('SELECT NULL FROM `user_subscription` WHERE `user_id` = ? AND `subscription_id` = ? LIMIT 1');
+            $statement->execute(array($user_id, $subscription_id));
+
+            if ($statement->rowCount()) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (PDOException $e) {
+
+            trigger_error($e->getMessage());
+            return false;
+        }
+    }
 }
