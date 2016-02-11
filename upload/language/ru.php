@@ -97,6 +97,7 @@ $_translation = array(
 'Remove Frame' => 'Удалить фрейм',
 '%s Buy with BitCoin' => '%s купить за BitCoin',
 '%s Purchase' => 'Покупка товара «%s»',
+'Access denied' => 'Доступ запрещен!',
 'Report successfully sent!' => 'Ваше сообщение успешно отправлено!',
 'Your message will be reviewed in the near time.' => 'Мы рассмотрим ваше сообщение в кратчайшие сроки.',
 'Your message was sent successfully!' => 'Ваше сообщение успешно отправлено!',
