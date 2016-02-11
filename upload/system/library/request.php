@@ -42,6 +42,11 @@ final class Request {
     /**
      * @var string
      */
+    private $_server_address   = 'undefined';
+
+    /**
+     * @var string
+     */
     private $_request_method   = 'undefined';
 
     /**
@@ -90,6 +95,10 @@ final class Request {
 
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $this->_setRemoteAddress((string) $_SERVER['REMOTE_ADDR']);
+        }
+
+        if (isset($_SERVER['SERVER_ADDR'])) {
+            $this->_setServerAddress((string) $_SERVER['SERVER_ADDR']);
         }
 
         if (isset($_SERVER['REQUEST_METHOD'])) {
@@ -142,6 +151,16 @@ final class Request {
         }
 
         return $data;
+    }
+
+    /**
+    * Set server address
+    *
+    * @param string $server_address
+    * @return null
+    */
+    private function _setServerAddress($server_address = 'undefined') {
+        $this->_server_address = $this->_filter($server_address);
     }
 
     /**
@@ -202,6 +221,15 @@ final class Request {
     */
     private function _setServerProtocol($server_protocol = 'undefined') {
         $this->_server_protocol = $this->_filter($server_protocol);
+    }
+
+    /**
+    * Get server address
+    *
+    * @return string Server IP
+    */
+    public function getServerAddress() {
+        return $this->_server_address;
     }
 
     /**
