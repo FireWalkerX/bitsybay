@@ -625,6 +625,9 @@ $_translation = array(
 'Your product has been commented - %s' => 'Ваш товар был прокомментирован - %s',
 '@%s has posted a comment about your product %s.' => '@%s прокомментировал ваш товар %s.',
 
+'Your payment has been received - %s' => 'Оплата успешно получена - %s',
+'Please wait for %s confirmations. It may take some time. Thanks!' => 'Пожалуйста, дождитесь %s подтверждений транзакции. Это может занять некоторое время. Спасибо!',
+
 'activity' => 'активность',
 'news' => 'новости',
 'security' => 'безопасность',
