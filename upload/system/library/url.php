@@ -241,8 +241,8 @@ final class Url {
             if (!$this->_request->isAjax()) {
 
                 // Check if rewrite rule is exists
-                $raw = $this->_base . 'index.php?' . urldecode(http_build_query($this->_request->get));
-                $sef = $this->link($this->_request->get['route'], urldecode(http_build_query(array_diff_key($this->_request->get, array_flip(array('route'))))));
+                $raw = $this->_base . 'index.php?' . http_build_query($this->_request->get);
+                $sef = $this->link($this->_request->get['route'], http_build_query(array_diff_key($this->_request->get, array_flip(array('route')))));
 
                 if (rawurldecode($raw) != rawurldecode($sef)) {
                     $this->_response->redirect($sef, 303);
