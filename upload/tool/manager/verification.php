@@ -164,6 +164,7 @@ if ($statement->rowCount()) {
 
 
             // Add affiliate notification
+            /*
             $notification = $db->prepare('INSERT INTO `user_notification` SET `user_id`     = :user_id,
                                                                               `language_id` = :language_id,
                                                                               `label`       = :label,
@@ -180,6 +181,7 @@ if ($statement->rowCount()) {
                     ':description' => sprintf("@%s was send a new verification request. Good job!", $request->username)
                 )
             );
+            */
 
             // Send cheers to email
             $mail_data['project_name'] = PROJECT_NAME;
