@@ -437,6 +437,7 @@ $_translation = array(
 'View in Catalog' => 'Посмотреть в каталоге',
 'Delete' => 'Удалить',
 'Download' => 'Скачать',
+'Confirmation...' => 'Подтверждение...',
 'My' => 'Мой',
 'product' => 'товар',
 'made it for you' => 'сделал это для вас',
