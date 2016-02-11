@@ -258,6 +258,33 @@ class ModelAccountUser extends Model {
     }
 
     /**
+     * Add file quota to specific user
+     *
+     * @param int $user_id
+     * @param int $file_quota
+     * @return array|bool affected rows or false if throw exception
+     */
+    public function addFileQuota($user_id, $file_quota) {
+
+        try {
+
+            $statement = $this->db->prepare('UPDATE `user` SET `file_quota` = `file_quota` + ? WHERE `user_id` = ? LIMIT 1');
+            $statement->execute(array($file_quota, $user_id));
+
+            return $statement->rowCount();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
     * Update user info
     *
     * @param int $user_id
