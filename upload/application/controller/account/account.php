@@ -110,10 +110,25 @@ class ControllerAccountAccount extends Controller {
             $approval_code = md5(rand() . microtime() . $this->request->post['email']);
             $approved      = 0;
 
+            // Get current language
+            if (isset($this->request->get['language_id']) &&
+                $this->model_common_language->getLanguage((int) $this->request->get['language_id'])
+            ) {
+                $language_id = (int) $this->request->get['language_id'];
+            } else if (
+                isset($this->request->cookie['language_id']) &&
+                $this->model_common_language->getLanguage((int) $this->request->cookie['language_id'])
+            ) {
+                $language_id = (int) $this->request->cookie['language_id'];
+            } else {
+                $language_id = (int) DEFAULT_LANGUAGE_ID;
+            }
+
             // Create new user
             if ($user_id = $this->model_account_user->createUser(  $this->request->post['username'],
                                                                    $this->request->post['email'],
                                                                    $this->request->post['password'],
+                                                                   $language_id,
                                                                    1, // Is buyer
                                                                    1, // Is seller
                                                                    NEW_USER_STATUS,
