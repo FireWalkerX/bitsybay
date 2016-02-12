@@ -82,10 +82,10 @@ class ControllerCommonHome extends Controller {
         $data['total_categories'] = sprintf(tt('%s %s'), $total_categories, plural($total_categories, array(tt('category'), tt('categories'), tt('categories '))));
 
         $total_sellers  = $this->model_account_user->getTotalSellers();
-        $data['total_sellers'] = sprintf(tt('%s %s'), $total_sellers, plural($total_sellers, array(tt('verified sellers'), tt('verified sellers'), tt('verified sellers '))));
+        $data['total_sellers'] = sprintf(tt('%s %s'), $total_sellers, plural($total_sellers, array(tt('verified seller'), tt('verified sellers'), tt('verified sellers '))));
 
         $total_buyers  = $this->model_account_user->getTotalUsers();
-        $data['total_buyers'] = sprintf(tt('%s %s'), $total_buyers, plural($total_buyers, array(tt('buyers'), tt('buyers'), tt('buyers '))));
+        $data['total_buyers'] = sprintf(tt('%s %s'), $total_buyers, plural($total_buyers, array(tt('buyer'), tt('buyers'), tt('buyers '))));
 
         $redirect = urlencode($this->url->getCurrentLink());
 
