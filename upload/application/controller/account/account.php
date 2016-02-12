@@ -177,6 +177,10 @@ class ControllerAccountAccount extends Controller {
                     }
 
                     // Send greetings email with verification code
+                    $mail_data = array();
+
+                    $mail_data['translation']  = array();
+
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf(tt('Welcome to %s!'), PROJECT_NAME);
@@ -309,6 +313,10 @@ class ControllerAccountAccount extends Controller {
                 if ($this->model_account_subscription->checkUserSubscription($this->auth->getId(), SECURITY_ACCOUNT_SUBSCRIPTION_ID)) {
 
                     // Send mail
+                    $mail_data = array();
+
+                    $mail_data['translation']  = array();
+
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf(tt('Your account settings has been updated - %s'), PROJECT_NAME);
@@ -334,6 +342,10 @@ class ControllerAccountAccount extends Controller {
                 if (mb_strtolower($this->request->post['email']) != mb_strtolower($this->auth->getEmail())) {
 
                     // Send email verification code
+                    $mail_data = array();
+
+                    $mail_data['translation']  = array();
+
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf(tt('Your email address has been changed - %s'), PROJECT_NAME);
@@ -497,6 +509,10 @@ class ControllerAccountAccount extends Controller {
                 if (isset($this->request->get['invite_email'])) {
 
                     // Send invite via email
+                    $mail_data = array();
+
+                    $mail_data['translation']  = array();
+
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf(tt('Join %s in %s!'), $this->auth->getUsername(), PROJECT_NAME);
@@ -553,6 +569,10 @@ class ControllerAccountAccount extends Controller {
                     if ($this->model_account_subscription->checkUserSubscription($this->auth->getId(), SECURITY_ACCOUNT_SUBSCRIPTION_ID)) {
 
                         // Send mail
+                        $mail_data = array();
+
+                        $mail_data['translation']  = array();
+
                         $mail_data['project_name'] = PROJECT_NAME;
 
                         $mail_data['subject'] = sprintf(tt('Your affiliate settings has been updated - %s'), PROJECT_NAME);
@@ -743,6 +763,10 @@ class ControllerAccountAccount extends Controller {
                 if ($this->model_account_subscription->checkUserSubscription($user->user_id, SECURITY_ACCOUNT_SUBSCRIPTION_ID)) {
 
                     // Send mail
+                    $mail_data = array();
+
+                    $mail_data['translation']  = array();
+
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf(tt('Your password has been updated - %s'), PROJECT_NAME);
@@ -840,6 +864,10 @@ class ControllerAccountAccount extends Controller {
             $this->model_account_user->addPasswordReset($user->user_id, $this->request->getRemoteAddress(), $reset_code);
 
             // Send email verification code
+            $mail_data = array();
+
+            $mail_data['translation']  = array();
+
             $mail_data['project_name'] = PROJECT_NAME;
 
             $mail_data['subject'] = sprintf(tt('New password request - %s'), PROJECT_NAME);
