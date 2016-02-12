@@ -111,6 +111,10 @@ if ($statement->rowCount()) {
         if ($user->subscribed == 1) {
 
             // Send email
+            $mail_data = array();
+
+            $mail_data['translation']  = array();
+
             $mail_data['project_name'] = PROJECT_NAME;
 
             $mail_data['subject'] = $subject;
