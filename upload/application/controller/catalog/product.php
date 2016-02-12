@@ -483,6 +483,10 @@ class ControllerCatalogProduct extends Controller {
                 if ($this->model_account_subscription->checkUserSubscription($product->user_id, FAVORITE_SUBSCRIPTION_ID)) {
 
                     // Send mail
+                    $mail_data = array();
+
+                    $mail_data['translation']  = array();
+
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf('Your product has been marked as favorite - %s', PROJECT_NAME);
@@ -642,6 +646,10 @@ class ControllerCatalogProduct extends Controller {
                     if ($this->model_account_subscription->checkUserSubscription($product->user_id, REVIEW_SUBSCRIPTION_ID)) {
 
                         // Send mail
+                        $mail_data = array();
+
+                        $mail_data['translation']  = array();
+
                         $mail_data['project_name'] = PROJECT_NAME;
 
                         $mail_data['subject'] = sprintf('Your product has been commented - %s', PROJECT_NAME);
