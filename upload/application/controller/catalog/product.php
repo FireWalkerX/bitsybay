@@ -458,6 +458,13 @@ class ControllerCatalogProduct extends Controller {
         $product = $this->model_catalog_product->getProduct($product_id, DEFAULT_LANGUAGE_ID /* todo */, $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
         $user    = $this->model_account_user->getUser($product->user_id);
 
+        // Get product descriptions
+        $product_descriptions = array(); foreach ($this->model_catalog_product->getProductDescriptions($product->product_id) as $product_description) {
+            $product_descriptions[$product_description->language_id] = array(
+                'title' => $product_description->title,
+            );
+        }
+
         // Favorite
         if ($this->model_catalog_product->createProductFavorite($product_id, $this->auth->getId())) {
 
@@ -475,7 +482,7 @@ class ControllerCatalogProduct extends Controller {
                         $this->model_account_notification->addNotificationDescription($user_notification_id,
                                                                                       $language_id,
                                                                                       tt('Your product has been marked as favorite', $translation),
-                                                                                      sprintf(tt('@%s has marked %s as favorite. Cheers!', $translation), $this->auth->getUsername(), $product->title));
+                                                                                      sprintf(tt('@%s has marked %s as favorite. Cheers!', $translation), $this->auth->getUsername(), $product_descriptions[$user->language_id]['title']));
                     }
                 }
 
@@ -493,7 +500,7 @@ class ControllerCatalogProduct extends Controller {
                     $mail_data['project_name'] = PROJECT_NAME;
 
                     $mail_data['subject'] = sprintf(tt('Your product has been marked as favorite - %s', $translation), PROJECT_NAME);
-                    $mail_data['message'] = sprintf(tt('@%s has marked %s as favorite. Cheers!', $translation), $this->auth->getUsername(), $product->title);
+                    $mail_data['message'] = sprintf(tt('@%s has marked %s as favorite. Cheers!', $translation), $this->auth->getUsername(), $product_descriptions[$user->language_id]['title']);
 
                     $mail_data['href_home']         = $this->url->link('common/home');
                     $mail_data['href_contact']      = $this->url->link('common/contact');
@@ -619,13 +626,19 @@ class ControllerCatalogProduct extends Controller {
             $json = array('error_message' => tt('Review text is not valid!'));
         } else {
 
-            if ($this->model_catalog_product->createProductReview((int)$this->request->post['product_id'], $this->request->post['review'], $this->auth->getId(), $this->language->getId(), 0)) {
+            if ($this->model_catalog_product->createProductReview((int)$this->request->post['product_id'], $this->request->post['review'], $this->auth->getId(), $this->language->getId(), 1)) {
 
                 // Get requires
                 $product    = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], DEFAULT_LANGUAGE_ID /* todo */, $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
                 $user       = $this->model_account_user->getUser($product->user_id);
                 $languages  = array(); foreach ($this->model_common_language->getLanguages() as $language) $languages[$language->language_id] = $language->code;
 
+                // Get product descriptions
+                $product_descriptions = array(); foreach ($this->model_catalog_product->getProductDescriptions($product->product_id) as $product_description) {
+                    $product_descriptions[$product_description->language_id] = array(
+                        'title' => $product_description->title,
+                    );
+                }
 
                 // Is not seller
                 if ($product->user_id != $this->auth->getId()) {
@@ -641,7 +654,7 @@ class ControllerCatalogProduct extends Controller {
                             $this->model_account_notification->addNotificationDescription($user_notification_id,
                                                                                           $language_id,
                                                                                           tt('Your product has been commented', $translation),
-                                                                                          sprintf(tt('@%s has posted a comment about your product %s.', $translation), $this->auth->getUsername(), $product->title));
+                                                                                          sprintf(tt('@%s has posted a comment about your product %s.', $translation), $this->auth->getUsername(), $product_descriptions[$user->language_id]['title']));
                         }
                     }
 
@@ -659,7 +672,7 @@ class ControllerCatalogProduct extends Controller {
                         $mail_data['project_name'] = PROJECT_NAME;
 
                         $mail_data['subject'] = sprintf(tt('Your product has been commented - %s', $translation), PROJECT_NAME);
-                        $mail_data['message'] = sprintf(tt('@%s has posted a comment about your product %s.', $translation), $this->auth->getUsername(), $product->title);
+                        $mail_data['message'] = sprintf(tt('@%s has posted a comment about your product %s.', $translation), $this->auth->getUsername(), $product_descriptions[$user->language_id]['title']);
 
                         $mail_data['href_home']         = $this->url->link('common/home');
                         $mail_data['href_contact']      = $this->url->link('common/contact');
@@ -678,11 +691,11 @@ class ControllerCatalogProduct extends Controller {
                 }
 
                 // Notice admin
-                $this->_mail->setTo(MAIL_EMAIL_BILLING_ADDRESS);
-                $this->_mail->setSubject(sprintf('%s REPORT', PROJECT_NAME));
-                $this->_mail->setHtml(false);
-                $this->_mail->setText(sprintf('New review for product: %s (%s)', $product->title, $this->url->link('catalog/product', 'product_id=' . $product->product_id)));
-                $this->_mail->send();
+                $this->mail->setTo(MAIL_EMAIL_BILLING_ADDRESS);
+                $this->mail->setSubject(sprintf('%s REPORT', PROJECT_NAME));
+                $this->mail->setHtml(false);
+                $this->mail->setText(sprintf('New review for product: %s (%s)', $product->title, $this->url->link('catalog/product', 'product_id=' . $product->product_id)));
+                $this->mail->send();
 
                 $json = array('success_message' => tt('Thank you for your review!'));
             } else {
