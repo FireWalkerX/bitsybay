@@ -619,7 +619,7 @@ class ControllerCatalogProduct extends Controller {
             $json = array('error_message' => tt('Review text is not valid!'));
         } else {
 
-            if ($this->model_catalog_product->createProductReview((int)$this->request->post['product_id'], $this->request->post['review'], $this->auth->getId(), $this->language->getId(), 1)) {
+            if ($this->model_catalog_product->createProductReview((int)$this->request->post['product_id'], $this->request->post['review'], $this->auth->getId(), $this->language->getId(), 0)) {
 
                 // Get requires
                 $product    = $this->model_catalog_product->getProduct((int) $this->request->post['product_id'], DEFAULT_LANGUAGE_ID /* todo */, $this->auth->getId(), ORDER_APPROVED_STATUS_ID);
