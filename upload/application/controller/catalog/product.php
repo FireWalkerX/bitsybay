@@ -677,6 +677,13 @@ class ControllerCatalogProduct extends Controller {
                     }
                 }
 
+                // Notice admin
+                $this->_mail->setTo(MAIL_EMAIL_BILLING_ADDRESS);
+                $this->_mail->setSubject(sprintf('%s REPORT', PROJECT_NAME));
+                $this->_mail->setHtml(false);
+                $this->_mail->setText(sprintf('New review for product: %s (%s)', $product->title, $this->url->link('catalog/product', 'product_id=' . $product->product_id)));
+                $this->_mail->send();
+
                 $json = array('success_message' => tt('Thank you for your review!'));
             } else {
                 $json = array('error_message' => tt('Internal server error! Please try again later.'));
