@@ -31,7 +31,15 @@ class ModelCommonOrder extends Model {
         try {
 
             // Check if configuration is exist
-            $statement = $this->db->prepare('SELECT `order_id` FROM `order` WHERE `user_id` = ? AND `product_id` = ? AND `license` = ? AND `amount` = ? AND `fee` = ? LIMIT 1');
+            $statement = $this->db->prepare('   SELECT `order_id`
+                                                FROM   `order`
+                                                WHERE  `user_id` = ?
+                                                AND    `product_id` = ?
+                                                AND    `license` = ?
+                                                AND    `amount` = ?
+                                                AND    `fee` = ?
+                                                LIMIT 1');
+
             $statement->execute(array($user_id, $product_id, $license, $amount, $fee));
 
             if ($statement->rowCount()) {
@@ -40,8 +48,28 @@ class ModelCommonOrder extends Model {
 
             // Insert if configuration is not exist
             } else {
-                $statement = $this->db->prepare('INSERT IGNORE INTO `order` SET `user_id` = ?, `product_id` = ?, `license` = ?, `order_status_id` = ?, `amount` = ?, `fee` = ?, `currency_id` = ?, `date_added` = NOW()');
-                $statement->execute(array($user_id, $product_id, $license, $order_status_id, $amount, $fee, $currency_id));
+                $statement = $this->db->prepare('INSERT IGNORE
+                                                 INTO  `order`
+                                                 SET   `user_id` = ?,
+                                                       `product_id` = ?,
+                                                       `license` = ?,
+                                                       `order_status_id` = ?,
+                                                       `amount` = ?,
+                                                       `fee` = ?,
+                                                       `currency_id` = ?,
+                                                       `date_added` = NOW()');
+
+                $statement->execute(
+                    array(
+                        $user_id,
+                        $product_id,
+                        $license,
+                        $order_status_id,
+                        $amount,
+                        $fee,
+                        $currency_id
+                    )
+                );
 
                 return $this->db->lastInsertId();
             }
@@ -95,7 +123,12 @@ class ModelCommonOrder extends Model {
 
         try {
 
-            $statement = $this->db->prepare('SELECT `order_status_id` FROM `order` WHERE `product_id` = ? AND `user_id` = ? LIMIT 1');
+            $statement = $this->db->prepare('SELECT `order_status_id`
+                                             FROM   `order`
+                                             WHERE  `product_id` = ?
+                                             AND    `user_id` = ?
+                                             LIMIT 1');
+
             $statement->execute(array($product_id, $user_id));
 
             if ($statement->rowCount()) {
@@ -144,43 +177,22 @@ class ModelCommonOrder extends Model {
 
 
     /**
-    * Get pending orders
+    * Get orders by status
     *
-    * @param int $language_id
-    * @param int $approved_status_id
+    * @param int $status_id
     * @return object|array Order PDOStatement::fetchAll object or array if throw exception
     */
-    public function getPendingOrders($language_id, $approved_status_id) {
+    public function getOrdersByStatus($status_id) {
 
         try {
 
             // Get pending orders
-            $statement = $this->db->prepare('SELECT `o`.`order_id`,
-                                              `o`.`amount`,
-                                              `o`.`user_id` AS `buyer_user_id`,
-                                              `p`.`user_id` AS `seller_user_id`,
-                                              `p`.`product_id`,
-                                              `p`.`currency_id`,
-                                              `p`.`withdraw_address`,
-                                              `us`.`contributor` AS `contributor`,
-                                              `us`.`email` AS `seller_email`,
-                                              `ub`.`email` AS `buyer_email`,
-                                              `ub`.`username` AS `buyer_username`,
-                                              (SELECT `title` FROM `product_description` AS `pd` WHERE `pd`.`product_id` = `p`.`product_id` AND `pd`.`language_id` = ? LIMIT 1) AS `product_title`
-                                              FROM `product` AS `p`
-                                              JOIN `order` AS `o` ON (`o`.`product_id` = `p`.`product_id`)
-                                              JOIN `user` AS `us` ON (`us`.`user_id` = `p`.`user_id`)
-                                              JOIN `user` AS `ub` ON (`ub`.`user_id` = `o`.`user_id`)
-                                              WHERE `order_status_id` <> ?
-                                              AND `o`.`product_id` IS NOT NULL
-                                              GROUP BY `order_id`');
+            $statement = $this->db->prepare('SELECT *
+                                             FROM   `order`
+                                             WHERE  `order_status_id` = ?
+                                             AND    `product_id` IS NOT NULL -- may be removed by author --');
 
-            $statement->execute(
-                array(
-                    $language_id,
-                    $approved_status_id
-                )
-            );
+            $statement->execute(array($status_id));
 
             if ($statement->rowCount()) {
                 return $statement->fetchAll();

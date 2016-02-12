@@ -64,7 +64,14 @@ class ModelCatalogProduct extends Model {
             HAVING (`order_status_id` = :approved_order_status_id OR `sold_as_exclusive` <> 1 OR (`p`.`user_id` = :session_user_id AND `sold_as_exclusive` <> 0))
             LIMIT 1');
 
-            $statement->execute(array(':language_id' => $language_id, ':session_user_id' => $session_user_id, ':product_id' => $product_id, ':approved_order_status_id' => $approved_order_status_id));
+            $statement->execute(
+                array(
+                    ':language_id'              => $language_id,
+                    ':session_user_id'          => $session_user_id,
+                    ':product_id'               => $product_id,
+                    ':approved_order_status_id' => $approved_order_status_id
+                )
+            );
 
             return $statement->rowCount() ? $statement->fetch() : array();
 
@@ -679,6 +686,37 @@ class ModelCatalogProduct extends Model {
             $statement->execute(array($product_id, $language_id));
 
             return $statement->rowCount() ? $statement->fetchAll() : array();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+
+            return false;
+        }
+    }
+
+    /**
+    * Get product user_id
+    *
+    * @param int $product_id
+    * @return string|bool Product user_id or FALSE if throw exception
+    */
+    public function getUserId($product_id) {
+
+        try {
+            $statement = $this->db->prepare('SELECT `user_id` FROM `product` WHERE `product_id` = ? LIMIT 1');
+            $statement->execute(array($product_id));
+
+            if ($statement->rowCount()) {
+                $result = $statement->fetch();
+                return $result->user_id;
+            } else {
+                return '';
+            }
 
         } catch (PDOException $e) {
 
