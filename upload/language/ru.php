@@ -590,7 +590,7 @@ $_translation = array(
 
 'Click here to change your password' => 'Нажмите здесь для выбора нового пароля',
 'Change' => 'Выбрать',
-'This link will be valid for 30 minutes.' => 'Эта ссылка будет доступна в течении',
+'This link will be valid for 30 minutes.' => 'Эта ссылка будет доступна в течении 30 минут.',
 
 'Your affiliate settings has been updated - %s' => 'Настройки вашей партнерской программы были обновлены - %s',
 'Your account settings has been updated - %s' => 'Настройки вашего аккаунта были обновлены - %s',
