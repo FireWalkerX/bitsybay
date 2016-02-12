@@ -482,15 +482,18 @@ class ControllerCatalogProduct extends Controller {
                 // If subscription enabled
                 if ($this->model_account_subscription->checkUserSubscription($product->user_id, FAVORITE_SUBSCRIPTION_ID)) {
 
+                    // Load current language
+                    $translation = $this->language->loadTranslation($user->language_id);
+
                     // Send mail
                     $mail_data = array();
 
-                    $mail_data['translation']  = array();
+                    $mail_data['translation']  = $translation;
 
                     $mail_data['project_name'] = PROJECT_NAME;
 
-                    $mail_data['subject'] = sprintf('Your product has been marked as favorite - %s', PROJECT_NAME);
-                    $mail_data['message'] = sprintf('@%s has marked %s as favorite. Cheers!', $this->auth->getUsername(), $product->title);
+                    $mail_data['subject'] = sprintf(tt('Your product has been marked as favorite - %s', $translation), PROJECT_NAME);
+                    $mail_data['message'] = sprintf(tt('@%s has marked %s as favorite. Cheers!', $translation), $this->auth->getUsername(), $product->title);
 
                     $mail_data['href_home']         = $this->url->link('common/home');
                     $mail_data['href_contact']      = $this->url->link('common/contact');
@@ -645,15 +648,18 @@ class ControllerCatalogProduct extends Controller {
                     // If subscription enabled
                     if ($this->model_account_subscription->checkUserSubscription($product->user_id, REVIEW_SUBSCRIPTION_ID)) {
 
+                        // Load current language
+                        $translation = $this->language->loadTranslation($user->language_id);
+
                         // Send mail
                         $mail_data = array();
 
-                        $mail_data['translation']  = array();
+                        $mail_data['translation']  = $translation;
 
                         $mail_data['project_name'] = PROJECT_NAME;
 
-                        $mail_data['subject'] = sprintf('Your product has been commented - %s', PROJECT_NAME);
-                        $mail_data['message'] = sprintf('@%s has posted a comment about your product %s.', $this->auth->getUsername(), $product->title);
+                        $mail_data['subject'] = sprintf(tt('Your product has been commented - %s', $translation), PROJECT_NAME);
+                        $mail_data['message'] = sprintf(tt('@%s has posted a comment about your product %s.', $translation), $this->auth->getUsername(), $product->title);
 
                         $mail_data['href_home']         = $this->url->link('common/home');
                         $mail_data['href_contact']      = $this->url->link('common/contact');
