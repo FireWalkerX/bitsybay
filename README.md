@@ -20,7 +20,7 @@ By donating to the foundation, you are helping us fund and manage this project:
 STATUS
 ------
 
-Beta, only for developers
+Open Beta
 
 
 FEATURES
@@ -34,14 +34,14 @@ FEATURES
 
 **Account**
 
-* Email approving
 * User verification
 * File quota for each seller
 * Basic brute force protection
 * Profile page and account settings
 * Global notification system
+* Email notifications
 * Affiliate program
-* Invite feature
+* Inviting features
 
 **Catalog**
 
@@ -72,13 +72,22 @@ FEATURES
 
 **Payment**
 
+* NYOP (Name-Your-Own-Price ) business model
+* Royalty-Free/Exclusive order implementation
 * Standalone BitCoin payment processor
-* Royalty-Free and Exclusive offers
-* Simple email notifications
+
+TODO LIST
+---------
+
+* Last viewed list
+* Pagination (autoload and page-by-page)
+* Find-by-color filter (images indexing already implemented)
+* Filter by tags (a.k.a. rubrics in the current architecture)
 
 COMING SOON
 -----------
 
+* Free offers (with donation interface)
 * Multi-currency implementation
 
 REQUIREMENTS
