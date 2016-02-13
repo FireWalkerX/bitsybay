@@ -49,7 +49,7 @@
                 <li><?php echo tt('You represent and warrant that you are the owner of, or that you have all rights to all your submissions') ?>;</li>
                 <li><?php echo tt('You responsible for any copyright violations') ?>;</li>
                 <li><?php echo tt('If you provide any content that is fraudulent, untrue, inaccurate, incomplete, not current, or illegal to') ?> <?php echo tt(HOST_COUNTRY) ?> <?php echo tt('laws, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website') ?>;</li>
-                <li><?php echo tt('We charge a 11% fee (0% fee up to 2016) on the selling price except') ?> <a href="team"><?php echo tt('project contributors') ?></a>. <?php echo tt('It\'s free for them forever') ?>.</li>
+                <li><?php echo sprintf(tt('We charge a %s%% fee on the selling price except'), FEE_PER_ORDER) ?> <a href="team"><?php echo tt('project contributors') ?></a>.</li>
               </ul>
             </div>
           </div>

@@ -518,7 +518,6 @@ $_translation = array(
     'laws, we reserve the right to suspend or terminate your account without notice and to refuse any and all current and future use of the website' => ', ми зберігаємо за собою право відключити такий обліковий запис без попереднього сповіщення без можливості відновлення',
     'We charge a 11% fee (0% fee up to 2016) on the selling price except' => 'Ми знімаємо комісійну плату в розмірі 11% від заявленої вартості кожного продажу (0% до кінця 2016) за виключенням',
     'project contributors' => 'контрибуторів проект',
-    'It\'s free for them forever' => 'З контрибуторів комісія не знімається на постійній основі',
     'Data Privacy' => 'Конфіденціальність',
     'We save and use your personal information only for providing services of this website and for contacting you' => 'Ми зберігаємо і використовуємо ваші персональні дані х ціллю надання послуг даного веб-сайту і для зворотнього зв’язку з вами',
     'We do not give your personal information to third parties' => 'Ми не передаємо ваші персональні дані третім лицям',
