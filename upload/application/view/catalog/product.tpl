@@ -238,7 +238,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="productPurchase" role="dialog">
+<div class="modal fade product-purchase" id="productPurchase" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -247,26 +247,33 @@
       </div>
       <div class="modal-body">
         <div class="row">
-          <div class="col-lg-12">
+          <div class="col-xs-12 col-md-12 col-lg-12">
             <div class="modal-loading"><i class="glyphicon glyphicon-hourglass"></i> <?php echo tt('Please, wait...') ?></div>
           </div>
         </div>
 
         <div class="row hide" id="paymentResult">
-          <div class="col-lg-4" id="paymentResultImg"></div>
-          <div class="col-lg-8 text-left" style="padding: 20px">
+          <div class="col-xs-4 col-md-4 col-lg-4" id="paymentResultImg"></div>
+          <div class="col-xs-8 col-md-8 col-lg-8 text-left" style="padding: 20px">
             <div class="row">
-              <div class="col-lg-12">
+              <div class="col-xs-12 col-md-12 col-lg-12">
                 <p></p>
                 <pre><?php echo tt('Loading...') ?></pre>
               </div>
             </div>
             <div class="row">
-              <div class="col-lg-3 text-left">
+              <div class="col-xs-3 col-md-3 col-lg-3 text-left">
                 <a id="initBitcoinWallet" class="btn btn-primary" href=""><?php echo tt('Use wallet') ?></a>
               </div>
-              <div class="col-lg-9 text-muted small">
+              <div class="col-xs-9 col-md-9 col-lg-9 text-muted small">
                 <i class="glyphicon glyphicon-info-sign"></i> <?php echo tt('Don\'t have a Wallet?') ?> <a href="https://bitcoin.org/en/choose-your-wallet" rel="nofollow" target="_blank"><?php echo tt('Get it now!') ?></a>
+                <br />
+                <i class="glyphicon glyphicon-heart-empty text-danger"></i> <?php echo tt('Support the author by paying above min price:') ?>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-md-12 col-lg-12">
+                <div class="payment-support text-right" id="paymentSupport"></div>
               </div>
             </div>
           </div>
@@ -305,6 +312,14 @@
                 $('#productPurchase p').html(e['text']);
                 $('#productPurchase p').prepend('<span style="float:right" id="paymentTimer"></span>');
                 $('#paymentResultImg').html('<img src="' + e['src'] + '" alt="' + e['address'] + '" />');
+
+                support  = ' <a href="' + e['amounts'][0]['href'] + '" class="label btn btn-xs btn-info">'    + e['amounts'][0]['label'] + '</a>';
+                support += ' <a href="' + e['amounts'][1]['href'] + '" class="label btn btn-xs btn-success">' + e['amounts'][1]['label'] + '</a>';
+                support += ' <a href="' + e['amounts'][2]['href'] + '" class="label btn btn-xs btn-warning">' + e['amounts'][2]['label'] + '</a>';
+                support += ' <a href="' + e['amounts'][3]['href'] + '" class="label btn btn-xs btn-danger">'  + e['amounts'][3]['label'] + '</a>';
+
+                $('#paymentSupport').html(support);
+
                 $('#initBitcoinWallet').attr('href', e['href']);
                 timer(900, document.getElementById('paymentTimer'));
               } else {

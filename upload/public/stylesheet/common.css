@@ -74,10 +74,18 @@ a.anchor {
     padding-top: 25px
 }
 
+.modal pre {
+    margin: 12px 0 16px;
+}
+
 .modal .modal-title,
 .modal .modal-body {
     text-align: center;
     overflow:hidden;
+}
+
+.modal-dialog {
+    width: 610px
 }
 
 .tab-pane {
@@ -594,4 +602,8 @@ table img {
 .highlight-license-condition.disallow, .highlight-license-condition.disallow span {
     font-weight: bold;
     color:#a94442!important;
+}
+
+.payment-support {
+    margin: 8px 0;
 }

@@ -133,7 +133,7 @@ class ControllerCronManagerOrder extends Controller {
         foreach ($this->model_common_order->getOrdersByStatus(ORDER_PROCESSED_STATUS_ID) as $order) {
 
             // When transaction has a minimum confirmations
-            if ((float) $this->_bitcoin->getreceivedbyaccount(BITCOIN_ORDER_PREFIX . $order->order_id, BITCOIN_MIN_TRANSACTION_CONFIRMATIONS) >= (float) $order->amount) {
+            if (($amount = (float) $this->_bitcoin->getreceivedbyaccount(BITCOIN_ORDER_PREFIX . $order->order_id, BITCOIN_MIN_TRANSACTION_CONFIRMATIONS)) >= (float) $order->amount) {
 
                 // Approved counter
                 $this->_count_approved++;
@@ -171,12 +171,12 @@ class ControllerCronManagerOrder extends Controller {
                  *****************************/
 
                 // Zero fees for all contributors
-                if ($seller->contributor == 1) {
+                if ($seller->contributor) {
                     $fund_profit   = (float) 0;
-                    $seller_profit = (float) $order->amount;
+                    $seller_profit = (float) $amount;
                 } else {
-                    $fund_profit   = (float) $order->amount * FEE_PER_ORDER / 100;
-                    $seller_profit = (float) $order->amount - $fund_profit;
+                    $fund_profit   = (float) $amount * FEE_PER_ORDER / 100;
+                    $seller_profit = (float) $amount - $fund_profit;
                 }
 
                 // Withdraw seller profit

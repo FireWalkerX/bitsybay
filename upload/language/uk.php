@@ -104,7 +104,8 @@ $_translation = array(
 
 // Payments
     'Use wallet' => 'Гаманець',
-    'Send exactly %s to this address:' => 'Сума до сплати: %s',
+    'Send %s or more to this address:' => 'Сплатіть %s або більше на адресу:',
+    'Support the author by paying above min price:' => 'Підтримайте автора, сплативши більше:',
 
 // Plural
     'offer' => 'пропозиція',

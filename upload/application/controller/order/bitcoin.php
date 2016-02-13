@@ -124,12 +124,39 @@ class ControllerOrderBitcoin extends Controller {
             // Set response
             if (false !== $bitcoin->status && $address = $bitcoin->getaccountaddress(BITCOIN_ORDER_PREFIX . $order_id)) {
 
+                $label = PROJECT_NAME . ' Order #' . $order_id;
+
                 $json = array(
                     'status'  => true,
                     'address' => $address,
-                    'text'    => sprintf(tt('Send exactly %s to this address:'), $this->currency->format($amount)),
-                    'href'    => 'bitcoin:' . $address . '?amount=' . $amount . '&label=' . PROJECT_NAME . ' Order #' . $order_id,
-                    'src'     => $this->url->link('common/image/qr', 'code=' . $address));
+                    'amount'  => $amount,
+                    'label'   => $label,
+                    'text'    => sprintf(tt('Send %s or more to this address:'), $this->currency->format($amount)),
+                    'href'    => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount, $label),
+                    'src'     => $this->url->link('common/image/qr', 'code=' . $address),
+                    'amounts' => array(
+                        array(
+                            'label'  => $this->currency->format($amount_1 = round($amount + ($amount * 10 / 100), 4)), // +10%
+                            'amount' => $amount_1,
+                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_1, $label),
+                        ),
+                        array(
+                            'label'  => $this->currency->format($amount_2 = round($amount + ($amount * 25 / 100), 4)), // +25%
+                            'amount' => $amount_2,
+                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_2, $label),
+                        ),
+                        array(
+                            'label'  => $this->currency->format($amount_3 = round($amount + ($amount * 50 / 100), 4)), // +50%
+                            'amount' => $amount_3,
+                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_3, $label),
+                        ),
+                        array(
+                            'label'  => $this->currency->format($amount_4 = round($amount + ($amount * 100 / 100), 4)), // +100%
+                            'amount' => $amount_4,
+                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_4, $label),
+                        ),
+                    )
+                );
             }
 
 
