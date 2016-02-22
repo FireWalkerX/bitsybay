@@ -18,7 +18,7 @@ $_translation = array(
 'j M, Y' => 'd.m.Y',
 
 // Headers
-'BitsyBay - Sell and Buy Digital Creative with BitCoin' => 'BitsyBay - Магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin',
+'BitsyBay - Be Your Own Bitcoin Marketplace. Shop Directly.' => 'BitsyBay - Магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin',
 'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Buy with Bitcoin. Sell online. Open your own virtual store.' => 'Bitcoin супермаркет фотографий, графики, шаблонов, кода, приложений, книг и другого креатива за BitCoin. Качественные авторские товары. Покупайте с Bitcoin. Продавайте онлайн. Откройте свой собственный интернет-магазин!',
 'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, photos, arts, illustrations, 3d, templates, codes, extensions, books, content, digital, creative, quality, legal' => 'bitsybay, bitcoin, биткойн, btc, инди, супермаркет, магазин, купить, продать, royalty-free, фото, изображения, иллюстрации, 3d, шаблоны, открытый код, приложения, книги, цифровой контент, креатив, качество, легально',
 
@@ -34,13 +34,15 @@ $_translation = array(
 '%s is a simple and minimalistic marketplace to help you buy and or sell creative digital products with cryptocurrency like BitCoin. %s provides only high-quality offers from verified authors. It\'s include a BTC marketplace for %s about %s. Buy or sell original content with Bitcoin fast, directly and safely from any country without compromises!' => '%s — это BTC супермаркет оригинальных авторских товаров за Bitcoin. Только на %s можно купить легальный контент за Bitcoin от проверенных авторов а также продать авторские товары из любой точки мира без ограничений и банковских комиссий. Здесь можно моментально купить и продать за BTC товары для рубрик %s на различные тематики %s и многое другое. Только высокое качество товаров, быстрая оплата в Bitcoin, безопасность и легкость использования!',
 
 // Welcome module
-'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
-'Then here you are:' => 'Тогда вы там, где нужно:',
+'Be Your Own Bitcoin Marketplace. Shop Directly.' => 'Откройте ваш персональный биткойн магазин. Покупайте напрямую.',
+'Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital creative around the world. We make paying with bitcoins quick and easy.' => 'Бесплатный магазин с открытым кодом, который позволяет покупать и продавать цифровые товары по всему миру за биткойн. Мы делаем платежи простыми, а выплаты — моментальными.',
+#'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
+#'Then here you are:' => 'Тогда вы там, где нужно:',
 #'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
 '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Бесплатно %s Мб дискового пространства +%s Мб за каждую сделку',
-'%s%% seller fee and 0%% for project contributors' => 'Низкая комиссия %s%% и 0%% для контрибуторов',
+'%s%% seller fee and 0%% for contributors' => 'Минимальные комиссии %s%% и 0%% для контрибуторов',
 'Freedom for peoples: 100% open engine for contributions and healthy competition' => 'Мы ♥ свободу: 100% открытая платформа для участия и здоровой конкуренции',
-'Respect for your privacy without third party injections and additional agreements' => 'Уважение к приватности без использования сторонних скриптов и лицензий',
+#'Respect for your privacy without third party injections and additional agreements' => 'Уважение к приватности без использования сторонних скриптов и лицензий',
 
 // Others modules
 'Last offers' => 'Новые товары',

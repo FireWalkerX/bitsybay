@@ -24,13 +24,12 @@
       <div class="bs-component welcome">
         <div class="jumbotron">
           <div class="col-lg-7">
-            <h3><?php echo tt('Looking for a Marketplace to buy or sell digital creative in Bitcoin?') ?></h3>
-            <?php echo tt('Then here you are:') ?>
+            <h3><?php echo tt('Be Your Own Bitcoin Marketplace. Shop Directly.') ?></h3>
+            <p><?php echo tt('Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital creative around the world. We make paying with bitcoins quick and easy.') ?></p>
             <ul>
               <li><?php echo $total_products ?> <?php echo tt('by') ?> <?php echo $total_sellers ?> <?php echo tt('for') ?> <?php echo $total_buyers ?></li>
-              <li><?php echo sprintf(tt('%s%% seller fee and 0%% for project contributors'), FEE_PER_ORDER) ?></li>
+              <li><?php echo sprintf(tt('%s%% seller fee and 0%% for contributors'), FEE_PER_ORDER) ?></li>
               <li><?php echo sprintf(tt('%s Mb free disk space for all new sellers and +%s Mb for every next sale'), QUOTA_FILE_SIZE_BY_DEFAULT, QUOTA_BONUS_SIZE_PER_ORDER) ?></li>
-              <li><?php echo tt('Respect for your privacy without third party injections and additional agreements') ?></li>
               <li><?php echo tt('Freedom for peoples: 100% open engine for contributions and healthy competition') ?></li>
             </ul>
           </div>
@@ -76,11 +75,4 @@
     </div>
   </div>
 </div>
-<?php if (isset($description) && !empty($description)) { ?>
-  <div class="row border-top">
-    <div class="col-lg-12 text-justify text-muted small">
-      <?php echo $description ?>
-    </div>
-  </div>
-<?php } ?>
 <?php echo $footer; ?>
