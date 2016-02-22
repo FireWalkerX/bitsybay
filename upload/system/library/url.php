@@ -97,6 +97,7 @@ final class Url {
         $this->_addRewrite('common/information/licenses', 'licenses');
         $this->_addRewrite('common/information/faq', 'faq');
         $this->_addRewrite('common/information/team', 'team');
+        $this->_addRewrite('common/information/bitcoin', 'bitcoin');
         $this->_addRewrite('common/image/qr', 'qr');
 
         // Create error rewrite rules

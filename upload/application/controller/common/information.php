@@ -158,4 +158,20 @@ class ControllerCommonInformation extends Controller {
 
         $this->response->setOutput($this->load->view('common/information/team.tpl', $data));
     }
+
+    public function bitcoin() {
+
+        $this->document->setTitle(tt('What is Bitcoin?'));
+
+        $data['footer']         = $this->load->controller('common/footer');
+        $data['header']         = $this->load->controller('common/header');
+
+        $data['module_breadcrumbs'] = $this->load->controller('module/breadcrumbs', array(
+            array('name' => tt('Home'), 'href' => $this->url->link('common/home'), 'active' => false),
+            array('name' => tt('Team'), 'href' => $this->url->link('common/information/bitcoin'), 'active' => true),
+        ));
+
+
+        $this->response->setOutput($this->load->view('common/information/bitcoin.tpl', $data));
+    }
 }
