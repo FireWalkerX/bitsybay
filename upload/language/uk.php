@@ -18,7 +18,7 @@ $_translation = array(
     'j M, Y' => 'd.m.Y',
 
 // Headers
-    'BitsyBay - Sell and Buy Digital Creative with BitCoin' => 'BitsyBay - Мгазин авторських шаблонів, фотографій, музики та відео за Bitcoin',
+    'BitsyBay - Be Your Own Bitcoin Marketplace. Shop Directly.' => 'BitsyBay - Мгазин авторських шаблонів, фотографій, музики та відео за Bitcoin',
     'BTC Marketplace for royalty-free photos, arts, templates, codes, books and other digital creative with BitCoin. Only quality and legal content from them authors. Buy with Bitcoin. Sell online. Open your own virtual store.' => 'Bitcoin супермаркет фотографій, графіки, шаблонів, коду, додатків, книг та іншого креативу за BitCoin. Якісні авторські товари. Купуйте з BitCoin. Продавайте онлайн. Відкрийте ваш власний інтернет-магазин!',
     'bitsybay, bitcoin, btc, indie, marketplace, store, buy, sell, royalty-free, photos, arts, illustrations, 3d, templates, codes, extensions, books, content, digital, creative, quality, legal' => 'bitsybay, bitcoin, биткойн, btc, інді, супермаркет, магазин, купити, продати, royalty-free, фото, зображення, ілюстрації, 3d, шаблони, відкритий код, додатки, книги, цифровий контент, креатив, якість, легально',
 
@@ -31,13 +31,12 @@ $_translation = array(
 
 
 // Welcome module
-    'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Шукаєте магазин авторських шаблонів, фотографій, музики та відео за Bitcoin?',
-    'Then here you are:' => 'Тоді ви в потрібному місці:',
+    'Be Your Own Bitcoin Marketplace. Shop Directly.' => 'Відкрийте ваш особистий магазин біткоїн. Купуйте безпосередньо.',
+    'Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital assets around the world. We make paying with bitcoins quick and easy.' => 'Безкоштовний магазин з відкритим кодом, який дозволяє купувати і продавати цифрові товари по всьому світі за біткоїн. Ми робимо платежі простими, а виплати — миттєвими.',
 #'Trade from any country without bank fees and other restrictions' => 'Купуйте та продавайте цифрові товари по всьому світу без обмежень',
     '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Безкоштовно %s Мб дискового простору +%s Мб за кожну угоду',
-    '0% seller fee up to 2016, 11% later and 0% for project contributors forever' => 'Комісія 0% до 2016 года, 11% після і 0% для контрибуторів',
-    'Freedom for peoples: 100% open engine for contributions and healthy competition' => 'Ми ♥ свободу: 100% відкрита платформа для участі та здорової конкуренції',
-    'Respect for your privacy without third party injections and additional agreements' => 'Повага до приватності без використання стороніх скриптів та ліцензій',
+    '%s%% seller fee and 0%% for contributors' => 'Мінімальні комісії %s%% і 0%% для контрибуторів',
+    'Freedom for people: 100% open engine for contributions and healthy competition' => 'Ми ♥ свободу: 100% відкрита платформа для участі та здорової конкуренції',
 
 // Others modules
     'Last offers' => 'Нові товари',
@@ -119,8 +118,8 @@ $_translation = array(
     'offers ' => 'пропозиції',
 
     'original high-quality offer' => 'оригінальна пропозиція',
-    'original high-quality offers' => 'оригінальних пропозицій',
-    'original high-quality offers ' => 'оригінальні пропозиції',
+    'original high-quality offers' => 'оригінальні пропозиції',
+    'original high-quality offers ' => 'оригінальних пропозицій',
 
     'seller' => 'продавець',
     'sellers' => 'продавця',
@@ -227,7 +226,7 @@ $_translation = array(
     'Enter your data' => 'Ваші дані, панове',
     'Username' => 'Логін',
     'Confirm Password' => 'Підтвердіть пароль',
-    'Magic word ↑' => 'Чари ↑',
+    'Magic word ↑' => 'Чарівне слово ↑',
     'I agree with the %s and %s' => 'Я приймаю %s і %s',
     'Create Account' => 'Створити',
     'Create' => 'Реєстрація',
@@ -345,7 +344,7 @@ $_translation = array(
 
 // Products
     'Products' => 'Товари',
-    'favorites' => 'обрані',
+    'favorites' => 'фаворити',
     'purchased' => 'придбані',
     'Product list' => 'Список товарів',
     'Add product' => 'Додати товар',
