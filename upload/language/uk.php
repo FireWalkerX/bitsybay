@@ -130,7 +130,7 @@ $_translation = array(
     'verified sellers ' => 'продавців',
 
     'buyer' => 'покупець',
-    'buyers' => 'покупець',
+    'buyers' => 'покупці',
     'buyers ' => 'покупців',
 
     'day' => 'день',
