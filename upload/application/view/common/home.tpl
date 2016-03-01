@@ -25,7 +25,7 @@
         <div class="jumbotron">
           <div class="col-lg-7">
             <h3><?php echo tt('Be Your Own Bitcoin Marketplace. Shop Directly.') ?></h3>
-            <p><?php echo tt('Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital creative around the world. We make paying with bitcoins quick and easy.') ?></p>
+            <p><?php echo tt('Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy creative digital assets around the world. We make paying with bitcoins quick and easy.') ?></p>
             <ul>
               <li><?php echo $total_products ?> <?php echo tt('by') ?> <?php echo $total_sellers ?> <?php echo tt('for') ?> <?php echo $total_buyers ?></li>
               <li><?php echo sprintf(tt('%s%% seller fee and 0%% for contributors'), FEE_PER_ORDER) ?></li>

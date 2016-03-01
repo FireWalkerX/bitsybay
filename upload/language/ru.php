@@ -35,7 +35,7 @@ $_translation = array(
 
 // Welcome module
 'Be Your Own Bitcoin Marketplace. Shop Directly.' => 'Откройте ваш персональный биткойн магазин. Покупайте напрямую.',
-'Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital creative around the world. We make paying with bitcoins quick and easy.' => 'Бесплатный магазин с открытым кодом, который позволяет покупать и продавать цифровые товары по всему миру за биткойн. Мы делаем платежи простыми, а выплаты — моментальными.',
+'Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy creative digital assets around the world. We make paying with bitcoins quick and easy.' => 'Бесплатный магазин с открытым кодом, который позволяет покупать и продавать цифровые товары по всему миру за биткойн. Мы делаем платежи простыми, а выплаты — моментальными.',
 #'Looking for a Marketplace to buy or sell digital creative in Bitcoin?' => 'Ищите магазин авторских шаблонов, фотографий, музыки и видео за Bitcoin?',
 #'Then here you are:' => 'Тогда вы там, где нужно:',
 #'Trade from any country without bank fees and other restrictions' => 'Покупайте и продавайте цифровые товары по всему миру без ограничений',
