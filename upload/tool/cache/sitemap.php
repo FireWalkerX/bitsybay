@@ -76,6 +76,8 @@ foreach ($languages as $language_id => $language_code) {
     $sitemap->addItem(canonical($language_id, $language_code, $url->link('common/information/terms')), '1.0', 'monthly');
     $sitemap->addItem(canonical($language_id, $language_code, $url->link('common/information/licenses')), '1.0', 'monthly');
     $sitemap->addItem(canonical($language_id, $language_code, $url->link('common/information/faq')), '1.0', 'monthly');
+    $sitemap->addItem(canonical($language_id, $language_code, $url->link('common/information/bitcoin')), '1.0', 'monthly');
+    $sitemap->addItem(canonical($language_id, $language_code, $url->link('common/information/promo')), '1.0', 'monthly');
     $sitemap->addItem(canonical($language_id, $language_code, $url->link('common/contact')), '1.0', 'yearly');
     $sitemap->addItem(canonical($language_id, $language_code, $url->link('account/account/login')), '1.0', 'yearly');
     $sitemap->addItem(canonical($language_id, $language_code, $url->link('account/account/create')), '1.0', 'yearly');
