@@ -77,7 +77,6 @@ $registry->set('cache', $cache);
 // Email
 $mail = new Mail();
 $mail->setFrom(MAIL_EMAIL_SENDER_ADDRESS);
-$mail->setReplyTo(MAIL_EMAIL_SENDER_ADDRESS);
 $mail->setSender(MAIL_EMAIL_SENDER_NAME);
 
 $registry->set('mail', $mail);

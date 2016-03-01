@@ -32,7 +32,8 @@ class ControllerCommonContact extends Controller {
         if ('POST' == $this->request->getRequestMethod() && $this->_validatePost()) {
 
             $this->mail->setTo(MAIL_EMAIL_SUPPORT_ADDRESS);
-            $this->mail->setReplyTo($this->request->post['email']);
+            $this->mail->setFrom($this->request->post['email']);
+            $this->mail->setSender($this->request->post['email']);
             $this->mail->setSubject($this->request->post['subject']);
             $this->mail->setText($this->request->post['message']);
             $this->mail->send();

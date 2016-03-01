@@ -691,7 +691,9 @@ class ControllerCatalogProduct extends Controller {
                 }
 
                 // Notice admin
+                $this->mail->setFrom($this->auth->getEmail());
                 $this->mail->setTo(MAIL_EMAIL_BILLING_ADDRESS);
+                $this->mail->setSender($this->auth->getEmail());
                 $this->mail->setSubject(sprintf('%s REPORT', PROJECT_NAME));
                 $this->mail->setHtml(false);
                 $this->mail->setText(sprintf('New review for product: %s (%s)', $product->title, $this->url->link('catalog/product', 'product_id=' . $product->product_id)));

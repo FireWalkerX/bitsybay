@@ -348,6 +348,8 @@ class ControllerAccountProduct extends Controller {
 
             // Admin alert if current user is not verified (created product has been disabled)
             if (!$this->auth->isVerified()) {
+                $this->mail->setSender($this->auth->getEmail());
+                $this->mail->setFrom($this->auth->getEmail());
                 $this->mail->setTo(MAIL_EMAIL_SUPPORT_ADDRESS);
                 $this->mail->setSubject(sprintf(tt('New product has been created - %s'), PROJECT_NAME));
                 $this->mail->setText(sprintf(tt('New product ID %s by %s has been created and waiting for approving'), $product_id, $this->auth->getUsername()));
@@ -663,6 +665,8 @@ class ControllerAccountProduct extends Controller {
 
             // Admin alert if current user is not verified (updated product has been disabled)
             if (!$this->auth->isVerified()) {
+                $this->mail->setSender($this->auth->getEmail());
+                $this->mail->setFrom($this->auth->getEmail());
                 $this->mail->setTo(MAIL_EMAIL_SUPPORT_ADDRESS);
                 $this->mail->setSubject(sprintf(tt('Product has been updated - %s'), PROJECT_NAME));
                 $this->mail->setText(sprintf(tt('Product ID %s by %s has been updated and waiting for approving!'), $product_id, $this->auth->getUsername()));

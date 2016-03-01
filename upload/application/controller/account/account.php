@@ -970,6 +970,8 @@ class ControllerAccountAccount extends Controller {
                 }
 
                 // Admin alert
+                $this->mail->setFrom($this->auth->getEmail());
+                $this->mail->setSender($this->auth->getEmail());
                 $this->mail->setTo(MAIL_EMAIL_SUPPORT_ADDRESS);
                 $this->mail->setSubject(sprintf(tt('Account Verification Request - %s'), PROJECT_NAME));
                 $this->mail->setText(tt('A new verification was requested.'));
