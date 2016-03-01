@@ -51,8 +51,8 @@ $_translation = array(
     'Already have an account?' => 'Вже є аккаунт?',
     'Email or username' => 'Логін або e-mail',
     'Password' => 'Пароль',
-    'Sign Up' => 'Регістрація',
-    'Join Us' => 'Регістрація',
+    'Sign Up' => 'Реєстрація',
+    'Join Us' => 'Реєстрація',
     'Join' => 'Приєднатися',
     'License Policy' => 'Ліцензування',
     'Sign In' => 'Увійти',
@@ -101,11 +101,17 @@ $_translation = array(
     'do not have a physical address at present as its only a software resource started by a' => 'не має фактичного офісу та функціонує виключно як програмний ресурс, що супроводжується',
     'few enthusiasts' => 'невеликою командою',
     'We can however be contacted by means of email through the above form.' => 'На даний момент, кращий спосіб зв’язатися з нами — написати нам листа!',
+    'Promotional Assets' => 'Рекламні матеріали',
+    'Branding' => 'Логотипи',
+    'Referal Banners' => 'Партнерські банери',
+    'XCF sources available on' => 'Початкові файли у форматі XCF доступні на',
+    'Bitsybay-related graphics used for promoting Bitsybay either for online use, retail display or other promotional purpose.' => 'Рекламні матеріали, які використовуються для просування проекту Bitsybay в соціальних мережах, прес-релізах, оглядах а також в друкованому вигляді.',
 
 // Payments
     'Use wallet' => 'Гаманець',
     'Send %s or more to this address:' => 'Сплатіть %s або більше на адресу:',
     'Support the author by paying above min price:' => 'Підтримайте автора, сплативши більше:',
+    'Don\'t have a Wallet?' => 'Немає гаманця?',
 
 // Plural
     'offer' => 'пропозиція',
@@ -113,7 +119,7 @@ $_translation = array(
     'offers ' => 'пропозиції',
 
     'original high-quality offer' => 'оригінальна пропозиція',
-    'original high-quality offers' => 'оригінальні пропозиції',
+    'original high-quality offers' => 'оригінальних пропозицій',
     'original high-quality offers ' => 'оригінальні пропозиції',
 
     'seller' => 'продавець',
@@ -188,7 +194,7 @@ $_translation = array(
     'If you have any questions' => 'Є питання?',
     'To get specific answers' => 'До ваших послуг наші',
     'here' => 'тут',
-    'Registration page' => 'Сторінку регістрації',
+    'Registration page' => 'Сторінку реєстрації',
     'Account status' => 'Статус',
     'Active' => 'Активний',
     'Approved' => 'Підтверджений',
@@ -224,7 +230,7 @@ $_translation = array(
     'Magic word ↑' => 'Чари ↑',
     'I agree with the %s and %s' => 'Я приймаю %s і %s',
     'Create Account' => 'Створити',
-    'Create' => 'Регістрація',
+    'Create' => 'Реєстрація',
     'Email is required' => 'Необхідно вказати e-mail!',
     'Confirm is required' => 'Необхідно підтвердити введений вами пароль!',
     'Magic word is required' => 'Ви забули про чарівне слово!',
@@ -374,7 +380,7 @@ $_translation = array(
     'Publish' => 'Готово!',
     'Image' => 'Зображення',
     'Images' => 'Зображення',
-    'Add image' => 'Добавити',
+    'Add image' => 'Додати',
     'Watermark' => 'Водяний знак',
     'Video' => 'Відео',
     'Source' => 'Джерело',
@@ -437,7 +443,7 @@ $_translation = array(
     'made it for you' => 'зробив це для вас',
     'Get' => 'Завантажити',
     'Unverified Seller' => 'Неперевірений продавець',
-    'Release: %s' => 'Релиз: %s',
+    'Release: %s' => 'Реліз: %s',
     'Update: %s' => 'Оновлено: %s',
     'Sales: %s' => 'Продано копій: %s',
     'License' => 'Ліцензія',
@@ -541,8 +547,8 @@ $_translation = array(
     'may' => 'може',
     'shall not' => 'не може',
     'The Item means copyrighted product offered for sale' => 'Товар — контент, захищений авторським правом, який був виставлений на продаж',
-    'Seller means a person or business that registered on this website and sells the Item' => 'Продавець — приватна чи юридична особа, що зареєстрована на даному веб-сайті і продає Товар',
-    'Buyer means a person or business that registered on this website and buys the Item' => 'Покупець — приватна чи юридична особа, що зареєстрована на даному веб-сайті і купує Товар',
+    'Seller means a person or business that registered on this website and sells the Item' => 'Продавець — приватна чи юридична особа, яка зареєстрована на даному веб-сайті і продає Товар',
+    'Buyer means a person or business that registered on this website and buys the Item' => 'Покупець — приватна чи юридична особа, яка зареєстрована на даному веб-сайті і купує Товар',
     'Copyright means legal right that grants the creator of an original work absolute and exclusive rights to its use and distribution' => 'Копірайт — право, що надає автору оригінальної работи абсолютні і ексклюзивні права на використання і розповсюдження Товару',
     'Regular License' => 'Регулярна ліцензія',
     'Exclusive License' => 'Ексклюзивна ліцензія',
@@ -559,7 +565,7 @@ $_translation = array(
 
 // Mailing and Notifications
     'Welcome to %s!' => 'Ласково просимо в %s!',
-    'Welcome and thank you for registering!' => 'Ласково просимо і дякуємо за регістрацію!',
+    'Welcome and thank you for registering!' => 'Ласково просимо і дякуємо за реєстрацію!',
     'We\'re so happy you\'ve joined us.' => 'Ми такі раді, що ви приєдналися до нас.',
     'Make every day awesome with inspired finds!' => 'Зробіть кожен день дивовижним з цікавими знахідками в нашому каталозі!',
 
