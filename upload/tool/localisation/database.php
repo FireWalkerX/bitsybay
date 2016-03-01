@@ -1,6 +1,6 @@
 <?php
 
-class Language {
+class ToolLocalisationDatabase {
     
     private $_db;
     private $_language_id_from;
@@ -124,6 +124,21 @@ class Language {
 
                 $insert = $this->_db->prepare("INSERT INTO `tag_description` SET `language_id` = ?, `tag_id` = ?, `name` = ?");
                 $insert->execute(array($this->_language_id_to, $tag->tag_id, $tag->name));
+            }
+        }
+    }
+
+    public function addUserNotificationDescriptions() {
+
+        $query = $this->_db->prepare("SELECT * FROM `user_notification` AS `un` JOIN `user_notification_description` AS `und` ON (`un`.`user_notification_id` = `und`.`user_notification_id`) WHERE `und`.`language_id` = ?");
+        $query->execute(array($this->_language_id_from));
+
+        if ($query->rowCount()) {
+
+            foreach ($query->fetchAll() as $notification) {
+
+                $insert = $this->_db->prepare("INSERT INTO `user_notification_description` SET `language_id` = ?, `user_notification_id` = ?, `title` = ?, `description` = ?");
+                $insert->execute(array($this->_language_id_to, $notification->user_notification_id, $notification->title, $notification->description));
             }
         }
     }

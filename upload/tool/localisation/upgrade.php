@@ -2,13 +2,14 @@
 
 // Load dependencies
 require('../../config.php');
-require('database/catalog.php');
+require('database.php');
 
-$language = new Language(1, 3);
+#$toolLocalisationDatabase = new ToolLocalisationDatabase(1, 3);
 
-#$language->addProductDescriptions();
-#$language->addProductDemoDescriptions();
-#$language->addProductImageDescriptions();
-#$language->addProductVideoDescriptions();
-#$language->addAudioVideoDescriptions();
-#$language->addTagDescriptions();
+#$toolLocalisationDatabase->addProductDescriptions();
+#$toolLocalisationDatabase->addProductDemoDescriptions();
+#$toolLocalisationDatabase->addProductImageDescriptions();
+#$toolLocalisationDatabase->addProductVideoDescriptions();
+#$toolLocalisationDatabase->addAudioVideoDescriptions();
+#$toolLocalisationDatabase->addTagDescriptions();
+#$toolLocalisationDatabase->addUserNotificationDescriptions();
