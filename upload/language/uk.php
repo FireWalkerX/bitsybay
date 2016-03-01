@@ -557,7 +557,7 @@ $_translation = array(
 // Team
     'Team' => 'Команда',
     'Contributors' => 'Контрибутори',
-    'Project Creator, Developer' => 'Розробник і Автор проекту',
+    'Project Creator, Developer' => 'Розробник і автор проекту',
     'Content Analyst, Support' => 'Контент-аналітика, підтримка',
     'Our team is only peoples, who love this project and make it better' => 'Тут лише люди, які люблять проект і роблять його кращим',
     'There are no corporation and authorized fund. We fund our support and contribution instead money.' => 'Немає уставних фондів, компаній і краваток. Ми інвестуємо нашу підтримку і контрибуції замість грошей.',
