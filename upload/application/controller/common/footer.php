@@ -36,6 +36,8 @@ class ControllerCommonFooter extends Controller {
         $data['href_common_information_terms']     = $this->url->link('common/information/terms');
         $data['href_common_information_faq']       = $this->url->link('common/information/faq');
 
+        $data['href_promo'] = $this->url->link('common/information/promo');
+
         $data['languages'] = array();
 
         $languages = $this->language->getLanguages();
