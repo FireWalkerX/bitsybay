@@ -33,7 +33,7 @@
                     <?php echo tt('Bitsybay-related graphics used for promoting Bitsybay either for online use, retail display or other promotional purpose.') ?>
                 </p>
                 <p>
-                    <?php echo tt('Raw sources in the XCF format availible on') ?> <a href="https://github.com/bitsybay/bitsybay/tree/master/media" target="_blank" rel="nofollow"><?php echo tt('GitHub') ?></a>
+                    <?php echo tt('Raw sources in the XCF format available on') ?> <a href="https://github.com/bitsybay/bitsybay/tree/master/media" target="_blank" rel="nofollow"><?php echo tt('GitHub') ?></a>
                 </p>
                 <h2><?php echo tt('Branding') ?></h2>
                 <p>
