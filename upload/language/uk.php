@@ -32,7 +32,7 @@ $_translation = array(
 
 // Welcome module
     'Be Your Own Bitcoin Marketplace. Shop Directly.' => 'Відкрийте ваш особистий магазин біткоїн. Купуйте безпосередньо.',
-    'Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital assets around the world. We make paying with bitcoins quick and easy.' => 'Безкоштовний магазин з відкритим кодом, який дозволяє купувати і продавати цифрові товари по всьому світі за біткоїн. Ми робимо платежі простими, а виплати — миттєвими.',
+    'Bitsybay is a free online bitcoin marketplace, which you can use to sell and buy digital assets around the world. We make paying with bitcoins quick and easy.' => 'Безкоштовний магазин з відкритим кодом, який дозволяє купувати і продавати цифрові товари навколо світу за біткоїн. Ми робимо платежі простими, а виплати — миттєвими.',
 #'Trade from any country without bank fees and other restrictions' => 'Купуйте та продавайте цифрові товари по всьому світу без обмежень',
     '%s Mb free disk space for all new sellers and +%s Mb for every next sale' => 'Безкоштовно %s Мб дискового простору +%s Мб за кожну угоду',
     '%s%% seller fee and 0%% for contributors' => 'Мінімальні комісії %s%% і 0%% для контрибуторів',
