@@ -110,6 +110,11 @@ $_translation = array(
 'do not have a physical address at present as its only a software resource started by a' => 'не имеет фактического офиса и функционирует исключительно как программный ресурс, сопровождаемый',
 'few enthusiasts' => 'небольшой командой',
 'We can however be contacted by means of email through the above form.' => 'На данный момент, лучший способ связаться с нами — написать нам письмо!',
+'Promotional Assets' => 'Рекламные материалы',
+'Branding' => 'Логотипы',
+'Referal Banners' => 'Партнерские баннеры',
+'Bitsybay-related graphics used for promoting Bitsybay either for online use, retail display or other promotional purpose.' => 'Рекламные материалы, используемые для продвижения проекта Bitsybay в социальных сетях, пресс-релизах, обзорах и принтах.',
+'XCF sources available on' => 'Исходные файлы в формате XCF доступны на',
 
 // Payments
 'Use wallet' => 'Кошелек',
