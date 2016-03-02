@@ -214,6 +214,7 @@ CREATE TABLE `order_status_description` (
   `language_id` int(10) unsigned NOT NULL,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`order_status_description_id`),
+  UNIQUE KEY `UNIQUE` (`product_status_id`, `language_id`),
   KEY `fk_order_status_description_order_status_id` (`order_status_id`),
   KEY `fk_order_status_description_language_id` (`language_id`),
   CONSTRAINT `fk_order_status_description_order_status_id` FOREIGN KEY (`order_status_id`) REFERENCES `order_status` (`order_status_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
