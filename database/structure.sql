@@ -253,6 +253,45 @@ CREATE TABLE `product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `product_status`
+--
+
+DROP TABLE IF EXISTS `product_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_status` (
+  `product_status_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`product_status_id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `product_status_description`
+--
+
+DROP TABLE IF EXISTS `product_status_description`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_status_description` (
+  `product_status_description_id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `product_status_id` INT(10) UNSIGNED NOT NULL,
+  `language_id` INT(10) UNSIGNED NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`product_status_description_id`),
+  UNIQUE INDEX `product_status_description_id_UNIQUE` (`product_status_description_id` ASC),
+  INDEX `fk_product_status_description_product_status_id` (`product_status_id` ASC),
+  INDEX `fk_product_status_description_language_id` (`language_id` ASC),
+  CONSTRAINT `fk_product_status_description_product_status_id`
+  FOREIGN KEY (`product_status_id`)
+  REFERENCES `product_status` (`product_status_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_status_description_language_id`
+  FOREIGN KEY (`language_id`)
+  REFERENCES `language` (`language_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `product_demo`
