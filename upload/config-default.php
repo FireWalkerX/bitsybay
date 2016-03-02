@@ -81,6 +81,11 @@ define('FEE_USER_VERIFICATION', 0.1);           // BTC
 define('ALLOWED_PRODUCT_MIN_PRICE', 0.01);      // BTC
 define('ALLOWED_PRODUCT_MAX_PRICE', 1000000);   // BTC
 
+// PRODUCTS
+define('PRODUCT_PENDING_STATUS_ID', 1);    // INT product_status_id in product_status table
+define('PRODUCT_ACTIVE_STATUS_ID', 2);     // INT product_status_id in product_status table
+define('PRODUCT_REJECTED_STATUS_ID', 3);   // INT product_status_id in product_status table
+
 // ORDERS
 define('ORDER_PENDING_STATUS_ID', 1);   // INT order_status_id in order_status table
 define('ORDER_APPROVED_STATUS_ID', 2);  // INT order_status_id in order_status table
