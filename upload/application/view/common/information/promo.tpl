@@ -41,9 +41,15 @@
                     <img src="https://raw.githubusercontent.com/bitsybay/bitsybay/master/media/branding/v2/favicon.png" alt="" />
                 </p>
                 <h2><?php echo tt('Referal Banners') ?></h2>
+                <p>&nbsp;</p>
+                <h4>468x60</h4>
                 <p> 
                     <img src="https://raw.githubusercontent.com/bitsybay/bitsybay/master/media/advertising/en/digital-assets-from-creative-people-468-60.png" alt="Digital Assets from Creative People" />
                     <img src="https://raw.githubusercontent.com/bitsybay/bitsybay/master/media/advertising/en/original-opencart-extensions-468-60.png" alt="Original OpenCart Extensions" />
+                </p>
+                <h4>728x90</h4>
+                <p>
+                    <img src="https://raw.githubusercontent.com/bitsybay/bitsybay/master/media/advertising/en/digital-assets-from-creative-people-728-90.png" alt="Digital Assets from Creative People" />
                  </p>
             </article>
         </section>
