@@ -187,74 +187,6 @@ CREATE TABLE `order` (
 
 
 --
--- Table structure for table `order_status`
---
-
-DROP TABLE IF EXISTS `order_status`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order_status` (
-  `order_status_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`order_status_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
-
---
--- Table structure for table `order_status_description`
---
-
-DROP TABLE IF EXISTS `order_status_description`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `order_status_description` (
-  `order_status_description_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `order_status_id` int(10) unsigned NOT NULL,
-  `language_id` int(10) unsigned NOT NULL,
-  `name` varchar(45) NOT NULL,
-  PRIMARY KEY (`order_status_description_id`),
-  UNIQUE KEY `UNIQUE` (`product_status_id`, `language_id`),
-  KEY `fk_order_status_description_order_status_id` (`order_status_id`),
-  KEY `fk_order_status_description_language_id` (`language_id`),
-  CONSTRAINT `fk_order_status_description_order_status_id` FOREIGN KEY (`order_status_id`) REFERENCES `order_status` (`order_status_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_status_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Table structure for table `product`
---
-
-DROP TABLE IF EXISTS `product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `product` (
-  `product_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `category_id` int(10) unsigned NOT NULL,
-  `currency_id` int(10) unsigned NOT NULL,
-  `user_id` int(10) unsigned NOT NULL,
-  `viewed` int(10) unsigned NOT NULL,
-  `regular_price` decimal(16,8) NOT NULL,
-  `exclusive_price` decimal(16,8) NOT NULL,
-  `status` tinyint(1) NOT NULL,
-  `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL,
-  `withdraw_address` varchar(255) NOT NULL,
-  `alias` varchar(255) NOT NULL,
-  PRIMARY KEY (`product_id`),
-  UNIQUE KEY `alias_UNIQUE` (`alias`),
-  KEY `fk_product_user_id` (`user_id`),
-  KEY `fk_product_category_id` (`category_id`),
-  KEY `fk_product_currency_id` (`currency_id`),
-  CONSTRAINT `fk_product_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_product_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`currency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
 -- Table structure for table `product_status`
 --
 
@@ -292,6 +224,75 @@ CREATE TABLE `product_status_description` (
   REFERENCES `language` (`language_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `order_status`
+--
+
+DROP TABLE IF EXISTS `order_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `order_status` (
+  `order_status_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`order_status_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+--
+-- Table structure for table `order_status_description`
+--
+
+DROP TABLE IF EXISTS `order_status_description`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `order_status_description` (
+  `order_status_description_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `order_status_id` int(10) unsigned NOT NULL,
+  `language_id` int(10) unsigned NOT NULL,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`order_status_description_id`),
+  UNIQUE KEY `UNIQUE` (`order_status_id`, `language_id`),
+  KEY `fk_order_status_description_order_status_id` (`order_status_id`),
+  KEY `fk_order_status_description_language_id` (`language_id`),
+  CONSTRAINT `fk_order_status_description_order_status_id` FOREIGN KEY (`order_status_id`) REFERENCES `order_status` (`order_status_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_order_status_description_language_id` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Table structure for table `product`
+--
+
+DROP TABLE IF EXISTS `product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product` (
+  `product_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(10) unsigned NOT NULL,
+  `currency_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `viewed` int(10) unsigned NOT NULL,
+  `regular_price` decimal(16,8) NOT NULL,
+  `exclusive_price` decimal(16,8) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `date_added` datetime NOT NULL,
+  `date_modified` datetime NOT NULL,
+  `withdraw_address` varchar(255) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  PRIMARY KEY (`product_id`),
+  UNIQUE KEY `alias_UNIQUE` (`alias`),
+  KEY `fk_product_user_id` (`user_id`),
+  KEY `fk_product_category_id` (`category_id`),
+  KEY `fk_product_currency_id` (`currency_id`),
+  CONSTRAINT `fk_product_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_product_currency_id` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`currency_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -775,18 +776,18 @@ CREATE TABLE `user` (
   INDEX `fk_user_referrer_user_id` (`referrer_user_id` ASC),
   INDEX `fk_user_affiliate_currency_id` (`affiliate_currency_id` ASC),
   CONSTRAINT `fk_user_referrer_user_id`
-    FOREIGN KEY (`referrer_user_id`)
-    REFERENCES `user` (`user_id`)
+  FOREIGN KEY (`referrer_user_id`)
+  REFERENCES `user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_affiliate_currency_id`
-    FOREIGN KEY (`affiliate_currency_id`)
-    REFERENCES `currency` (`currency_id`)
+  FOREIGN KEY (`affiliate_currency_id`)
+  REFERENCES `currency` (`currency_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_language_id`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `language` (`language_id`)
+  FOREIGN KEY (`language_id`)
+  REFERENCES `language` (`language_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -808,11 +809,11 @@ CREATE TABLE IF NOT EXISTS `user_notification` (
   PRIMARY KEY (`user_notification_id`),
   INDEX `fk_user_notification_user_id` (`user_id` ASC),
   CONSTRAINT `fk_user_notification_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`user_id`)
+  FOREIGN KEY (`user_id`)
+  REFERENCES `user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -858,11 +859,11 @@ CREATE TABLE IF NOT EXISTS `user_password_reset` (
   PRIMARY KEY (`user_password_reset_id`),
   INDEX `fk_user_password_reset_user_id` (`user_id` ASC),
   CONSTRAINT `fk_user_password_reset_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`user_id`)
+  FOREIGN KEY (`user_id`)
+  REFERENCES `user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 --
@@ -885,16 +886,16 @@ CREATE TABLE IF NOT EXISTS `user_verification_request` (
   INDEX `fk_user_verification_request_user_id` (`user_id` ASC),
   INDEX `fk_user_verification_request_currency_id` (`currency_id` ASC),
   CONSTRAINT `fk_user_verification_request_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`user_id`)
+  FOREIGN KEY (`user_id`)
+  REFERENCES `user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_verification_request_currency_id`
-    FOREIGN KEY (`currency_id`)
-    REFERENCES `currency` (`currency_id`)
+  FOREIGN KEY (`currency_id`)
+  REFERENCES `currency` (`currency_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -905,7 +906,7 @@ DROP TABLE IF EXISTS `subscription` ;
 CREATE TABLE IF NOT EXISTS `subscription` (
   `subscription_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`subscription_id`))
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -924,16 +925,16 @@ CREATE TABLE IF NOT EXISTS `subscription_description` (
   INDEX `fk_subscription_description_subscription_id` (`subscription_id` ASC),
   INDEX `fk_subscription_description_language_id` (`language_id` ASC),
   CONSTRAINT `fk_subscription_description_subscription_id`
-    FOREIGN KEY (`subscription_id`)
-    REFERENCES `subscription` (`subscription_id`)
+  FOREIGN KEY (`subscription_id`)
+  REFERENCES `subscription` (`subscription_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_subscription_description_language_id`
-    FOREIGN KEY (`language_id`)
-    REFERENCES `language` (`language_id`)
+  FOREIGN KEY (`language_id`)
+  REFERENCES `language` (`language_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `user_subscription`
@@ -948,16 +949,16 @@ CREATE TABLE IF NOT EXISTS `user_subscription` (
   INDEX `fk_user_subscription_user_id` (`user_id` ASC),
   INDEX `fk_user_subscription_subscription_id` (`subscription_id` ASC),
   CONSTRAINT `fk_user_subscription_user_id`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`user_id`)
+  FOREIGN KEY (`user_id`)
+  REFERENCES `user` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_subscription_subscription_id`
-    FOREIGN KEY (`subscription_id`)
-    REFERENCES `subscription` (`subscription_id`)
+  FOREIGN KEY (`subscription_id`)
+  REFERENCES `subscription` (`subscription_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+  ENGINE = InnoDB;
 
 -- -----------------------------------------------------
 -- Table `license`
@@ -1020,9 +1021,9 @@ CREATE TABLE `license_condition_description` (
   CONSTRAINT `fk_ license_condition_description_license_condition_id` FOREIGN KEY (`license_condition_id`) REFERENCES `license_condition` (`license_condition_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  -- -----------------------------------------------------
-  -- Table `product_to_license_condition`
-  -- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Table `product_to_license_condition`
+-- -----------------------------------------------------
 
 CREATE TABLE `product_to_license_condition` (
   `product_to_license_condition_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1045,15 +1046,15 @@ CREATE VIEW `catalog` AS SELECT `pd`.`product_id`  AS `product_id`,
                                 `pd`.`title`       AS `title`,
 
                                 (SELECT GROUP_CONCAT(`cd`.`title`) FROM `category_description` AS `cd`
-                                                                   JOIN `category` AS `c` ON (`c`.`category_id` = `cd`.`category_id`)
-                                                                   JOIN `product`  AS `p` ON (`p`.`category_id` = `c`.`category_id`)
-                                                                   WHERE `p`.`product_id` = `pd`.`product_id` AND `cd`.`language_id` = `pd`.`language_id`) AS `category`,
+                                  JOIN `category` AS `c` ON (`c`.`category_id` = `cd`.`category_id`)
+                                  JOIN `product`  AS `p` ON (`p`.`category_id` = `c`.`category_id`)
+                                WHERE `p`.`product_id` = `pd`.`product_id` AND `cd`.`language_id` = `pd`.`language_id`) AS `category`,
 
                                 (SELECT GROUP_CONCAT(`td`.`name`)  FROM `tag_description` AS `td`
-                                                                   JOIN `product_to_tag`  AS `p2t` ON (`p2t`.`tag_id` = `td`.`tag_id`)
-                                                                   WHERE `p2t`.`product_id` = `pd`.`product_id` AND `td`.`language_id` = `pd`.`language_id`) AS `tags`
+                                  JOIN `product_to_tag`  AS `p2t` ON (`p2t`.`tag_id` = `td`.`tag_id`)
+                                WHERE `p2t`.`product_id` = `pd`.`product_id` AND `td`.`language_id` = `pd`.`language_id`) AS `tags`
 
-                                FROM `product_description` AS `pd`;
+                         FROM `product_description` AS `pd`;
 
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
