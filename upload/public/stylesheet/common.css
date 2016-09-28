@@ -291,7 +291,7 @@ table img {
     opacity: 0.5
 }
 .catalog-category-product.grid .product-item .product-title {
-    height: 46px;
+    height: 60px;
 }
 .catalog-category-product.grid .product-item .product-title a {
     text-decoration: none;
