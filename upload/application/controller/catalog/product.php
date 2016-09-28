@@ -37,8 +37,6 @@ class ControllerCatalogProduct extends Controller {
         $this->load->helper('highlight');
         $this->load->helper('search_engines');
 
-        $this->load->library('bitcoin');
-
         // Set variables
         foreach ($this->model_common_language->getLanguages() as $language) {
             $this->_languages[$language->language_id] = $language->code;

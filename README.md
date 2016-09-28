@@ -101,7 +101,7 @@ REQUIREMENTS
     php-imagick 
     php-curl
     curl
-    bitcoind
+    electrum
     sphinxsearch
     ffmpeg
     clamav, php-clamav

@@ -236,6 +236,33 @@ class ModelAccountUser extends Model {
     }
 
     /**
+     * Update verification address
+     *
+     * @param int $order_id
+     * @param string $address
+     * @return array|bool affected rows or false if throw exception
+     */
+    public function updateVerificationAddress($order_id, $address) {
+
+        try {
+
+            $statement = $this->db->prepare('UPDATE `user` SET `verification_address` = ? WHERE `user_id` = ? LIMIT 1');
+            $statement->execute(array($address, $order_id));
+
+            return $statement->rowCount();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
     * Approve email
     *
     * @param int $user_id

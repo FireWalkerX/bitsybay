@@ -23,7 +23,7 @@ class ControllerOrderBitcoin extends Controller {
         $this->load->model('common/order');
         $this->load->model('account/user');
 
-        $this->load->library('bitcoin');
+        $this->load->library('electrum');
     }
 
     public function index() {
@@ -114,54 +114,76 @@ class ControllerOrderBitcoin extends Controller {
             exit;
         }
 
+        // Generate label
+        $label = sprintf('%s Order #%s', PROJECT_NAME, $order_id);
+
+        // Get order address if exists
+        $order_info = $this->model_common_order->getOrder($order_id);
+
+        if ($order_info->address) {
+
+            $address = $order_info->address;
+
         // Create a new BitCoin Address
-        try {
-            $bitcoin = new BitCoin(BITCOIN_RPC_USERNAME,
-                                   BITCOIN_RPC_PASSWORD,
-                                   BITCOIN_RPC_HOST,
-                                   BITCOIN_RPC_PORT);
+        } else {
 
-            // Set response
-            if (false !== $bitcoin->status && $address = $bitcoin->getaccountaddress(BITCOIN_ORDER_PREFIX . $order_id)) {
+            try {
+                $electrum = new Electrum(ELECTRUM_RPC_HOST, ELECTRUM_RPC_PORT);
 
-                $label = PROJECT_NAME . ' Order #' . $order_id;
-
-                $json = array(
-                    'status'  => true,
-                    'address' => $address,
-                    'amount'  => $amount,
-                    'label'   => $label,
-                    'text'    => sprintf(tt('Send %s or more to this address:'), $this->currency->format($amount)),
-                    'href'    => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount, $label),
-                    'src'     => $this->url->link('common/image/qr', 'code=' . $address),
-                    'amounts' => array(
-                        array(
-                            'label'  => $this->currency->format($amount_1 = round($amount + ($amount * 10 / 100), 4)), // +10%
-                            'amount' => $amount_1,
-                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_1, $label),
-                        ),
-                        array(
-                            'label'  => $this->currency->format($amount_2 = round($amount + ($amount * 25 / 100), 4)), // +25%
-                            'amount' => $amount_2,
-                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_2, $label),
-                        ),
-                        array(
-                            'label'  => $this->currency->format($amount_3 = round($amount + ($amount * 50 / 100), 4)), // +50%
-                            'amount' => $amount_3,
-                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_3, $label),
-                        ),
-                        array(
-                            'label'  => $this->currency->format($amount_4 = round($amount + ($amount * 100 / 100), 4)), // +100%
-                            'amount' => $amount_4,
-                            'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_4, $label),
-                        ),
+                $response = $electrum->addrequest(
+                    array(
+                        'amount'     => $amount,
+                        'memo'       => $label,
+                        'force'      => true,
                     )
                 );
+
+                if (isset($response['result']['address'])) {
+
+                    $address = $response['result']['address'];
+                    $this->model_common_order->updateAddress($order_id, $address);
+
+                } else {
+                    $this->security_log->write($response);
+                }
+
+            } catch (Exception $e) {
+                $this->security_log->write($e->getMessage());
             }
+        }
 
-
-        } catch (Exception $e) {
-            $this->security_log->write($bitcoin->error . '/' . $e->getMessage());
+        if (isset($address)) {
+            $json = array(
+                'status'  => true,
+                'address' => $address,
+                'amount'  => $amount,
+                'label'   => $label,
+                'text'    => sprintf(tt('Send %s or more to this address:'), $this->currency->format($amount)),
+                'href'    => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount, $label),
+                'src'     => $this->url->link('common/image/qr', 'code=' . $address),
+                'amounts' => array(
+                    array(
+                        'label'  => $this->currency->format($amount_1 = round($amount + ($amount * 10 / 100), 4)), // +10%
+                        'amount' => $amount_1,
+                        'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_1, $label),
+                    ),
+                    array(
+                        'label'  => $this->currency->format($amount_2 = round($amount + ($amount * 25 / 100), 4)), // +25%
+                        'amount' => $amount_2,
+                        'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_2, $label),
+                    ),
+                    array(
+                        'label'  => $this->currency->format($amount_3 = round($amount + ($amount * 50 / 100), 4)), // +50%
+                        'amount' => $amount_3,
+                        'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_3, $label),
+                    ),
+                    array(
+                        'label'  => $this->currency->format($amount_4 = round($amount + ($amount * 100 / 100), 4)), // +100%
+                        'amount' => $amount_4,
+                        'href'   => sprintf('bitcoin:%s?amount=%s&label=%s', $address, $amount_4, $label),
+                    ),
+                )
+            );
         }
 
         $this->response->addHeader('Content-Type: application/json');

@@ -14,7 +14,7 @@
 
 class ControllerCronManagerOrder extends Controller {
 
-    private $_bitcoin;
+    private $_electrum;
     private $_mail;
 
     private $_errors    = array();
@@ -38,7 +38,7 @@ class ControllerCronManagerOrder extends Controller {
         $this->load->model('account/subscription');
         $this->load->model('catalog/product');
 
-        $this->load->library('bitcoin');
+        $this->load->library('electrum');
 
         // Init languages
         foreach ($this->model_common_language->getLanguages() as $language) {
@@ -53,14 +53,7 @@ class ControllerCronManagerOrder extends Controller {
 
         // Init BitCoin
         try {
-
-            $this->_bitcoin = new BitCoin(
-                BITCOIN_RPC_USERNAME,
-                BITCOIN_RPC_PASSWORD,
-                BITCOIN_RPC_HOST,
-                BITCOIN_RPC_PORT
-            );
-
+            $this->_electrum = new Electrum(ELECTRUM_RPC_HOST, ELECTRUM_RPC_PORT);
         } catch (Exception $e) {
             $this->_errors[] = $e->getMessage();
         }
@@ -77,8 +70,15 @@ class ControllerCronManagerOrder extends Controller {
 
         foreach ($this->model_common_order->getOrdersByStatus(ORDER_PENDING_STATUS_ID) as $order) {
 
+            // Get balance by address
+            $response = $this->_electrum->getaddressbalance($order->address);
+
+            if (!isset($response['result']['unconfirmed']) || !$order->address) {
+                continue;
+            }
+
             // When order has been purchased and amount is correct
-            if ((float) $this->_bitcoin->getreceivedbyaccount(BITCOIN_ORDER_PREFIX . $order->order_id, 0) >= (float) $order->amount) {
+            if ((float) $response['result']['unconfirmed'] >= (float) $order->amount) {
 
                 // Processed counter
                 $this->_count_processed++;
@@ -106,7 +106,7 @@ class ControllerCronManagerOrder extends Controller {
                 $mail_data['project_name'] = PROJECT_NAME;
 
                 $mail_data['subject'] = sprintf(tt('Your payment has been received - %s', $translation), PROJECT_NAME);
-                $mail_data['message'] = sprintf(tt('Please wait for %s confirmations. It may take some time. Thanks!', $translation), BITCOIN_MIN_TRANSACTION_CONFIRMATIONS);
+                $mail_data['message'] = tt('Please wait for confirmation. It may take some time. Thanks!', $translation);
 
                 $mail_data['href_home']         = URL_BASE;
                 $mail_data['href_contact']      = URL_BASE . 'contact';
@@ -132,8 +132,18 @@ class ControllerCronManagerOrder extends Controller {
          *****************************/
         foreach ($this->model_common_order->getOrdersByStatus(ORDER_PROCESSED_STATUS_ID) as $order) {
 
+            // Get balance by address
+            $response = $this->_electrum->getaddressbalance($order->address);
+
+            if (!isset($response['result']['unconfirmed']) || !$order->address) {
+                continue;
+            }
+
             // When transaction has a minimum confirmations
-            if (($amount = (float) $this->_bitcoin->getreceivedbyaccount(BITCOIN_ORDER_PREFIX . $order->order_id, BITCOIN_MIN_TRANSACTION_CONFIRMATIONS)) >= (float) $order->amount) {
+            if ((float) $response['result']['confirmed'] >= (float) $order->amount) {
+
+                // Get confirmed amount
+                $amount = (float) $response['result']['confirmed'];
 
                 // Approved counter
                 $this->_count_approved++;
@@ -180,15 +190,22 @@ class ControllerCronManagerOrder extends Controller {
                 }
 
                 // Withdraw seller profit
-                if (!$transaction_id = $this->_bitcoin->sendtoaddress($product_withdraw_address, $seller_profit, sprintf('Order ID %s Payout', $order->order_id))) {
-                    $this->_errors[] = sprintf('Withdrawal error: %s', $this->_bitcoin->error);
-                }
+                $this->_electrum->payto(
+                    array(
+                        'amount'      => $seller_profit,
+                        'destination' => $product_withdraw_address
+                    )
+                );
 
                 // Withdraw fund profit, if exists
-                if ($fund_profit > 0 && $transaction_id = $this->_bitcoin->sendtoaddress(BITCOIN_FUND_ADDRESS, $fund_profit, sprintf('Order ID %s Profit', $order->order_id))) {
-                    $this->_errors[] = sprintf("Withdrawal error: %s", $this->_bitcoin->error);
+                if ($fund_profit > 0 ) {
+                    $this->_electrum->payto(
+                        array(
+                            'amount'      => $fund_profit,
+                            'destination' => BITCOIN_FUND_ADDRESS
+                        )
+                    );
                 }
-
 
                 /************************************************
                  *

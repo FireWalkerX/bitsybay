@@ -33,7 +33,7 @@ class ControllerAccountAccount extends Controller {
         $this->load->helper('validator/upload');
         $this->load->helper('validator/bitcoin');
 
-        $this->load->library('bitcoin');
+        $this->load->library('electrum');
         $this->load->library('identicon');
         $this->load->library('captcha/captcha');
 
@@ -935,13 +935,40 @@ class ControllerAccountAccount extends Controller {
         $data = array();
         $code = md5(PROJECT_NAME . $this->auth->getId());
 
+        // Get verification address if exists
+        $user_info = $this->model_account_user->getUser($this->auth->getId());
+
+        if ($user_info->verification_address) {
+
+            $address = $user_info->verification_address;
+
         // Create a new BitCoin Address
-        try {
-            $bitcoin = new BitCoin(BITCOIN_RPC_USERNAME, BITCOIN_RPC_PASSWORD, BITCOIN_RPC_HOST, BITCOIN_RPC_PORT);
-            $address = $bitcoin->getaccountaddress(BITCOIN_USER_VERIFICATION_PREFIX . $this->auth->getId());
-        } catch (Exception $e) {
-            $this->security_log->write('BitCoin connection error ' . $e->error);
-            exit;
+        } else {
+
+            try {
+
+                $electrum = new Electrum(ELECTRUM_RPC_HOST, ELECTRUM_RPC_PORT);
+
+                $response = $electrum->addrequest(
+                    array(
+                        'amount' => FEE_USER_VERIFICATION,
+                        'memo'   => sprintf('Verification Request for Account ID %s', $this->auth->getId()),
+                        'force'  => true,
+                    )
+                );
+
+                if (isset($response['result']['address'])) {
+
+                    $address = $response['result']['address'];
+                    $this->model_account_user->updateVerificationAddress($this->auth->getId(), $address);
+
+                } else {
+                    $this->security_log->write($response);
+                }
+
+            } catch (Exception $e) {
+                $this->security_log->write($e->getMessage());
+            }
         }
 
         if ('POST' == $this->request->getRequestMethod() && $this->_validateVerification()) {
@@ -990,10 +1017,12 @@ class ControllerAccountAccount extends Controller {
         $data['accept_2']  = isset($this->request->post['accept_2']) ? $this->request->post['accept_2'] : false;
 
         // Step 1
-        $data['payment_instruction'] = sprintf(tt('Send exactly %s to this address:'), $this->currency->format(FEE_USER_VERIFICATION));
-        $data['payment_address']     = $address;
-        $data['payment_qr_href']     = $this->url->link('common/image/qr', 'code=' . $address);
-        $data['payment_wallet_href'] = sprintf('bitcoin:%s?amount=%s&label=%s Verification Request for Account ID %s', $address, FEE_USER_VERIFICATION, PROJECT_NAME, $this->auth->getId());
+        if (isset($address)) {
+            $data['payment_instruction'] = sprintf(tt('Send exactly %s to this address:'), $this->currency->format(FEE_USER_VERIFICATION));
+            $data['payment_address']     = $address;
+            $data['payment_qr_href']     = $this->url->link('common/image/qr', 'code=' . $address);
+            $data['payment_wallet_href'] = sprintf('bitcoin:%s?amount=%s&label=%s Verification Request for Account ID %s', $address, FEE_USER_VERIFICATION, PROJECT_NAME, $this->auth->getId());
+        }
 
         // Step 3
         $data['confirmation_code']   = $code;

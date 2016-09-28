@@ -129,17 +129,12 @@ define('MAIL_EMAIL_SUPPORT_ADDRESS', '');
 define('MAIL_EMAIL_SENDER_ADDRESS', '');
 define('MAIL_EMAIL_SENDER_NAME', PROJECT_NAME);
 
-// BITCOIN
-define('BITCOIN_RPC_PORT', '8332');
-define('BITCOIN_RPC_HOST', 'localhost');
-define('BITCOIN_RPC_USERNAME', '');
-define('BITCOIN_RPC_PASSWORD', '');
-define('BITCOIN_DAEMON_PATH', '/usr/local/bin/bitcoind');
+// ELECTRUM
+define('ELECTRUM_RPC_PORT', '7777');
+define('ELECTRUM_RPC_HOST', 'localhost');
 
+// BITCOIN
 define('BITCOIN_FUND_ADDRESS', '');
-define('BITCOIN_ORDER_PREFIX', 'order_');
-define('BITCOIN_USER_VERIFICATION_PREFIX', 'user_verification_');
-define('BITCOIN_MIN_TRANSACTION_CONFIRMATIONS', 6); // Minimum BTC transaction confirmations requires before the order will be marked as APPROVED
 
 // SPHINX
 define('SPHINX_MATCH_MODE', 6);

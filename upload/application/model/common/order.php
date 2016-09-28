@@ -30,7 +30,7 @@ class ModelCommonOrder extends Model {
 
         try {
 
-            // Check if configuration is exist
+            // Is existing order
             $statement = $this->db->prepare('   SELECT `order_id`
                                                 FROM   `order`
                                                 WHERE  `user_id` = ?
@@ -40,13 +40,21 @@ class ModelCommonOrder extends Model {
                                                 AND    `fee` = ?
                                                 LIMIT 1');
 
-            $statement->execute(array($user_id, $product_id, $license, $amount, $fee));
+            $statement->execute(
+                array(
+                    $user_id,
+                    $product_id,
+                    $license,
+                    $amount,
+                    $fee
+                )
+            );
 
             if ($statement->rowCount()) {
                 $order_info = $statement->fetch();
                 return $order_info->order_id;
 
-            // Insert if configuration is not exist
+            // Insert if not exist
             } else {
                 $statement = $this->db->prepare('INSERT IGNORE
                                                  INTO  `order`
@@ -98,6 +106,33 @@ class ModelCommonOrder extends Model {
 
             $statement = $this->db->prepare('UPDATE `order` SET `order_status_id` = ? WHERE `order_id` = ? LIMIT 1');
             $statement->execute(array($order_status_id, $order_id));
+
+            return $statement->rowCount();
+
+        } catch (PDOException $e) {
+
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+
+            trigger_error($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+    * Update order address
+    *
+    * @param int $order_id
+    * @param string $address
+    * @return array|bool affected rows or false if throw exception
+    */
+    public function updateAddress($order_id, $address) {
+
+        try {
+
+            $statement = $this->db->prepare('UPDATE `order` SET `address` = ? WHERE `order_id` = ? LIMIT 1');
+            $statement->execute(array($address, $order_id));
 
             return $statement->rowCount();
 
