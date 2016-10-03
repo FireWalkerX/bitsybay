@@ -323,7 +323,7 @@
                 $('#initBitcoinWallet').attr('href', e['href']);
                 timer(900, document.getElementById('paymentTimer'));
               } else {
-                $('#productPurchase .modal-loading').html('Maintenance mode. Please wait a few minutes and try again.');
+                $('#productPurchase .modal-loading').html('Maintenance mode. Please wait few minutes and try again.');
               }
             },
             error: function (e) {
