@@ -57,8 +57,6 @@ class ControllerCommonContact extends Controller {
         $data['href_common_information_terms']     = $this->url->link('common/information/terms');
         $data['href_common_information_faq']       = $this->url->link('common/information/faq');
 
-        $data['guest'] = !$this->auth->isLogged();
-
         $captcha = new Captcha();
         $this->session->setCaptcha($captcha->getCode());
 
@@ -93,12 +91,10 @@ class ControllerCommonContact extends Controller {
             $this->_error['message'] = tt('Message is required');
         }
 
-        if (!$this->auth->isLogged()) {
-            if (!isset($this->request->post['captcha']) || empty($this->request->post['captcha'])) {
-                $this->_error['captcha'] = tt('Magic word is required');
-            } else if (strtoupper($this->request->post['captcha']) != strtoupper($this->session->getCaptcha())) {
-                $this->_error['captcha'] = tt('Incorrect magic word');
-            }
+        if (!isset($this->request->post['captcha']) || empty($this->request->post['captcha'])) {
+            $this->_error['captcha'] = tt('Magic word is required');
+        } else if (strtoupper($this->request->post['captcha']) != strtoupper($this->session->getCaptcha())) {
+            $this->_error['captcha'] = tt('Incorrect magic word');
         }
 
         return !$this->_error;

@@ -59,17 +59,15 @@
                 <?php } ?>
               </div>
             </div>
-            <?php if ($guest) { ?>
-              <div class="form-group<?php if (isset($error['captcha'])) { ?> has-error<?php } ?>">
-                <div class="col-lg-10 col-lg-offset-2">
-                  <img src="<?php echo $captcha ?>" alt="captcha" />
-                  <input type="text" name="captcha" class="form-control input-lg" id="inputCaptcha" placeholder="<?php echo tt('Magic word ↑') ?>" style="width:160px;margin-top:15px">
-                  <?php if (isset($error['captcha'])) { ?>
-                  <div class="text-danger"><?php echo $error['captcha'] ?></div>
-                  <?php } ?>
-                </div>
+            <div class="form-group<?php if (isset($error['captcha'])) { ?> has-error<?php } ?>">
+              <div class="col-lg-10 col-lg-offset-2">
+                <img src="<?php echo $captcha ?>" alt="captcha" />
+                <input type="text" name="captcha" class="form-control input-lg" id="inputCaptcha" placeholder="<?php echo tt('Magic word ↑') ?>" style="width:160px;margin-top:15px">
+                <?php if (isset($error['captcha'])) { ?>
+                <div class="text-danger"><?php echo $error['captcha'] ?></div>
+                <?php } ?>
               </div>
-            <?php } ?>
+            </div>
             <div class="form-group">
               <div class="col-lg-10 col-lg-offset-2 text-right">
                 <button type="submit" class="btn btn-primary"><?php echo tt('Submit') ?></button>
