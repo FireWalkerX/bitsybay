@@ -36,10 +36,11 @@ final class Cache {
     */
     public function image($name, $user_id, $width, $height, $watermarked = false, $overwrite = false, $best_fit = false) {
 
-        $storage     = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_IMAGE_EXTENSION;
-        $cache       = DIR_IMAGE . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '-' . (int) $best_fit . '-' . $width . '-' . $height . '.' . STORAGE_IMAGE_EXTENSION;
-        $watermark   = DIR_IMAGE . 'common' . DIR_SEPARATOR . 'watermark.png';
-        $cached_url  = URL_BASE . 'image' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '-' . (int) $best_fit . '-' . $width . '-' . $height . '.' . STORAGE_IMAGE_EXTENSION;
+        $storage         = DIR_STORAGE . $user_id . DIR_SEPARATOR . $name . '.' . STORAGE_IMAGE_EXTENSION;
+        $cache           = DIR_IMAGE . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '-' . (int) $best_fit . '-' . $width . '-' . $height . '.' . STORAGE_IMAGE_EXTENSION;
+        $watermark_black = DIR_IMAGE . 'common' . DIR_SEPARATOR . 'watermark-black.png';
+        $watermark_white = DIR_IMAGE . 'common' . DIR_SEPARATOR . 'watermark-white.png';
+        $cached_url      = URL_BASE . 'image' . DIR_SEPARATOR . 'cache' . DIR_SEPARATOR . $user_id . DIR_SEPARATOR . $name . '-' . (int) $best_fit . '-' . $width . '-' . $height . '.' . STORAGE_IMAGE_EXTENSION;
 
         // Force reset
         if ($overwrite && file_exists($overwrite)) {
@@ -69,7 +70,21 @@ final class Cache {
             $image->resize($width, $height, 1, false, $best_fit);
 
             if ($watermarked) {
-                $image->watermark($watermark);
+
+                $average = new Imagick($storage);
+                $average->resizeImage(1, 1, Imagick::FILTER_POINT, 0);
+
+                $pixel = $average->getImagePixelColor(1, 1);
+                $color = $pixel->getColor();
+
+                $avg = (0.299 * $color['r'] + 0.587 * $color['g'] + 0.114 * $color['b']) * 100 / 255;
+
+                if ($avg < 50) {
+                    $image->watermark($watermark_white);
+                } else {
+                    $image->watermark($watermark_black);
+                }
+
             }
 
             $image->save($cache);
