@@ -79,7 +79,7 @@ final class Cache {
 
                 $brightness = (0.299 * $color['r'] + 0.587 * $color['g'] + 0.114 * $color['b']) * 100 / 255;
 
-                if ($brightness < 10) {
+                if ($brightness < 25) {
                     $image->watermark($watermark_white);
                 } else {
                     $image->watermark($watermark_black);
