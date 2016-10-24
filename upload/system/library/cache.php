@@ -77,9 +77,9 @@ final class Cache {
                 $pixel = $average->getImagePixelColor(1, 1);
                 $color = $pixel->getColor();
 
-                $avg = (0.299 * $color['r'] + 0.587 * $color['g'] + 0.114 * $color['b']) * 100 / 255;
+                $brightness = (0.299 * $color['r'] + 0.587 * $color['g'] + 0.114 * $color['b']) * 100 / 255;
 
-                if ($avg < 50) {
+                if ($brightness < 10) {
                     $image->watermark($watermark_white);
                 } else {
                     $image->watermark($watermark_black);
