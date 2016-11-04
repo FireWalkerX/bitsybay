@@ -6,7 +6,7 @@ It was made by and for creative peoples who love a freedom and looking to easy t
 BitsyBay Engine
 ===============
 
-We believe that liberty service should be accessible to its users: it's 100% open source licensed under the GNU GPL version 3.  
+We believe that liberty service should be accessible to its users: it's 100% open source licensed under the GNU GPL v.3
 
 DONATE
 ------
