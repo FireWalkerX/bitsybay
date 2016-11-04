@@ -30,6 +30,9 @@
       <section>
         <article>
           <p>
+            <img src="image/common/logo-sm.png" alt="<?php echo PROJECT_NAME ?>" />
+          </p>
+          <p>
             <?php echo sprintf(tt('%s is a simple and minimalistic service to help you buy and or sell creative digital products with cryptocurrency like BitCoin.'), PROJECT_NAME) ?><br />
             <?php echo tt('It includes a marketplace for legal CMS extensions, illustrations, photos, themes and other creative assets from various authors.') ?>
           </p>
