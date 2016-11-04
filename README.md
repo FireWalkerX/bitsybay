@@ -7,7 +7,6 @@ BitsyBay Engine
 ===============
 
 We believe that liberty service should be accessible to its users: it's 100% open source licensed under the GNU GPL version 3.  
-If you know how to make this world better, join to the party or use this engine as your own BitCoin service.  
 
 DONATE
 ------
