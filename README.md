@@ -8,12 +8,6 @@ BitsyBay Engine
 
 We believe that liberty service should be accessible to its users: it's 100% open source licensed under the GNU GPL v.3
 
-STATUS
-------
-
-Open Beta
-
-
 FEATURES
 --------
 
