@@ -1,6 +1,3 @@
-The BitsyBay Project
-====================
-
 ![Bitsybay] (https://github.com/bitsybay/bitsybay/blob/master/media/branding/v2/logo.png?raw=true)
 
 BitsyBay is an experimental minimalistic service to help you buy or sell digital creative with cryptocurrency like BitCoin. It includes marketplace for legal CMS extensions, illustrations, photos, themes and other creative assets from them authors.  
