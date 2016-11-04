@@ -8,13 +8,6 @@ BitsyBay Engine
 
 We believe that liberty service should be accessible to its users: it's 100% open source licensed under the GNU GPL v.3
 
-DONATE
-------
-
-By donating to the foundation, you are helping us fund and manage this project: 
-
-    BTC 13t5kVqpFgKzPBLYtRNShSU2dMSTP4wQYx
-
 STATUS
 ------
 
@@ -104,3 +97,9 @@ REQUIREMENTS
     ffmpeg
     clamav, php-clamav
 
+DONATE
+------
+
+By donating to the foundation, you are helping us fund and manage this project: 
+
+    BTC 13t5kVqpFgKzPBLYtRNShSU2dMSTP4wQYx
