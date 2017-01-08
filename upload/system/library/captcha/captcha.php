@@ -6,7 +6,7 @@
  *
  * The MIT License (MIT)
  *
- * Copyright (c) 2015 The BitsyBay Project (http://bitsybay.com)
+ * Copyright (c) 2015 The BitsyBay Project (https://github.com/bitsybay)
  * Copyright 2013 by Cory LaViska for A Beautiful Site, LLC
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

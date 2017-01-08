@@ -8,7 +8,7 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @package    BitsyBay Engine
- * @copyright  Copyright (c) 2015 The BitsyBay Project (http://bitsybay.com)
+ * @copyright  Copyright (c) 2015 The BitsyBay Project (https://github.com/bitsybay)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License, Version 3
  */
 

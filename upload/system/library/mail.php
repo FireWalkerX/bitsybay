@@ -8,7 +8,7 @@
  * http://www.gnu.org/copyleft/gpl.html
  *
  * @package    BitsyBay Engine
- * @copyright  Copyright (c) 2015 The BitsyBay Project (http://bitsybay.com)
+ * @copyright  Copyright (c) 2015 The BitsyBay Project (https://github.com/bitsybay)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License, Version 3
  */
 
@@ -29,7 +29,7 @@ class Mail {
     public $smtp_timeout = 5;
     public $newline = "\n";
     public $verp = false;
-    public $parameter = '-f info@bitsybay.com';
+    public $parameter = '-f info@bitsybay.github.io';
 
     public function __construct($config = array()) {
         foreach ($config as $key => $value) {
